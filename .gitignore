@@ -156,3 +156,4 @@ certs.zip
 *.bak
 *.backup
 
+config/
