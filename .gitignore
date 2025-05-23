@@ -156,4 +156,8 @@ certs.zip
 *.bak
 *.backup
 
-config/
+# Ignore config files and Procfile
+Procfile
+config/nginx.conf
+config/redis_cache.conf
+config/redis_queue.conf
