@@ -1,0 +1,321 @@
+{
+ "actions": [],
+ "autoname": "HR-EMP-SEP-.YYYY.-.#####",
+ "creation": "2018-05-10 02:29:16.740490",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "department",
+  "designation",
+  "company",
+  "column_break_7",
+  "submission_date",
+  "required_lwd",
+  "reason",
+  "resign_status",
+  "lwd_as_per_policy",
+  "notice_period",
+  "section_break_dobn",
+  "applying_to",
+  "employee_remark",
+  "column_break_scjj",
+  "alternate_email_id",
+  "alternate_mobile_number",
+  "section_break_nfnb",
+  "resign_attachment",
+  "section_break_btfd",
+  "approved_lwd",
+  "fit_to_rehire",
+  "remark_for_employee",
+  "remark_for_manager",
+  "amended_from",
+  "column_break_ubqr",
+  "final_decision_status",
+  "stop_salary_process_date",
+  "table_for_activity",
+  "column_break_gres",
+  "employee_separation_template",
+  "activities",
+  "notify_users_by_email",
+  "section_break_14",
+  "exit_interview"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "notify_users_by_email",
+   "fieldtype": "Check",
+   "label": "Notify users by email"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee_separation_template",
+   "fieldtype": "Link",
+   "label": "Employee Separation Template",
+   "options": "Employee Separation Template"
+  },
+  {
+   "fetch_from": "employee.company",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Department",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "table_for_activity",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Separation Activities"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "activities",
+   "fieldtype": "Table",
+   "label": "Activities",
+   "options": "Employee Boarding Activity"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break",
+   "hidden": 1
+  },
+  {
+   "fieldname": "exit_interview",
+   "fieldtype": "Text Editor",
+   "label": "Exit Interview Summary"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Separation",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "submission_date",
+   "fieldtype": "Date",
+   "label": "Submission Date",
+   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1",
+   "reqd": 1
+  },
+  {
+   "fieldname": "required_lwd",
+   "fieldtype": "Date",
+   "label": "Required LWD",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_gres",
+   "fieldtype": "Column Break",
+   "hidden": 1
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Link",
+   "label": "Reason",
+   "options": "Resignation Reason",
+   "reqd": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "resign_status",
+   "fieldtype": "Select",
+   "label": "Resign Status",
+   "options": "Pending\nIn Process\nCompleted",
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager', 'Projects Manager']) != 1",
+   "reqd": 1
+  },
+  {
+   "fieldname": "lwd_as_per_policy",
+   "fieldtype": "Date",
+   "label": "LWD as Per Policy",
+   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
+  },
+  {
+   "description": "In days",
+   "fetch_from": "employee.notice_number_of_days",
+   "fieldname": "notice_period",
+   "fieldtype": "Data",
+   "label": "Notice Period",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_nfnb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "resign_attachment",
+   "fieldtype": "Attach",
+   "label": "Resign Attachment"
+  },
+  {
+   "fieldname": "section_break_btfd",
+   "fieldtype": "Section Break",
+   "label": "Add details"
+  },
+  {
+   "fieldname": "approved_lwd",
+   "fieldtype": "Date",
+   "label": "Approved LWD",
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager','Projects Manager']) != 1"
+  },
+  {
+   "default": "0",
+   "fieldname": "fit_to_rehire",
+   "fieldtype": "Check",
+   "label": "Fit To Rehire",
+   "read_only_depends_on": "eval:frappe.user.has_role(['Projects Manager', 'HR Manager']) != 1"
+  },
+  {
+   "fieldname": "remark_for_employee",
+   "fieldtype": "Small Text",
+   "label": "Remark For Employee",
+   "max_height": "70px",
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager', 'Projects Manager']) != 1"
+  },
+  {
+   "fieldname": "remark_for_manager",
+   "fieldtype": "Small Text",
+   "label": "Remark For Manager",
+   "max_height": "70px",
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager']) != 1"
+  },
+  {
+   "fieldname": "column_break_ubqr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "final_decision_status",
+   "fieldtype": "Select",
+   "label": "Final Decision Status",
+   "options": "In Process\nRetain\nExit Approved",
+   "read_only_depends_on": "eval:frappe.user.has_role(['Projects Manager', 'HR Manager']) != 1"
+  },
+  {
+   "fieldname": "section_break_dobn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "employee.reports_to",
+   "fieldname": "applying_to",
+   "fieldtype": "Data",
+   "label": "Applying To",
+   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_scjj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee_remark",
+   "fieldtype": "Small Text",
+   "label": "Employee Remark",
+   "max_height": "70px"
+  },
+  {
+   "fieldname": "alternate_email_id",
+   "fieldtype": "Data",
+   "label": "Alternate Email ID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "alternate_mobile_number",
+   "fieldtype": "Phone",
+   "label": "Alternate Mobile Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "stop_salary_process_date",
+   "fieldtype": "Date",
+   "label": "Stop Salary Process Date",
+   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-02-03 16:32:36.534907",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Separation",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "employee_name"
+}

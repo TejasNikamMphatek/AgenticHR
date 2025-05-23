@@ -1,0 +1,327 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="sidebar border">
+                <div class="profile text-center">
+                    <div class="image-layer-first">
+                        <img src="{{emp_image}}" alt="Profile Image" class="profile-img">
+                    </div>
+                    <div class="profile-info">
+                        <a href="/app/employee/{{me.emp_id}}">View Profile <i class="fa fa-gear"></i></a>
+                        <h4 class="my-2">{{employee_name}}</h4>
+                        <p>{{designation}}</p>
+                    </div>
+                </div>
+                <div class="sidebar-link">
+                    <div class="parent-link active_test">
+                        <a href="/app/pipal-employee-dashboard">
+                            <i class="fa fa-home mx-2"></i>
+                            Home
+                        </a>
+                    </div>
+                    
+                    <div class="parent-link">
+                        <a href="javascript:void(0);">
+                            <i class="fa fa-calendar mx-2"></i>
+                            Leave
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/leave-application">Leave Application</a>
+                            <a href="/app/query-report/Employee Leave Balance">Leave Balance</a>
+                            <a href="/app/leave-application/view/calendar">Leave Calendar</a>
+                        </div>
+                    </div>
+                    
+                    <div class="parent-link">
+                        <a  href="javascript:void(1);">
+                            <i class="fa fa-check-square mx-2"></i>
+                            Attendance
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/attendance/view/calendar/default">Attendance Calendar</a>
+                            <a href="/app/attendance-request">Attendance Request</a>
+                        </div>
+                    </div>
+
+                    <div class="parent-link">
+                        <a  href="javascript:void(2);">
+                            <i class="fa fa-tasks mx-2"></i>
+                            Projects
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/project-timesheet-management">Employee TimeSheet</a>
+                        </div>
+                    </div>
+
+                    <div class="parent-link">
+                        <a  href="javascript:void(3);">
+                            <i class="fa fa-bank mx-2"></i>
+                            Salary
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/salary-slip?docstatus=1">Salary Slip</a>
+                            <a href="/app/employee-tax-exemption-declaration">IT Declaration</a>
+                            <a href="/app/employee-tax-exemption-proof-submission">IT Proof Submission</a>
+                        </div>
+                    </div>
+                    
+                    <div class="parent-link">
+                        <a  href="javascript:void(4);">
+                            <i class="fa fa-hourglass-half mx-2"></i>
+                            Timeline
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/employee-separation">Resign</a>
+                        </div>
+                    </div>
+
+                    <div class="parent-link">
+                        <a  href="javascript:void(5);">
+                            <i class="fa fa-file mx-2"></i>
+                            Documents
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/custom-appointment-letter">Appointment Letter</a>
+                            <a href="/app/confirmation-letter">Confirmation Letter</a>
+                            <a href="/app/increment-letter">Increment Letter</a>
+                            <a href="/app/confirmation-letter-with-increment">Confirmation + Increment</a>
+                            <a href="/app/relieving-experience-letter">Relieving & Experience</a>
+                            <a href="/app/nda-letter">NDA Letter</a>
+                            <a href="/app/salary-slip?docstatus=1">Salary Slip</a>
+                        </div>
+                    </div>
+
+                                
+                                       
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9" >
+            <div class="row">
+                <div class="content">
+                    <div class="col-md-12 d-none d-md-block">
+                        <div class="header">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h3 class="mb-1">{{greetingMessage}}</h3>
+                                    <p>The quickest way to double your money is to fold it over and put it back in your pocket. - WILL ROGERS</p>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <img class="w-50" src="/assets/hrms/images/hrms_show.png" alt="hrms_show">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="main-content">
+                            <!-- card start -->
+                            <div class="card border-none p-3" style="background-color: #f3f3f3;">
+                                <div class="card shadow checkin-card">
+                                    <h3 class="mt-3 mb-1">{{formattedDate}}</h3>
+                                    <p>{{dayOfWeek}} | {{me.default_shift}}</p>
+                                    <div class="row time-container">
+                                        <div class="col-12">
+                                            <b  id="liveTime"></b>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row mt-4 check-in-swipe">
+                                        <div class="col-6">
+                                            <a id="view-swipe" class="my-2 hide" onclick="me.viewSwipe()">
+                                                View Swipe
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <button id="check-in-out-btn" class="btn btn-sm text-uppercase" onclick="me.checkInOut(me.checkInLogType)">Check {{me.checkInLogType}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card shadow quick-access mt-3">
+                                    <h3>Quick Access</h3>
+
+                                        <p class="mb-1">
+                                            <a href="/app/salary-slip">
+                                                Payslip
+                                            </a>
+                                        </p>
+                                        <p class="mb-1">
+                                            <a href="/app/query-report/Income%20Tax%20Deductions">
+                                                IT Statement
+                                            </a>
+                                        </p>
+                                        <p class="mb-1">
+                                            <a href="/app/query-report/Salary%20Register">
+                                                YTD Reports
+                                            </a>
+                                        </p>
+                                </div>
+                            </div>
+                            
+                            <div class="card shadow payslip_card">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h3>Payslip</h3>
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        <a href="/app/salary-slip/{{slip_name}}">
+                                            <i class="fa fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-7 paylip_graph">
+                                        <canvas id="pieChart" height="100" width="100"></canvas>
+                                    </div>
+                                    <div class="col-5 text-center">
+                                        <strong>{{pay_month_date}}</strong>
+
+                                        <p class="text-center mt-3 mb-0">{{pay_payment_days}}</p>
+                                        <span>Paid Days</span>
+
+                                    </div>
+                                </div>
+                                
+                                <table class="table border-none">
+                                    <tr>
+                                        <td>
+                                            <span>Gross Pay </span>
+                                        </td>
+                                        <td class="text-right">
+                                            <span>
+                                                <!-- {{pay_currency}}  -->
+                                                &#8377;
+                                                <span id="pay_gross_pay">*****</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>    
+                                        <td>
+                                            <span>Deduction</span>
+                                        </td>
+                                        <td class="text-right">
+                                            <span> 
+                                                <!-- {{pay_currency}}  -->
+                                                &#8377;
+                                                <span id="pay_total_deduction">*****</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>Net Pay</span>
+                                        </td>
+                                        <td class="text-right">
+                                            <span>
+                                                <!-- {{pay_currency}}  -->
+                                                &#8377;
+                                                <span id="pay_net_pay">*****</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <div class="row payslip-btnbox">
+
+                                    <table class="table border-none my-0">
+                                        <tr>
+                                            <td>
+                                                <a id="payslip_download_link" onclick="me.waitLoad()" href="/api/method/frappe.utils.print_format.download_pdf?doctype=Salary%20Slip&name={{slip_name}}&format=Monthly%20Salary%20Slip" download="{{slip_name}}.pdf" >Download</a>
+                                            </td>
+                                            <td class="text-right">
+                                                <a class="mr-3" id="salary-toggle" onclick="me.ShowHideSalary(me.toggle_salary)">{{me.toggle_salary}}</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- <div class="col-6">
+                                        <a id="payslip_download_link" onclick="me.waitLoad()" href="/api/method/frappe.utils.print_format.download_pdf?doctype=Salary%20Slip&name={{slip_name}}&format=Monthly%20Salary%20Slip" download="{{slip_name}}.pdf" >Download</a>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <a class="mr-3" id="salary-toggle" onclick="me.ShowHideSalary(me.toggle_salary)">{{me.toggle_salary}}</a>
+                                    </div> -->
+                                </div>
+                                
+                            </div>
+
+                            <div class="card shadow upcoming-holiday">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <h3>Upcoming Holidays</h3>
+                                    </div>
+                                    <div class="col-2">
+                                        <a href="/app/holiday-calendar">
+                                            <i class="fa fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                {{me.holiday_element}}
+                            </div>
+
+                            <div class="card shadow">
+                                <h3>IT Declaration</h3>
+                                <div id="declaration_data" class="row">
+                                    <div class="col-6">
+                                        <p>Please review your IT declaration.</p>
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-center align-items-center">
+                                        <a href="/app/employee-tax-exemption-declaration">View</a>
+                                    </div>
+                                </div>
+
+                               <div class="row declaration_not_found" >
+                                    <div class="col-4 declaration_image">
+                                        <img src="/assets/hrms/images/it_declaration.svg" alt="declaration_not_found" >
+                                    </div>
+                                    <div class="col-8">
+                                        <p>Uh oh! You have missed submitting your IT declaration. Please submit it once the window opens.</p>
+                                    </div>
+                               </div>
+                            </div>
+
+                            <div class="card shadow">
+                                <h3>POI</h3>
+                                <div id="proof_data" class="row">
+                                    <div class="col-6">
+                                        <p>Please review your Proof Of Investment.</p>
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-center align-items-center">
+                                        <a href="/app/employee-tax-exemption-proof-submission">View</a>
+                                    </div>
+                                   
+                                </div>
+                                <div class="row proof_not_found">
+                                    <div class="col-4 declaration_image">
+                                        <img src="/assets/hrms/images/poi.svg" alt="declaration_not_found" >
+                                    </div>
+                                    <div class="col-8">
+                                        <p>Hold on! You can submit your Proof of Investments (POI) once released.</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="card shadow">
+                                <h3>Review</h3>
+                                <div class="row review_img">
+                                    <div class="col-12 text-center mb-3">
+                                        <img src="/assets/hrms/images/review.png" alt="">
+                                    </div>
+                                </div>
+                                <p>Hurrah! You have nothing to review.</p>
+                            </div>
+                            <!-- card end -->
+                        </div>
+                    </div>
+                </div>
+            <div>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>

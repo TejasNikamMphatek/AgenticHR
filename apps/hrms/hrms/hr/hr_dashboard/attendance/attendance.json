@@ -1,0 +1,38 @@
+{
+ "cards": [
+  {
+   "card": "Total Present (This Month)"
+  },
+  {
+   "card": "Total Absent (This Month)"
+  },
+  {
+   "card": "Late Entry (This Month)"
+  },
+  {
+   "card": "Early Exit (This Month)"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Attendance Count",
+   "width": "Full"
+  },
+  {
+   "chart": "Monthly Attendance Count",
+   "width": "Full"
+  }
+ ],
+ "creation": "2024-04-29 15:30:17.219659",
+ "dashboard_name": "Attendance",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 13,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2024-10-10 12:11:56.637458",
+ "modified_by": "hr@mphatek.com",
+ "module": "HR",
+ "name": "Attendance",
+ "owner": "infomphateksystems@gmail.com"
+}

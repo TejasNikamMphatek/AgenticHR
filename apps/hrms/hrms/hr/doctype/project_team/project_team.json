@@ -1,0 +1,70 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-11-12 11:59:50.589147",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "designation",
+  "column_break_afvg",
+  "employee_name",
+  "effective_date_on_project",
+  "project_timesheet"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_afvg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name"
+  },
+  {
+   "fieldname": "effective_date_on_project",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Effective Date On Project"
+  },
+  {
+   "fieldname": "project_timesheet",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Project Timesheet",
+   "options": "Project Timesheet Management"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-11-12 12:44:14.693329",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Project Team",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

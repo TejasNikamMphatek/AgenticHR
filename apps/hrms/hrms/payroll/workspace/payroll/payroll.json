@@ -1,0 +1,97 @@
+{
+ "charts": [
+  {
+   "chart_name": "Outgoing Salary",
+   "label": "Outgoing Salary"
+  }
+ ],
+ "content": "[{\"id\":\"neKH2wRY6E\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Outgoing Salary\",\"col\":12}},{\"id\":\"ii_IlkU5f3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"iLXx-5N1Fp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Register\",\"col\":3}},{\"id\":\"RbivxRUoiw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Slip\",\"col\":3}},{\"id\":\"YplpjPl-_7\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"frqudtQl5j\",\"type\":\"card\",\"data\":{\"card_name\":\"Quick Links\",\"col\":4}},{\"id\":\"-tdlYVZmJk\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}}]",
+ "creation": "2020-05-27 19:54:23.405607",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "money-coins-1",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Payroll",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Settings",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payroll Settings",
+   "link_count": 0,
+   "link_to": "Payroll Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Quick Links",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payroll Entry",
+   "link_count": 0,
+   "link_to": "Payroll Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Slip",
+   "link_count": 0,
+   "link_to": "Salary Slip",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-07-15 17:07:14.402470",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Payroll",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [],
+ "sequence_id": 21.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Salary Slip",
+   "link_to": "Salary Slip",
+   "stats_filter": "[[\"Salary Slip\",\"status\",\"=\",\"Submitted\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Salary Register",
+   "link_to": "Salary Register",
+   "type": "Report"
+  }
+ ],
+ "title": "Payroll"
+}

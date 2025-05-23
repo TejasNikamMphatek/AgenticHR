@@ -1,0 +1,279 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:Payroll-Lock-{select_payroll_period}",
+ "creation": "2024-11-28 19:04:46.271077",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "select_payroll_period",
+  "column_break_ibmj",
+  "payroll_start_date",
+  "payroll_end_date",
+  "section_break_idfr",
+  "jan",
+  "jan_lock_date",
+  "column_break_nulr",
+  "feb",
+  "feb_lock_date",
+  "column_break_xsuz",
+  "mar",
+  "mar_lock_date",
+  "column_break_qlsp",
+  "apr",
+  "apr_lock_date",
+  "section_break_rebh",
+  "may",
+  "may_lock_date",
+  "column_break_ebnt",
+  "jun",
+  "jun_lock_date",
+  "column_break_hxdd",
+  "jul",
+  "jul_lock_date",
+  "column_break_bfhd",
+  "aug",
+  "aug_lock_date",
+  "section_break_ibhj",
+  "sep",
+  "sep_lock_date",
+  "column_break_ucnz",
+  "oct",
+  "oct_lock_date",
+  "column_break_afnn",
+  "nov",
+  "nov_lock_date",
+  "column_break_yvla",
+  "dec",
+  "dec_lock_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "select_payroll_period",
+   "fieldtype": "Link",
+   "label": "Select Payroll Period",
+   "options": "Payroll Period"
+  },
+  {
+   "fieldname": "column_break_ibmj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "select_payroll_period.start_date",
+   "fieldname": "payroll_start_date",
+   "fieldtype": "Date",
+   "label": "Payroll Start Date"
+  },
+  {
+   "fetch_from": "select_payroll_period.end_date",
+   "fieldname": "payroll_end_date",
+   "fieldtype": "Date",
+   "label": "Payroll End Date"
+  },
+  {
+   "fieldname": "section_break_idfr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "jan",
+   "fieldtype": "Check",
+   "label": "Jan"
+  },
+  {
+   "fieldname": "column_break_nulr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "feb",
+   "fieldtype": "Check",
+   "label": "Feb"
+  },
+  {
+   "fieldname": "column_break_xsuz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "mar",
+   "fieldtype": "Check",
+   "label": "Mar"
+  },
+  {
+   "fieldname": "column_break_qlsp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "apr",
+   "fieldtype": "Check",
+   "label": "Apr"
+  },
+  {
+   "fieldname": "section_break_rebh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "may",
+   "fieldtype": "Check",
+   "label": "May"
+  },
+  {
+   "fieldname": "column_break_ebnt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "jun",
+   "fieldtype": "Check",
+   "label": "Jun"
+  },
+  {
+   "fieldname": "column_break_hxdd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "jul",
+   "fieldtype": "Check",
+   "label": "Jul"
+  },
+  {
+   "fieldname": "column_break_bfhd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "aug",
+   "fieldtype": "Check",
+   "label": "Aug"
+  },
+  {
+   "fieldname": "section_break_ibhj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "sep",
+   "fieldtype": "Check",
+   "label": "Sep"
+  },
+  {
+   "fieldname": "column_break_ucnz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "oct",
+   "fieldtype": "Check",
+   "label": "Oct"
+  },
+  {
+   "fieldname": "column_break_afnn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "nov",
+   "fieldtype": "Check",
+   "label": "Nov"
+  },
+  {
+   "fieldname": "column_break_yvla",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "dec",
+   "fieldtype": "Check",
+   "label": "Dec"
+  },
+  {
+   "fieldname": "jan_lock_date",
+   "fieldtype": "Date",
+   "label": "Jan Lock Date"
+  },
+  {
+   "fieldname": "feb_lock_date",
+   "fieldtype": "Date",
+   "label": "Feb Lock Date"
+  },
+  {
+   "fieldname": "mar_lock_date",
+   "fieldtype": "Date",
+   "label": "Mar Lock Date"
+  },
+  {
+   "fieldname": "apr_lock_date",
+   "fieldtype": "Date",
+   "label": "Apr Lock Date"
+  },
+  {
+   "fieldname": "may_lock_date",
+   "fieldtype": "Date",
+   "label": "May Lock Date"
+  },
+  {
+   "fieldname": "jun_lock_date",
+   "fieldtype": "Date",
+   "label": "Jun Lock Date"
+  },
+  {
+   "fieldname": "jul_lock_date",
+   "fieldtype": "Date",
+   "label": "Jul Lock Date"
+  },
+  {
+   "fieldname": "aug_lock_date",
+   "fieldtype": "Date",
+   "label": "Aug Lock Date"
+  },
+  {
+   "fieldname": "sep_lock_date",
+   "fieldtype": "Date",
+   "label": "Sep Lock Date"
+  },
+  {
+   "fieldname": "oct_lock_date",
+   "fieldtype": "Date",
+   "label": "Oct Lock Date"
+  },
+  {
+   "fieldname": "nov_lock_date",
+   "fieldtype": "Date",
+   "label": "Nov Lock Date"
+  },
+  {
+   "fieldname": "dec_lock_date",
+   "fieldtype": "Date",
+   "label": "Dec Lock Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-28 19:13:48.093629",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Lock Unlock Payroll",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

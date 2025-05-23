@@ -1,0 +1,72 @@
+<div class="page-loader-wrapper">
+    <div class="loader">
+        <div class="m-t-30"><img class="zmdi-hc-spin" src="/assets/frappe/compass/assets/images/loader.png" width="48" height="48" alt="Loader"></div>
+        <p>Please wait...</p>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-10 text-center p-0 w-auto">
+            {{me.statTable}}
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-between">
+        <div class="col-md-4 p-0" style="height: 100vh;">
+            <div class="card p-3" style="height: 100%;">
+                <div class="card-head border-bottom py-2">
+                    <div class="text-center font-weight-bold border-bottom py-2" id="NotYetIn">Not Yet In (184)</div>      
+                    <div class="d-flex justify-content-between py-2">
+                        <b>Employee</b>
+                        <b>Expected In Time</b>
+                    </div>
+                </div>
+                <div class="card-body p-0 custom-scroll" style="height: calc(100vh - 100px); overflow-y: auto;">
+                    {{me.notYetInRows}}
+                </div>
+            </div>
+        </div>
+        <!-- -------------------------- -->
+
+        <div class="col-md-3 p-0 my-3 my-md-0" style="height: 100vh;">
+            <div class="card p-3" style="height: 100%;">
+                <div class="card-head border-bottom py-2">
+                    <div class="text-center font-weight-bold border-bottom py-2" id="lateArrival">Late Arrivals (0)</div>      
+                    <div class="d-flex justify-content-between py-2">
+                        <b>Employee</b>
+                        <b>Late Time</b>
+                    </div>
+                </div>
+                <div class="card-body p-0 custom-scroll" style="height: calc(100vh - 100px); overflow-y: auto;">
+                    {{me.lateCheckEmpRow}}
+                </div>
+            </div>
+        </div>
+
+        <!-- ---------------- -->
+        <div class="col-md-4 p-0" style="height: 100vh;">
+            <div class="card p-3" style="height: 100%;">
+                <div class="card-head border-bottom py-2">
+                    <div class="text-center font-weight-bold border-bottom py-2" id="LeaveCount"></div>      
+                    <div class="d-flex justify-content-between py-2">
+                        <b>Employee</b>
+                        <b>Number Of Days</b>
+                    </div>
+                </div>
+                <div class="card-body p-0 custom-scroll" style="height: calc(100vh - 100px); overflow-y: auto;">
+                    {{me.leave_rows}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  <div class="modal fade" id="leaveInfo" tabindex="-1" aria-labelledby="leaveInfoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        {{me.leaveModal}}
+    </div>
+  </div>
+
+<script src="/assets/frappe/compass/assets/bundles/mainscripts.bundle.js"></script>
+  

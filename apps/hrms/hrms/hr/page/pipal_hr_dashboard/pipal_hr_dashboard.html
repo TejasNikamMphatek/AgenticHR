@@ -1,0 +1,1107 @@
+<!-- Custom Css -->
+<div class="theme-cyan">
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="/assets/frappe/compass/assets/images/loader.png" width="48" height="48" alt="Loader"></div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+
+    <!-- Top Bar -->
+    <nav class="navbar d-none">
+        <div class="col-12">        
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="/app/pipal-employee-dashboard">
+                    <img src="/assets/erpnext/images/mphatek_white_logo.png" style="height: 50px;" alt="logo">
+                    <span class="m-l-10 text-white">PIPAL HR</span>
+                </a>
+            </div>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="javascript:void(0);" class="ls-toggle-btn" data-close="true"><i class="zmdi zmdi-swap"></i></a></li>            
+                <li class="hidden-sm-down">
+                    <!-- <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <span class="input-group-addon">
+                            <i class="zmdi zmdi-search"></i>
+                        </span>
+                    </div> -->
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown"> 
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="zmdi zmdi-notifications"></i>
+                        <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideDown">
+                        <li class="header">NOTIFICATIONS</li>
+                        <li class="body">
+                            <ul class="menu list-unstyled">
+                                <li> 
+                                    <a href="javascript:void(0);">
+                                        <div class="icon-circle bg-blue">
+                                            <i class="zmdi zmdi-account"></i>
+                                        </div>
+                                        <div class="menu-info">
+                                            <h4>8 New Members joined</h4>
+                                            <p><i class="zmdi zmdi-time"></i> 14 mins ago </p>
+                                        </div>
+                                    </a> 
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="footer"> <a href="javascript:void(0);">View All Notifications</a> </li>
+                    </ul>
+                </li>
+                <li class="dropdown"> 
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="zmdi zmdi-flag"></i>
+                        <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideDown">
+                        <li class="header"></li>
+                        <li class="body">
+                            <ul class="menu tasks list-unstyled">
+                                <li> <a href="javascript:void(0);">
+                                    <div class="progress-container progress-primary">
+                                        <span class="progress-badge">My settings</span>
+                                        
+                                    </div>
+                                    </a>
+                                </li>
+                                <li> <a href="javascript:void(0);">
+                                    <div class="progress-container progress-info">
+                                        <span class="progress-badge">Reload</span>
+                                        
+                                    </div>
+                                    </a>
+                                </li>
+                                <li> <a href="javascript:void(0);">
+                                    <div class="progress-container progress-success">
+                                        <span class="progress-badge">Log Out</span>
+                                        
+                                    </div>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li class="footer"><a href="javascript:void(0);">View All</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" class="fullscreen hidden-sm-down" data-provide="fullscreen" data-close="true"><i class="zmdi zmdi-fullscreen"></i></a>
+                </li>
+                <li>
+                    <a href="" class="mega-menu" data-close="true"><i class="zmdi zmdi-power"></i>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Left Sidebar -->
+    <aside id="leftsidebar" class="sidebar hr_dash_sidebar">
+        <div class="menu">
+            <ul class="list">
+                <li>
+                    {{me.user_profile}}
+                </li>
+                <li class="active"> 
+                    <a href="/app/pipal-employee-dashboard" class="">
+                    <i class="zmdi zmdi-home"></i><span>Dashboard</span></a>
+                </li>
+
+                <!-- Engage Start -->
+                <li> 
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="zmdi zmdi-apps"></i> 
+                        <span>Engage</span>
+                    </a>
+                    <ul class="ml-menu ml-3">
+                        <li><a href="/app/pipal-engage">Engage</a></li>
+                    </ul>
+                </li>
+                <!-- Engage End -->
+
+                <!-- Employee_tab Start -->
+                <li> 
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="zmdi zmdi-account"></i><span>Employee</span> 
+                    </a>
+                    <ul class="ml-menu">
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Main</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/dashboard-view/HR Overview">OverView</a></li>
+                                <li><a href="/app/data-export">Analytical Hub</a></li>
+                                <li><a href="/app/organizational-chart">Orgnizational Chart</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Information</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/employee">Employee Profile</a></li>
+                                <li><a href="/app/bank-pf-esi-lwf">Bank/PF/ESI</a></li>
+                                <li><a href="/app/family-details">Family Details</a></li>
+                                <li><a href="/app/employee-assets-manage">Assets</a></li>
+                                <li><a href="/app/employee-separation">Separation</a></li>
+                                <li><a href="/app/file">File Manager</a></li>
+                                <li><a href="/app/employee-contract">Employee Contracts</a></li>
+                                <li><a href="/app/salary-slip">Employee Salary</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Admin</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/data-import">Excel Import</a></li>
+                                <li><a href="/app/job-opening">Bulletin Board</a></li>
+                                <li><a href="/app/mass-communication">Mass Communication</a></li>
+                                <li><a href="/app/data-drive">Data Drive</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Letter Generator</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/custom-appointment-letter">Appointment Letter</a></li>
+                                <li><a href="/app/confirmation-letter">Confirmation Letter</a></li>
+                                <li><a href="/app/increment-letter">Increment Letter</a></li>
+                                <li><a href="/app/confirmation-letter-with-increment">Confirmation + Increment</a></li>
+                                <li><a href="/app/relieving-experience-letter">Relieving & Experience</a></li>
+                                <li><a href="/app/nda-letter">NDA Letter</a></li>
+                                <li><a href="/app/salary-slip">Salary Slip</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Setup</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/print-format">Letter Template</a></li>
+                                <li><a href="/app/company-policy">Company Policy</a></li>
+                                <li><a href="/app/employee">Employee Filter</a></li>
+                            </ul>
+                        </li>
+                        
+                    </ul> 
+                </li>            
+                <!-- Employee_tab End -->
+
+                <!-- Leave Tab Start -->
+                <li> 
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="zmdi zmdi-calendar"></i><span>Leave</span> 
+                    </a>
+                    <ul class="ml-menu">
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Main</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/dashboard-view/Leave Overview">Leave Overview</a></li>
+                                <li><a href="/app/dashboard-view/Attendance">Attendance Overview</a></li>
+                                <li><a href="/app/leave-application/view/calendar">Leave Calendar</a></li>
+                                <li><a href="/app/who-is-in">Who Is In ?</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Information</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/leave-application/">Employee Leave Application</a></li>
+                                <li><a href="/app/shift-assignment">Shift Roster</a></li>
+                                <li><a href="/app/employee-checkin/view/report">Employee Swipes</a></li>
+                                <li><a href="/app/query-report/Monthly Attendance Sheet">Attendance Muster</a></li>
+                                <li><a href="/app/attendance/view/calendar/default">Attendance Info</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Admin</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/query-report/Leave Ledger">Leave Allocation</a></li>
+                                <li><a href="/app/leave-period">Attendance/Leave Period</a></li>
+                                <li><a href="/app/shift-type">Process Attendance By Shift</a></li>
+                                <li><a href="/app/leave-encashment">Leave Encashment</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Year End Process</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/leave-application/view/list?status=Open">Pending Leave Applications</a></li>
+                                <li><a href="/app/leave-type">Leave Policy Type</a></li>
+                                <li><a href="/app/leave-control-panel">Leave Control Panel</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Shift Override</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/shift-request">Shift Request</a></li>
+                                <li><a href="/app/shift-assignment">Shift shift-assignment</a></li>
+                                <li><a href="/app/shift-assignment-tool">Bulk Shift Assign/Req.</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Setup</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/holiday-list">Holiday List</a></li>
+                                <li><a href="/app/holiday-calendar">Holiday Calendar</a></li>
+                                <li><a href="/app/leave-type">Leave Type</a></li>
+                            </ul>
+                        </li>
+                        
+                    </ul> 
+                </li>            
+                <!-- Leave Tab End -->
+
+                <!-- Workflow Tab Start -->
+                <li> 
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="zmdi zmdi-shape"></i><span>Workflow</span> 
+                    </a>
+                    <ul class="ml-menu">
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Monitor</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/attendance-request">Attendance Requests</a></li>
+                                <li><a href="/app/leave-application?status=Open">Leave Applications</a></li>
+                                <li><a href="/app/help-desk">Help Desk</a></li>
+                                <li><a href="/app/leave-block-list">Leave Block List</a></li>
+                                <li><a href="/app/employee-separation">Resignations</a></li>
+                                <li><a href="/app/confirmation-list">Confirmation</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Review</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/leave-application?status=Cancelled">Leave Cancelled</a></li>
+                                <li><a href="/app/help-desk">Help Desk</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Onboarding</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/user/new-user">Create User</a></li>
+                                <li><a href="/app/employee?status=Active&employee_info_verified=0">Emp Veri. Pending</a></li>
+                            </ul>
+                        </li>
+
+                    </ul> 
+                </li>            
+                <!-- Workflow Tab End -->
+
+                <!-- Report Tab Start -->
+                <li> 
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="zmdi zmdi-file-text"></i><span>Report</span> 
+                    </a>
+                    <ul class="ml-menu">
+                        <li><a href="/app/data-export">Export Excel Reports</a></li>
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>HR</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/query-report/Employee Leave Balance">Employee Leave Balance</a></li>
+                                <li><a href="/app/query-report/Employee Leave Balance Summary">Leave Balance Summary</a></li>
+                                <li><a href="/app/query-report/Monthly Attendance Sheet">Monthly Attendance Sheet</a></li>
+                                <li><a href="/app/query-report/Employee Birthday">Employee Birthday</a></li>
+                                <li><a href="/app/query-report/Employee Analytics">Employee Analytics</a></li>
+                                <li><a href="/app/query-report/Leave Ledger">Leave Ledger</a></li>
+                                <li><a href="/app/query-report/Shift Attendance">Shift Attendance</a></li>
+                                <li><a href="/app/query-report/Appraisal Overview">Appraisal Overview</a></li>
+                                <li><a href="/app/query-report/Unpaid Expense Claim">Unpaid Expense Claim</a></li>
+                                <li><a href="/app/employee/view/report/Employee Information">Employee Information</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Payroll</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/query-report/Salary Register">Salary Register</a></li>
+                                <li><a href="/app/query-report/Income Tax Deductions">Income Tax Deductions</a></li>
+                                <!-- <li><a href="/app/query-report/Income Tax Computation">Income Tax Computation</a></li> -->
+                                <li><a href="/app/query-report/Salary Payments Based On Payment Mode">Salary Payment Mode</a></li>
+                                <li><a href="/app/query-report/Salary Payments via ECS">Salary Payments ECS</a></li>
+                                <li><a href="/app/query-report/Bank Remittance">Bank Remittance</a></li>
+                                <li><a href="/app/query-report/Professional Tax Deductions">Professional Tax Deductions</a></li>
+                                <li><a href="/app/query-report/Provident Fund Deductions">Provident Fund Deductions</a></li>
+                            </ul>
+                        </li>
+                    </ul> 
+                </li>            
+                <!-- Report Tab End -->
+
+                 <!-- Payroll Tab Start -->
+                 <li> 
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="zmdi zmdi-balance"></i><span>Payroll</span> 
+                    </a>
+                    <ul class="ml-menu">
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Main</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/dashboard-view/Payroll">Overview</a></li>
+                                <li><a href="/app/lock-unlock-payroll">Payroll Lock</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Information</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/employee-promotion">Salary Rivision History</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Payroll Inputs</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/salary-component">Component</a></li>
+                                <li><a href="/app/salary-structure">Salary Structure</a></li>
+                                <li><a href="/app/salary-structure-assignment">Salary Structure Assign</a></li>
+                                <li><a href="/app/bulk-salary-structure-assignment">Bulk Structure Assign</a></li>
+                                <li><a href="/app/employee-promotion">Salary Rivision</a></li>
+                                <li><a href="/app/expense-claim">Expense Claim</a></li>
+                                <li><a href="/app/income-tax-slab">Income Tax Slab</a></li>
+                                <li><a href="/app/query-report/Income Tax Deductions">Income Tax</a></li>
+                                <li><a href="/app/query-report/Monthly Attendance Sheet">Employee LOP Days</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li><a href="/app/payroll-entry">Payroll Process</a></li>
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Verify</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li>
+                                    <a href="javascript:void(0);" class="menu-toggle">
+                                        <i class="zmdi zmdi-apps"></i> 
+                                        <span>Payroll Statement</span>
+                                    </a>
+                                    <ul class="ml-menu ml-3">
+                                        <li><a href="/app/query-report/Salary Bank Transfer Statement">Bank Transfer Statement</a></li>
+                                        <li><a href="/app/query-report/CTC Report">CTC Report</a></li>
+                                        <li><a href="/app/query-report/ESI Deduction Report">ESI Report</a></li>
+                                        <li><a href="/app/query-report/PMS CTC">PMS CTC</a></li>
+                                        <li><a href="/app/query-report/Salary Register">Salary Register</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="/app/query-report/Salary Register">Quick Salary Statement</a></li>
+                                <li><a href="/app/additional-salary/view/report">Payroll Differences</a></li>
+                            </ul>
+                        </li>
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Payout</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <!-- <li><a href="">Accounts JV</a></li>  Not found anything-->
+                                <!-- <li><a href="/app/bank-transaction">Bank Transfer</a></li> Not Found anything-->
+                                <li><a href="/app/salary-slip">Payslips</a></li>
+                                <li><a href="/app/hold-salary-employee">Hold Salary Payout</a></li>
+                                <li><a href="/app/full-and-final-statement">FNF Statement</a></li>
+                            </ul>
+                        </li>
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Publish Info</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="/app/query-report/Publish Payslip">Publish Payslip Report</a></li>
+                                <!-- <li><a href="">CTC Payslips</a></li> -->
+                                <li><a href="/app/salary-slip">Reimbursement Payslip</a></li>
+                                <li><a href="/app/query-report/Salary Register">YTD Summary</a></li>
+                                <li><a href="/app/query-report/Provident Fund Deductions">PF YTD Statement</a></li>
+                                <li><a href="/app/expense-claim/view/report">Expense Claim Statement</a></li>
+                                <!-- <li><a href="">Loan Declaration</a></li>
+                                <li><a href="">FBP Declaration</a></li> -->
+                            </ul>
+                            
+                        </li>
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Admin</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <li><a href="">Form 16</a></li>
+                                <li><a href="">Form 24Q</a></li>
+                                <li><a href="/app/employee-tax-exemption-declaration">Employee IT Declaration</a></li>
+                                <li><a href="/app/employee-pan-status">PAN Status</a></li>
+                                <li><a href="/app/employee-promotion">Revision Planner</a></li>
+                                <!-- <li><a href="">Remittance</a></li> -->
+                                <li><a href="/app/payroll-entry">Payroll Release</a></li>
+                                <li><a href="/app/query-report/POI Overview">POI Overview</a></li>
+                                <!-- <li><a href="">PF KYC Mapping</a></li> -->
+                            </ul>
+                        </li>
+                        <li> 
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="zmdi zmdi-apps"></i> 
+                                <span>Setup</span>
+                            </a>
+                            <ul class="ml-menu ml-3">
+                                <!-- <a href="">Pay Item Group</a> -->
+                                <!-- <a href="">Payroll Repository</a> -->
+                                <a href="/app/print-format?doc_type=Salary+Slip">Payslip Format</a>
+                            </ul>
+                        </li>
+                    </ul> 
+                </li>            
+                <!-- Payroll Tab End -->
+
+                <!-- <li class="header">Analysis</li>
+                <li>
+                    <div class="progress-container progress-success m-t-10">
+                        <span class="progress-badge">Attendance</span>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" style="width: 67%;">
+                                <span class="progress-value">67%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-container progress-warning">
+                        <span class="progress-badge">Leave</span>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100" style="width: 86%;">
+                                <span class="progress-value">33%</span>
+                            </div>
+                        </div>
+                    </div>
+                </li> -->
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Right Sidebar -->
+    <aside id="rightsidebar" class="right-sidebar">
+        <ul class="nav nav-tabs" style="margin-top: 55px;">
+            <!-- <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="/app/hr-settings"><i class="zmdi zmdi-settings zmdi-hc-spin"></i></a></li> -->
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="/app/hr-settings"><i class="zmdi zmdi-settings zmdi-hc-spin"></i></a></li>
+            <!-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href=""><i class="zmdi zmdi-comments"></i></a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="">Activity</a></li> -->
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active slideRight" id="setting">
+                <div class="slim_scroll">
+                    <div class="card">
+                        <h6>Skins</h6>
+                        <ul class="choose-skin list-unstyled">
+                            <!-- <li data-theme="purple">
+                                <div class="purple"></div>
+                            </li>                    -->
+                            <li data-theme="blue">
+                                <div class="blue"></div>
+                            </li>
+                            <li data-theme="cyan" class="active">
+                                <div class="cyan"></div>                    
+                            </li>
+                            <li data-theme="green">
+                                <div class="green"></div>
+                            </li>
+                            <li data-theme="orange">
+                                <div class="orange"></div>
+                            </li>
+                            <li data-theme="blush">
+                                <div class="blush"></div>                    
+                            </li>
+                        </ul>                    
+                    </div>
+                    <!-- <div class="card">
+                        <h6>Left Menu</h6>
+                        <ul class="list-unstyled theme-light-dark">
+                            <li>
+                                <div class="t-light btn btn-default btn-simple btn-round">Light</div>
+                            </li>
+                            <li>
+                                <div class="t-dark btn btn-default btn-round">Dark</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h6>General Settings</h6>
+                        <ul class="setting-list list-unstyled">
+                            <li>
+                                <div class="checkbox">
+                                    <input id="checkbox1" type="checkbox">
+                                    <label for="checkbox1">Report Panel Usage</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="checkbox2" type="checkbox" checked="">
+                                    <label for="checkbox2">Email Redirect</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="checkbox3" type="checkbox" checked="">
+                                    <label for="checkbox3">Notifications</label>
+                                </div>                        
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="checkbox4" type="checkbox" checked="">
+                                    <label for="checkbox4">Auto Updates</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h6>Account Settings</h6>
+                        <ul class="setting-list list-unstyled">
+                            <li>
+                                <div class="checkbox">
+                                    <input id="checkbox5" type="checkbox" checked="">
+                                    <label for="checkbox5">Offline</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="checkbox6" type="checkbox" checked="">
+                                    <label for="checkbox6">Location Permission</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div> -->
+                </div>                
+            </div>       
+            <div class="tab-pane right_chat pullUp" id="chat">
+                <div class="slim_scroll">
+                    <div class="card">
+                        <div class="search">                        
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h6>Recent</h6>
+                        <ul class="list-unstyled">
+                            <li class="online">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="name">Sophia</span>
+                                            <span class="message">There are many variations of passages of Lorem Ipsum available</span>
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>                            
+                            </li>
+                            <li class="online">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="name">Grayson</span>
+                                            <span class="message">All the Lorem Ipsum generators on the</span>
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>                            
+                            </li>
+                            <li class="offline">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="name">Isabella</span>
+                                            <span class="message">Contrary to popular belief, Lorem Ipsum</span>
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>                            
+                            </li>
+                            <li class="me">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="name">John</span>
+                                            <span class="message">It is a long established fact that a reader</span>
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>                            
+                            </li>
+                            <li class="online">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="name">Alexander</span>
+                                            <span class="message">Richard McClintock, a Latin professor</span>
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>                            
+                            </li>                        
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h6>Contacts</h6>
+                        <ul class="list-unstyled">
+                            <li class="offline inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="offline inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="offline inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="offline inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="offline inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="online inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="offline inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="offline inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="online inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="offline inlineblock">
+                                <a href="javascript:void(0);">
+                                    <div class="media">
+                                        <img class="media-object " src="/" alt="">
+                                        <div class="media-body">
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane slideRight" id="activity">
+                <div class="slim_scroll">
+                    <div class="card">
+                        <h6>Recent Activity</h6>
+                        <ul class="list-unstyled activity">
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="zmdi zmdi-cake bg-blue"></i>                    
+                                    <div class="info">
+                                        <h4>Admin Birthday</h4>                    
+                                        <small>Will be Dec 21th</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="zmdi zmdi-file-text bg-red"></i>
+                                    <div class="info">
+                                        <h4>Code Change</h4>                    
+                                        <small>Will be Dec 22th</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="zmdi zmdi-account-box-phone bg-green"></i>
+                                    <div class="info">
+                                        <h4>Add New Contact</h4>                    
+                                        <small>Will be Dec 23th</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="zmdi zmdi-email bg-amber"></i>
+                                    <div class="info">
+                                        <h4>New Email</h4>
+                                        <small>Will be July 28th</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h6>Project Status</h6>
+                        <div class="progress-container progress-primary">
+                            <span class="progress-badge">eCommerce Website</span>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100" style="width: 86%;">
+                                    <span class="progress-value">86%</span>
+                                </div>
+                            </div>                        
+                            <ul class="list-unstyled team-info">
+                                <li class="m-r-15"><small>Team</small></li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>                            
+                            </ul>
+                        </div>
+                        <div class="progress-container">
+                            <span class="progress-badge">iOS Game Dev</span>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
+                                    <span class="progress-value">45%</span>
+                                </div>
+                            </div>
+                            <ul class="list-unstyled team-info">
+                                <li class="m-r-15"><small>Team</small></li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="progress-container progress-warning">
+                            <span class="progress-badge">Home Development</span>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100" style="width: 29%;">
+                                    <span class="progress-value">29%</span>
+                                </div>
+                            </div>
+                            <ul class="list-unstyled team-info">
+                                <li class="m-r-15"><small>Team</small></li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>
+                                <li>
+                                    <img src="/" alt="Avatar">
+                                </li>                            
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Chat-launcher -->
+    <div class="chat-launcher"></div>
+    <div class="chat-wrapper">
+        <div class="card">
+            <div class="header">
+                <ul class="list-unstyled team-info margin-0">
+                    <h4>Title</h4>
+                </ul>                       
+            </div>
+            <div class="body">
+                <div class="chat-widget">
+                <ul class="chat-scroll-list clearfix">
+                    ---------------
+                </ul>
+                </div>
+                <div class="input-group p-t-15">
+                    <input type="text" class="form-control" placeholder="Enter text here...">
+                    <span class="input-group-addon">
+                        <i class="zmdi zmdi-mail-send"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="content home">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-8 col-md-6 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-1  col-sm-4 col-xs-4">
+                            
+                            <a href="javascript:void(0);" class="ls-toggle-btn btn-icon btn btn-warning btn-round center-icon" data-close="true" type="button">
+                                    <i class="zmdi zmdi-swap"></i>
+                                </a>
+                                
+                        </div>
+                        <div class="col-md- col-sm-8 col-xs-8">
+                           
+                            <h2>{{greetingMessage}}</h2>
+                            <small>Lets do great things together 🚀 🌟</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">                
+                    
+                    <ul class="breadcrumb float-md-right px-2 py-1">
+                        <li class="breadcrumb-item"><a href=""><i class="zmdi zmdi-home"></i> PIPAL HR</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ul>
+                    <!-- <button class="btn btn-primary btn-icon btn-round hidden-sm-down float-right" type="button" >
+                        <i class="zmdi zmdi-plus"></i>
+                    </button>      -->
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="row mt-4 d-flex justify-content-center hr-items">
+                            <div class="col-md-12">
+                                <h3 style="font-size: 24px !important;" class="my-2">My Tasks</h3>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="tasks">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="task">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="/app/confirmation-list">Confirmation</a>
+                                                        <p>{{me.pending_confirmation}} tasks pending for your review.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="task">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="/app/leave-application?status=Open">Leave Applications</a>
+                                                        <p>{{me.leave_app_count}} tasks pending for your review.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="tasks">
+                                    <div class="row">
+                                        <div class="col-md-9">
+            
+                                            <div class="task">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="/app/employee-separation">Resignations</a>
+                                                        <p>{{me.resign_count}} tasks pending for your review.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+            
+                                            <div class="task">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="/app/attendance-request?status=Open">Attendance Regularization</a>
+                                                        <p>{{me.att_req_count}} tasks pending for others review.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+            
+                                            <div class="task">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="/app/help-desk">Help Desk</a>
+                                                        <p>{{me.help_desk_count}} tasks pending for Your review.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3 col-sm-8 col-xs-12 justify-content-center d-none d-md-inline-block" >
+                        <!-- -----------Happy Anniversary------------ -->
+                        <div class="anniver_slide text-center">
+                            <b class="mb-0">Work Anniversary</b>
+                            <div id="carouselAnniversaryInterval" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                                <div class="carousel-inner">
+                                    {{me.anniver_slide}}
+                                </div>
+                            </div>
+                            <div class="card p-2 mt-1 text-center">
+                                <button class="btn btn-block btn-info btn-send-wish" onclick="me.sendToAllAnniversaryWish()">Send to All</button>
+                                <small>Anniversary Wish</small>
+                            </div>
+                        </div>
+            
+                        <!-- -----------Happy Birthday------------- -->
+                        <div class="birthday_slide text-center">
+                            <b class="mb-0 mt-4 text-center">Happy Birthday</b>
+                        <div id="carouselBirthdayInterval" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                {{me.birthday_slide}}
+                            </div>
+                        </div>
+                        <div class="card p-2 mt-1 text-center">
+                            <button class="btn btn-block btn-info btn-send-wish" onclick="me.sendToAllBirthDayWish()">Send to All</button>
+                            <small>Birthday Wish</small>
+                        </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+    </section>
+</div>
+<script src="/assets/frappe/compass/assets/bundles/vendorscripts.bundle.js"></script> 
+<script src="/assets/frappe/compass/assets/bundles/sparkline.bundle.js"></script> 
+<script src="/assets/frappe/compass/assets/bundles/mainscripts.bundle.js"></script>
+<!-- <script src="/assets/frappe/compass/assets/js/pages/index.js"></script> -->

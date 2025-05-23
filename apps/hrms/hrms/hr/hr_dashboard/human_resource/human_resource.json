@@ -1,0 +1,57 @@
+{
+ "cards": [
+  {
+   "card": "Total Employees"
+  },
+  {
+   "card": "New Hires (This Year)"
+  },
+  {
+   "card": "Employee Exits (This Year)"
+  },
+  {
+   "card": "Employees Joining (This Quarter)"
+  },
+  {
+   "card": "Employees Relieving (This Quarter)"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Hiring vs Attrition Count",
+   "width": "Full"
+  },
+  {
+   "chart": "Employees by Age",
+   "width": "Full"
+  },
+  {
+   "chart": "Gender Diversity Ratio",
+   "width": "Half"
+  },
+  {
+   "chart": "Employees by Type",
+   "width": "Half"
+  },
+  {
+   "chart": "Designation Wise Employee Count",
+   "width": "Half"
+  },
+  {
+   "chart": "Department Wise Employee Count",
+   "width": "Half"
+  }
+ ],
+ "creation": "2024-04-29 15:30:16.996575",
+ "dashboard_name": "Human Resource",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 2,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2024-05-24 11:45:32.647034",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Human Resource",
+ "owner": "infomphateksystems@gmail.com"
+}

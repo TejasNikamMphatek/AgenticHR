@@ -1,0 +1,117 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:ncns-agreement-{employee_name}",
+ "creation": "2024-08-07 11:17:56.458517",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "designation",
+  "pan_number",
+  "relieving_date",
+  "current_address",
+  "city",
+  "state",
+  "country",
+  "pin_code",
+  "column_break_ffdn"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.pan_number",
+   "fieldname": "pan_number",
+   "fieldtype": "Data",
+   "label": "PAN Number",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.relieving_date",
+   "fieldname": "relieving_date",
+   "fieldtype": "Date",
+   "label": "Relieving Date"
+  },
+  {
+   "fetch_from": "employee.current_address",
+   "fieldname": "current_address",
+   "fieldtype": "Small Text",
+   "label": "Current Address"
+  },
+  {
+   "fetch_from": "employee.current_city",
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fetch_from": "employee.current_state",
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State"
+  },
+  {
+   "fetch_from": "employee.current_country",
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fetch_from": "employee.current_pin_code",
+   "fieldname": "pin_code",
+   "fieldtype": "Data",
+   "label": "Pin Code"
+  },
+  {
+   "fieldname": "column_break_ffdn",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-10-23 16:59:23.571831",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "NCNS Agreement",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,23 @@
+{
+ "content": null,
+ "creation": "2024-10-17 11:28:17.858671",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2024-10-17 11:28:17.858671",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "who-is-in",
+ "owner": "Administrator",
+ "page_name": "who-is-in",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Who Is In ?"
+}

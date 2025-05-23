@@ -1,0 +1,245 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:BANK-PF-ESI-{employee}",
+ "creation": "2024-09-19 12:51:24.338855",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "column_break_uilt",
+  "employee_name",
+  "column_break_jpdr",
+  "column_break_wscb",
+  "bank_account_section",
+  "bank_name",
+  "bank_account_number",
+  "column_break_ytrn",
+  "payment_type",
+  "account_type",
+  "column_break_gxpd",
+  "ifsc_code",
+  "dd_payable_at",
+  "column_break_otks",
+  "iban",
+  "name_as_per_bank_record",
+  "pf_account_section",
+  "employee_is_covered_under_pf",
+  "uan",
+  "pf_join_date",
+  "is_existing_member_of_eps",
+  "column_break_rbbx",
+  "pf_number",
+  "family_pf_number",
+  "bank_account_no",
+  "allow_epf_excess_contribution",
+  "column_break_tgmw",
+  "name_in_bank_account",
+  "allow_eps_excess_contribution",
+  "section_break_ejrz",
+  "esi_account_column",
+  "employee_is_covered_under_esi",
+  "esi_number"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "column_break_uilt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name"
+  },
+  {
+   "fieldname": "column_break_jpdr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_wscb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bank_account_section",
+   "fieldtype": "Section Break",
+   "label": "Bank Account"
+  },
+  {
+   "fetch_from": "employee.bank_name",
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "label": "Bank Name"
+  },
+  {
+   "fieldname": "column_break_ytrn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_gxpd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_otks",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.bank_ac_no",
+   "fieldname": "bank_account_number",
+   "fieldtype": "Data",
+   "label": "Bank Account Number"
+  },
+  {
+   "fetch_from": "employee.ifsc_code",
+   "fieldname": "ifsc_code",
+   "fieldtype": "Data",
+   "label": "IFSC CODE"
+  },
+  {
+   "fetch_from": "employee.iban",
+   "fieldname": "iban",
+   "fieldtype": "Data",
+   "label": "IBAN"
+  },
+  {
+   "fieldname": "account_type",
+   "fieldtype": "Select",
+   "label": "Account Type",
+   "options": "\nSaving\nCurrent\nSalary"
+  },
+  {
+   "fieldname": "payment_type",
+   "fieldtype": "Select",
+   "label": "Payment Type",
+   "options": "\nCash\nBank Transfer\nCheque\nDemand Draft\nStop Pay DD\nHold Salary"
+  },
+  {
+   "fieldname": "dd_payable_at",
+   "fieldtype": "Data",
+   "label": "DD Payable At"
+  },
+  {
+   "fieldname": "name_as_per_bank_record",
+   "fieldtype": "Data",
+   "label": "Name As Per Bank Record"
+  },
+  {
+   "fieldname": "pf_account_section",
+   "fieldtype": "Section Break",
+   "label": "PF Account"
+  },
+  {
+   "default": "0",
+   "fieldname": "employee_is_covered_under_pf",
+   "fieldtype": "Check",
+   "label": "Employee is covered under PF"
+  },
+  {
+   "fieldname": "column_break_rbbx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pf_number",
+   "fieldtype": "Data",
+   "label": "PF Number"
+  },
+  {
+   "fieldname": "column_break_tgmw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "name_in_bank_account",
+   "fieldtype": "Data",
+   "label": "Name in Bank Account"
+  },
+  {
+   "fieldname": "uan",
+   "fieldtype": "Data",
+   "label": "UAN"
+  },
+  {
+   "fieldname": "family_pf_number",
+   "fieldtype": "Data",
+   "label": "Family PF Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_eps_excess_contribution",
+   "fieldtype": "Check",
+   "label": "Allow EPS excess contribution"
+  },
+  {
+   "fieldname": "pf_join_date",
+   "fieldtype": "Date",
+   "label": "PF Join Date"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_existing_member_of_eps",
+   "fieldtype": "Check",
+   "label": "Is Existing member of EPS"
+  },
+  {
+   "fieldname": "bank_account_no",
+   "fieldtype": "Data",
+   "label": "Bank Account No."
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_epf_excess_contribution",
+   "fieldtype": "Check",
+   "label": "Allow EPF excess contribution"
+  },
+  {
+   "fieldname": "section_break_ejrz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "esi_account_column",
+   "fieldtype": "Column Break",
+   "label": "ESI Account"
+  },
+  {
+   "default": "0",
+   "fieldname": "employee_is_covered_under_esi",
+   "fieldtype": "Check",
+   "label": "Employee is covered under ESI"
+  },
+  {
+   "fieldname": "esi_number",
+   "fieldtype": "Data",
+   "label": "ESI Number"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-27 11:37:56.448769",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Bank PF ESI LWF",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

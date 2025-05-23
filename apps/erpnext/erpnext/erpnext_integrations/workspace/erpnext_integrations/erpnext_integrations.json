@@ -1,0 +1,134 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"e88ADOJ7WC\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Integrations</b></span>\",\"col\":12}},{\"id\":\"pZEYOOCdB0\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Browse Apps\",\"col\":3}},{\"id\":\"St7AHbhVOr\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "creation": "2020-08-20 19:30:48.138801",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "integration",
+ "idx": 0,
+ "is_hidden": 1,
+ "label": "ERPNext Integrations",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Authentication",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Social Login",
+   "link_count": 0,
+   "link_to": "Social Login Key",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "LDAP Settings",
+   "link_count": 0,
+   "link_to": "LDAP Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "OAuth Client",
+   "link_count": 0,
+   "link_to": "OAuth Client",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "OAuth Provider Settings",
+   "link_count": 0,
+   "link_to": "OAuth Provider Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Google Services",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Google Settings",
+   "link_count": 0,
+   "link_to": "Google Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Google Contacts",
+   "link_count": 0,
+   "link_to": "Google Contacts",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Google Calendar",
+   "link_count": 0,
+   "link_to": "Google Calendar",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Google Drive",
+   "link_count": 0,
+   "link_to": "Google Drive",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-07-11 11:28:38.203588",
+ "modified_by": "Administrator",
+ "module": "ERPNext Integrations",
+ "name": "ERPNext Integrations",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [],
+ "sequence_id": 28.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Browse Apps",
+   "type": "URL",
+   "url": "https://mphatek.com"
+  }
+ ],
+ "title": "ERPNext Integrations"
+}

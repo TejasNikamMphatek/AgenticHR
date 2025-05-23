@@ -1,0 +1,72 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:EMP-CON-{employee}",
+ "creation": "2024-10-10 12:35:32.732846",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "column_break_aefv",
+  "employee_name",
+  "section_break_utdj",
+  "contracts_information"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_aefv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name"
+  },
+  {
+   "fieldname": "section_break_utdj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "click on the Edit button in the table for Open the Form",
+   "fieldname": "contracts_information",
+   "fieldtype": "Table",
+   "label": "Contracts Information",
+   "options": "Employee Contract Table",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-10-23 16:59:21.870859",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Contract",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

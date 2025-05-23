@@ -1,0 +1,23 @@
+{
+ "content": null,
+ "creation": "2024-11-12 12:54:58.032647",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2024-11-12 12:54:58.032647",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "project-manager-dash",
+ "owner": "Administrator",
+ "page_name": "project-manager-dash",
+ "roles": [
+  {
+   "role": "Projects Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Project Manager Dashboard"
+}

@@ -1,0 +1,23 @@
+{
+ "content": null,
+ "creation": "2024-10-10 12:53:16.409405",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2024-10-10 12:53:16.409405",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "mass-communication",
+ "owner": "Administrator",
+ "page_name": "mass-communication",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Mass Communication"
+}

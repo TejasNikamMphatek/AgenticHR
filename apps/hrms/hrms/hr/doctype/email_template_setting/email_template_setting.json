@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-09-12 12:12:35.027446",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "help_desk_notify_to_hr",
+  "employee_resign_notification",
+  "mass_communication",
+  "column_break_oxax",
+  "help_desk_update_to_final_status",
+  "resign_status_update_to_employee",
+  "notify_hr_asset_recovery"
+ ],
+ "fields": [
+  {
+   "fieldname": "help_desk_notify_to_hr",
+   "fieldtype": "Link",
+   "label": "Help Desk Notify to HR",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_oxax",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "help_desk_update_to_final_status",
+   "fieldtype": "Link",
+   "label": "Help Desk Update to Final Status",
+   "options": "Email Template"
+  },
+  {
+   "description": "notify to HR, Manager.\n\n",
+   "fieldname": "employee_resign_notification",
+   "fieldtype": "Link",
+   "label": "Employee Resign Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "resign_status_update_to_employee",
+   "fieldtype": "Link",
+   "label": "Resign Status Update to Employee",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "mass_communication",
+   "fieldtype": "Link",
+   "label": "Mass Communication",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "notify_hr_asset_recovery",
+   "fieldtype": "Link",
+   "label": "Notify HR Asset Recovery",
+   "options": "Email Template"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-10-23 12:42:51.174377",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Email Template Setting",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,232 @@
+.search-bar .awesomplete input {
+  width: 100% !important;
+  padding-left: 36px !important;
+  height: 28px !important;
+  font-size: var(--text-sm) !important;
+  font-weight: var(--weight-regular) !important;
+  letter-spacing: 0.02em !important; 
+}
+
+#awesomplete_list_1 > li:hover{
+  background-color: lightblue !important;
+}
+
+
+#awesomplete_list_1{
+  background-color: #474749 !important;
+}
+
+#awesomplete_list_1 > li[aria-selected="true"] {
+  background-color: cadetblue !important;
+}
+
+.hr_dash_sidebar {
+  margin-top: 0px !important;
+}
+
+header.navbar {
+  /* background-color: cadetblue !important; */
+  background-color:  #00bcd4 !important;
+}
+
+.form-inline .form-control {
+  display: inline-block !important;
+  width: auto;
+  vertical-align: middle;
+  background-color: white !important;
+  z-index: 9999;
+}
+
+.awesomplete_list_1 ul {
+  color: black !important;
+  background-color: lightskyblue;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  margin: 4px 0px !important;
+}
+
+span, p {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+#page-pipal-hr-dashboard{
+  background-color: #f3f3f3;
+}
+
+body{
+  background-color: #f3f3f3 !important;
+}
+
+
+.hr-items{
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+
+ul.show {
+  top: 50px !important;
+  left: unset !important;
+  right: 10px !important;
+  list-style:unset !important
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.sidebar .menu .list .ml-menu li a:hover{
+    color: #00bcd4 !important;
+    background-color: aliceblue;
+}
+
+
+.frappe-card > div:nth-child(1) {
+    margin-top: 37px;
+  }
+  
+
+li.nav-item:nth-child(4) > button:nth-child(1) {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    /* border: 1px solid white; */
+    border-radius: 10px;
+    padding: 1px 5px;
+}
+
+
+.theme-cyan .nav-tabs .nav-link.active {
+  border: none !important;
+}
+
+.fc .fc-toolbar .fc-button {
+  color:#000 !important;
+  background:transparent !important;
+  height:50px !important;
+}
+
+.fc .fc-toolbar {
+  height:50px;
+  background:cornsilk !important;
+}
+
+.recent-item.notification-item{
+  color:#000 !important;
+}
+
+.notifications-seen > svg:nth-child(2) {
+  background: white !important;
+  border-radius: 50px;
+  padding: 2px;
+}
+
+
+.center-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.tasks{
+  height: 300px; 
+  overflow-y: auto;
+  padding-right: 15px;
+}
+
+.my-task, .links h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.task {
+  padding: 10px;
+  background-color: #fff;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-left: 2px solid green;
+  width: 275px;
+}
+
+
+.task a {
+  font-size: 16px;
+  font-weight: 400;
+  color: #007bff;
+  text-decoration: none;
+}
+
+
+@media (max-width: 768px) {
+  .pipal-hr-sidebar {
+      height: auto;
+      width: 300px !important;
+  }
+  .greeting, .card {
+      margin-bottom: 15px;
+  }
+
+  .greeting {
+      text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .pipal-hr-sidebar-link a {
+      font-size: 18px;
+  }
+
+  .tasks {
+      height: auto;
+      display: flex;
+      justify-content: center;
+  }
+
+  .task {
+      padding: 8px;
+  }
+}
+
+
+.confirmation-status-section img{
+  height: 30px;
+  border-radius: 50px;
+}
+
+

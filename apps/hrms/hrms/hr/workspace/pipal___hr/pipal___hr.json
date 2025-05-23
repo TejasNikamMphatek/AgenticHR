@@ -1,0 +1,279 @@
+{
+ "charts": [
+  {
+   "chart_name": "Hiring vs Attrition Count",
+   "label": "Hiring vs Attrition Count"
+  }
+ ],
+ "content": "[{\"id\":\"EgzjLqRlNH\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Hiring vs Attrition Count\",\"col\":12}},{\"id\":\"0ZlJL-juSd\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"XzNgdCCj5y\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"id\":\"sPgnJ311z9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Check In/Out\",\"col\":3}},{\"id\":\"QKqOgOuwqK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Regulization\",\"col\":3}},{\"id\":\"AcbSofwIPX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance\",\"col\":3}},{\"id\":\"5TVtlAbsJU\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"YYrvQSK4iZ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"gCDSW-LvQn\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"AVGk6WHWEI\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"id\":\"0Mgf4v_PsF\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"xMLCHjglT1\",\"type\":\"card\",\"data\":{\"card_name\":\"Attendance\",\"col\":4}},{\"id\":\"ShFlQax2jg\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"wnRRCavBs6\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}}]",
+ "creation": "2020-03-02 15:48:58.322521",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "hr",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Pipal - HR",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Setup",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Company",
+   "link_count": 0,
+   "link_to": "Company",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Branch",
+   "link_count": 0,
+   "link_to": "Branch",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Department",
+   "link_count": 0,
+   "link_to": "Department",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Designation",
+   "link_count": 0,
+   "link_to": "Designation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance",
+   "link_count": 3,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance",
+   "link_count": 0,
+   "link_to": "Attendance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance Request",
+   "link_count": 0,
+   "link_to": "Attendance Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Checkin",
+   "link_count": 0,
+   "link_to": "Employee Checkin",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Settings",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "HR Settings",
+   "link_count": 0,
+   "link_to": "HR Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee",
+   "link_count": 0,
+   "link_to": "Employee",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Key Reports",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "Attendance",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Monthly Attendance Sheet",
+   "link_count": 0,
+   "link_to": "Monthly Attendance Sheet",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Leave Balance",
+   "link_count": 0,
+   "link_to": "Employee Leave Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Leave Balance Summary",
+   "link_count": 0,
+   "link_to": "Employee Leave Balance Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Exits",
+   "link_count": 0,
+   "link_to": "Employee Exits",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Other Reports",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Birthday",
+   "link_count": 0,
+   "link_to": "Employee Birthday",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employees Working on a Holiday",
+   "link_count": 0,
+   "link_to": "Employees working on a holiday",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-07-23 18:00:53.491748",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Pipal - HR",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [],
+ "sequence_id": 9.0,
+ "shortcuts": [
+  {
+   "color": "Cyan",
+   "doc_view": "List",
+   "label": "Attendance Regulization",
+   "link_to": "Attendance Request",
+   "stats_filter": "[[\"Attendance Request\",\"docstatus\",\"=\",\"0\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Check In/Out",
+   "link_to": "Employee Checkin",
+   "stats_filter": "[[\"Employee Checkin\",\"time\",\"Timespan\",\"this month\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Attendance",
+   "link_to": "Attendance",
+   "stats_filter": "[[\"Attendance\",\"attendance_date\",\"Timespan\",\"this month\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "format": "{} Active",
+   "label": "Employee",
+   "link_to": "Employee",
+   "stats_filter": "{\"status\":\"Active\"}",
+   "type": "DocType"
+  }
+ ],
+ "title": "Pipal - HR"
+}

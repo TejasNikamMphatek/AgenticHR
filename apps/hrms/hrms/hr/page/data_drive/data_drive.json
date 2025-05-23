@@ -1,0 +1,23 @@
+{
+ "content": null,
+ "creation": "2024-10-10 13:04:45.916114",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2024-10-10 13:04:45.916114",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "data-drive",
+ "owner": "Administrator",
+ "page_name": "data-drive",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 1,
+ "title": "Data Drive"
+}

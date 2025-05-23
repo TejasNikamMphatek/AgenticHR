@@ -1,0 +1,31 @@
+{
+ "cards": [
+  {
+   "card": "Total Present (This Month)"
+  },
+  {
+   "card": "Total Absent (This Month)"
+  },
+  {
+   "card": "Total Employees"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Attendance Count",
+   "width": "Full"
+  }
+ ],
+ "creation": "2024-09-19 16:37:25.511227",
+ "dashboard_name": "HR Overview",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2024-11-29 15:24:03.278843",
+ "modified_by": "hr@mphatek.com",
+ "module": "HR",
+ "name": "HR Overview",
+ "owner": "Administrator"
+}

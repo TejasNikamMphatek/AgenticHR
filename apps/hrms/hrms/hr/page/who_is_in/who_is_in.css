@@ -1,0 +1,18 @@
+#page-who-is-in {
+    padding: 20px;
+    background: #f3f3f3;
+}
+
+.custom-scroll::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
+}
+
+/* Hide scrollbar for Firefox */
+.custom-scroll {
+    scrollbar-width: none; /* Hide the scrollbar */
+}
+
+/* For both browsers, ensure scrollability */
+.custom-scroll {
+    overflow-y: scroll; /* Ensure vertical scrolling is still possible */
+}

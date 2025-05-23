@@ -1,0 +1,101 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:EMP-ASS-{employee}",
+ "creation": "2024-09-26 12:13:44.264149",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "column_break_pctk",
+  "employee_name",
+  "section_break_tvoo",
+  "assets_details",
+  "section_break_fzda",
+  "total_recover_amount",
+  "recovery_status",
+  "column_break_ocxk",
+  "send_email"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name"
+  },
+  {
+   "fieldname": "assets_details",
+   "fieldtype": "Table",
+   "label": "Assets Details",
+   "options": "Assets Table"
+  },
+  {
+   "fieldname": "total_recover_amount",
+   "fieldtype": "Currency",
+   "label": "Total Recover Amount"
+  },
+  {
+   "default": "0",
+   "description": "Inform HR Only for Amount Recovery Case.",
+   "fieldname": "send_email",
+   "fieldtype": "Check",
+   "label": "Send Email"
+  },
+  {
+   "fieldname": "recovery_status",
+   "fieldtype": "Select",
+   "label": "Recovery Status",
+   "options": "Pending\nIn Process\nRecovered"
+  },
+  {
+   "fieldname": "column_break_pctk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_tvoo",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_fzda",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_ocxk",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-10-23 16:57:05.150649",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Assets Manage",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

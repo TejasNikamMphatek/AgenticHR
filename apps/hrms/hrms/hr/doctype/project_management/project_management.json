@@ -1,0 +1,141 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{project_type}-{name_of_project}",
+ "creation": "2024-11-12 12:07:05.125464",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "is_active",
+  "column_break_vhtt",
+  "project_type",
+  "section_break_tmub",
+  "name_of_project",
+  "project_status",
+  "project_head",
+  "project_head_name",
+  "column_break_huhr",
+  "expected_start_date",
+  "expected_end_date",
+  "priority",
+  "section_break_hwgh",
+  "project_team"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active"
+  },
+  {
+   "fieldname": "column_break_vhtt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "project_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Project Type",
+   "options": "Project Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_tmub",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "name_of_project",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name Of Project",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_huhr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "expected_start_date",
+   "fieldtype": "Date",
+   "label": "Expected Start Date"
+  },
+  {
+   "fieldname": "expected_end_date",
+   "fieldtype": "Date",
+   "label": "Expected End Date"
+  },
+  {
+   "default": "Medium",
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "Medium\nHigh\nLow"
+  },
+  {
+   "fieldname": "project_status",
+   "fieldtype": "Select",
+   "label": "Project Status",
+   "options": "Open\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "project_head",
+   "fieldtype": "Link",
+   "label": "Project Head",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "project_head.employee_name",
+   "fieldname": "project_head_name",
+   "fieldtype": "Data",
+   "label": "Project Head Name"
+  },
+  {
+   "fieldname": "section_break_hwgh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "project_team",
+   "fieldtype": "Table",
+   "label": "Project Team",
+   "options": "Project Team"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-12 12:51:16.132562",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Project Management",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

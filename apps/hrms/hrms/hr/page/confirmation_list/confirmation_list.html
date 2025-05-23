@@ -1,0 +1,210 @@
+<div class="page-loader-wrapper">
+    <div class="loader">
+        <div class="m-t-30"><img class="zmdi-hc-spin" src="/assets/frappe/compass/assets/images/loader.png" width="48" height="48" alt="Loader"></div>
+        <p>Please wait...</p>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+       
+        <div class="col-md-3">
+            <button class="btn btn-sm" style="background-color: azure;">
+                <a class="text-decoration-none" href="/app/pipal-employee-dashboard"><i class="zmdi zmdi-home"></i> HR Home</a>
+            </button>
+        </div>    
+    
+        <div class="col-md-9 confirmation-list-section">
+            <div class="row">
+                <div class="col-md-12  my-2 text-right">
+                    <button onclick="me.openConfirmedList()" class="btn btn-sm show_conf_list">Confirmed List</button>
+                    <button onclick="me.openProbationList()" class="btn btn-sm hide_prob_list">On Probation List</button>
+                </div>
+                <div class="col-md-12 conf_emp_title">
+                    <h3>Confimed Employee</h3>
+                </div>
+            </div>
+            {{me.confirmed_emp_element}}
+            <!-- ----------------------------------------------------- -->
+            <div class="row">
+                <div class="col-md-12 prob_emp_title">
+                    <h3>Upcoming and Pending Confirmation</h3>
+                </div>
+            </div>
+            {{me.upcoming_confirmation_element}}
+        </div>
+
+        <div class="col-md-9 sigle_employee_confirm_extend hide">
+            <div class="row">
+                <div class="col-md-12 my-2 text-right">
+                    <button onclick="me.openConfirmedList()" class="btn btn-sm show_conf_list">Confirmed List</button>
+                    <button onclick="me.openProbationList()" class="btn btn-sm hide_prob_list">On Probation List</button>
+                </div>
+            </div>
+           <div class="row p-3 confirmed_emp_data">
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                    <span>Location</span> <br>
+                    <b id="branch">{{me.branch}}</b>
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                    <span>Department</span> <br>
+                    <b id="department">{{me.department}}</b>
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                    <span>Repporting Manager</span> <br>
+                    <b id="reports_to">{{me.reports_to}}</b>
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                    <span>Total Experience</span> <br>
+                    <b> <span id="total_work_experience"></span> Years</b>
+                </div>
+
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                    <span>Date Of Joining</span> <br>
+                    <b id="date_of_joining">{{me.date_of_joining}}</b>
+                </div>
+
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                    <span>Confirmation Date</span> <br>
+                    <b class="final_confirmation_date">{{me.final_confirmation_date}}</b>
+                </div>
+
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                    <span>Confirmation Initiated On</span> <br>
+                    <b id="confirmation_initiate_on_date">{{me.confirmation_initiate_on_date}}</b>
+                </div>
+                
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                    <span>Confirmation Extend Date</span> <br>
+                    <b class="confirmation_extend_date">{{me.confirmation_extend_date}}</b>
+                </div>
+           </div>
+           <!-- ------------------ -->
+            <div class="row mt-3 p-3 bg-white">
+               <div class="col-12">
+                    <div class="row">
+                        <h3>Confirmation for &nbsp;<h3 id="confirm_emp_title_name">{{me.employee_name}}</h3></h3>
+                    </div>
+               </div>
+                <div class="col-12 p-3 con-status-info">
+                    <div class="row">
+                        <div class="col-3">
+                            <span>Recommanded Status</span> <br>
+                            <b id="confirmation_status">{{me.confirmation_status}}</b>
+                        </div>
+                        <div class="col-3">
+                            <span>Recommanded Date</span> <br>
+                            <b class="recommanded_date">{{me.recommanded_date}}</b>
+                        </div>
+                        <div class="col-3">
+                            <span>Reason</span> <br>
+                            <p id="confirmation_extend_reason">{{me.confirmation_extend_reason}}</p>
+                        </div>
+                        <div class="col-3">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- -------------------- -->
+            <div class="row confirm_extend_section p-3">
+                <div class="col-md-4 col-sm-6 confirmation_box">
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="radio" name="toggleStatus" value="confirm" onclick="me.showHideByRadio(value)">
+                        </div>
+                        <div class="col-7">
+                            <b>Confirm Employee</b> <br>
+                            <span>select this to confirm Employee</span>
+                        </div>
+                        <div class="col-3 d-flex align-items-center justify-content-center">
+                            <img src="/assets/hrms/images/success.png" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6 extend_box">
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="radio" name="toggleStatus" value="extend" onclick="me.showHideByRadio(value)">
+                        </div>
+                        <div class="col-7">
+                            <b>Extend Probation</b> <br>
+                            <span>select this to Extend the Probation</span>
+                        </div>
+                        <div class="col-3 d-flex align-items-center justify-content-center">
+                            <img src="/assets/hrms/images/extend_calendar.png" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 show_by_confirm_radio hide">
+                    <div class="row">
+                        <div class="col-12 mt-3">
+                            <b>Add details below to confirm the employee</b>
+                        </div>
+                        <div class="col-md-12"> 
+                            <label for="c_feedback_for_employee">Feedback For Employee</label>
+                            <textarea class="form-control" name="c_feedback_for_employee" id="c_feedback_for_employee" cols="10" placeholder="Feedback Visible to Employee"></textarea>
+                            <!-- <label for="c_share_remark">Remarks</label>
+                            <textarea class="form-control" name="c_share_remark" id="c_share_remark" cols="20"></textarea>
+                            <label for="c_file_attachment">Upload Attachment</label>
+                            <input class="form-control-file mt-3" type="file" name="c_file_attachment" id="c_file_attachment"> -->
+                        </div> 
+                        <div class="col-12 mt-3">
+                            <div class="row">
+                                <div class="col-md-12 btn-submit-group text-right">
+                                    <button type="button" onclick="me.confirmEmpVal(id)" id="c_cancel" class="btn-cancel btn btn-default btn-sm">Cancel</button>
+                                    <button type="button" onclick="me.confirmEmpVal(id)" id="c_submit" class="btn-submit btn btn-default btn-sm">Submit</button>
+                                    <button type="button" onclick="me.confirmEmpVal(id)" id="c_reject" class="btn-reject btn btn-default btn-sm">Reject</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Extend -->
+                <div class="col-12 show_by_extend_radio hide">
+                    <div class="col-12 mt-3">
+                        <b>Add details below to extend the employee</b>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="e_extend_date">Extend Date</label>
+                            <input class="form-control" type="date" name="e_extend_date" id="e_extend_date">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="e_extend_reason">Reason</label>
+                            <select id="e_extend_reason" class="form-control p-2">
+                                <option value="" selected disabled>--Select--</option>
+                                <option value="Dicipline">Dicipline</option>
+                                <option value="Low Efficiency">Low Efficiency</option>
+                                <option value="Low Performance">Low Performance</option>
+                                <option value="Suggest To Terminate">Suggest to Terminate</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 ">
+                            <label for="e_feedback_for_employee">Feedback For Employee</label>
+                            <textarea class="form-control" name="e_feedback_for_employee" id="e_feedback_for_employee" cols="10" placeholder="Feedback Visible to Employee"></textarea>
+                            <!-- <label for="e_share_remark">Remarks</label>
+                            <textarea class="form-control" name="e_share_remark" id="e_share_remark" cols="20"></textarea>
+                            <label for="e_file_attachment">Upload Attachment</label>
+                            <input class="form-control-file mt-3" type="file" name="e_file_attachment" id="e_file_attachment"> -->
+                        </div> 
+                        <div class="col-12 mt-3">
+                            <div class="row">
+                                <div class="col-md-12 btn-submit-group text-right">
+                                    <button type="button" onclick="me.extendEmpVal(id)" id="e_cancel" class="btn-cancel btn btn-default btn-sm">Cancel</button>
+                                    <button type="button" onclick="me.extendEmpVal(id)" id="e_submit" class="btn-submit btn btn-default btn-sm">Submit</button>
+                                    <button type="button" onclick="me.extendEmpVal(id)" id="e_reject" class="btn-reject btn btn-default btn-sm">Reject</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+
+<script src="/assets/frappe/compass/assets/bundles/mainscripts.bundle.js"></script>

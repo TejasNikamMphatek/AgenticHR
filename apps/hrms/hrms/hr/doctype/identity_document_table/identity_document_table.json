@@ -1,0 +1,75 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-10 13:12:14.254842",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "document_type",
+  "document_number",
+  "name_on_document",
+  "column_break_jyyx",
+  "valid_upto",
+  "document_proof",
+  "verified"
+ ],
+ "fields": [
+  {
+   "fieldname": "document_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Document Type",
+   "options": "Identification Document Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_jyyx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "valid_upto",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Valid Upto"
+  },
+  {
+   "default": "0",
+   "fieldname": "verified",
+   "fieldtype": "Check",
+   "label": "Verified",
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager']) != 1"
+  },
+  {
+   "fieldname": "document_proof",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Document Proof"
+  },
+  {
+   "fieldname": "name_on_document",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name on Document",
+   "reqd": 1
+  },
+  {
+   "fieldname": "document_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Document Number"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-21 11:37:44.890028",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Identity Document Table",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:Policy-{name_of_policy}",
+ "creation": "2024-10-10 12:45:15.086188",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "name_of_policy",
+  "policy_start_date",
+  "policy_end_date",
+  "column_break_jxcj",
+  "policy_document",
+  "policy_image"
+ ],
+ "fields": [
+  {
+   "fieldname": "name_of_policy",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name Of Policy",
+   "reqd": 1
+  },
+  {
+   "fieldname": "policy_start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Policy Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "policy_end_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Policy End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_jxcj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "policy_document",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Policy Document",
+   "reqd": 1
+  },
+  {
+   "description": "Banner Image",
+   "fieldname": "policy_image",
+   "fieldtype": "Attach Image",
+   "label": "Policy Image"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-10-23 16:59:21.607181",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Company Policy",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

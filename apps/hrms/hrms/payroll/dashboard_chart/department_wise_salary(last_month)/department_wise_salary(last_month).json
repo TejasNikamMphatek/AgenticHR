@@ -1,0 +1,38 @@
+{
+ "aggregate_function_based_on": "rounded_total",
+ "chart_name": "Department Wise Salary(Last Month)",
+ "chart_type": "Group By",
+ "creation": "2024-04-29 15:30:18.731164",
+ "custom_options": "",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "Salary Slip",
+ "dynamic_filters_json": "[[\"Salary Slip\",\"company\",\"=\",\"frappe.defaults.get_user_default(\\\"Company\\\")\"]]",
+ "filters_json": "[[\"Salary Slip\",\"docstatus\",\"=\",\"1\",false],[\"Salary Slip\",\"start_date\",\"Timespan\",\"last month\",false]]",
+ "group_by_based_on": "department",
+ "group_by_type": "Sum",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "last_synced_on": "2024-07-05 17:36:54.224769",
+ "modified": "2024-07-11 09:49:33.747657",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Department Wise Salary(Last Month)",
+ "number_of_groups": 0,
+ "owner": "infomphateksystems@gmail.com",
+ "roles": [
+  {
+   "role": "Administrator"
+  },
+  {
+   "role": "HR Manager"
+  }
+ ],
+ "time_interval": "Monthly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "y_axis": []
+}

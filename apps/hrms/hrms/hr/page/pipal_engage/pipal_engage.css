@@ -1,0 +1,38 @@
+h3{
+    margin:10px 0px !important;
+}
+
+
+#page-pipal-engage{
+    background: #f3f3f3;
+ }
+
+
+#navbar-breadcrumbs > li > a {
+    color: white;
+    font-weight: bold;
+}
+
+li.nav-item:nth-child(4) > button:nth-child(1) > span:nth-child(1) {
+    color: white;
+}
+
+span{
+    font-size: 14px;
+}
+.comp-logo{
+    height: 40px;
+    margin-bottom: 50px;
+}
+
+
+.birth_image{
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    margin-right: 10px;
+}
+
+.celebartion-poster{
+    height: 120px;
+}

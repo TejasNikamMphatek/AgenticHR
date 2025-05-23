@@ -1,0 +1,130 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:employee_name",
+ "creation": "2024-05-24 18:01:00.888099",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "exit_questionnaire_section",
+  "employee",
+  "employee_name",
+  "ques_1",
+  "ques_2",
+  "ques_3",
+  "ques_4",
+  "ques_5",
+  "ques_6",
+  "ques_7",
+  "comment"
+ ],
+ "fields": [
+  {
+   "fieldname": "exit_questionnaire_section",
+   "fieldtype": "Section Break",
+   "label": "Exit Questionnaire"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "unique": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "ques_1",
+   "fieldtype": "Data",
+   "label": "What is the reason for quitting this job?"
+  },
+  {
+   "fieldname": "ques_2",
+   "fieldtype": "Data",
+   "label": "In your opinion, were you provided the essential tools and resources required to excel in your position in our organization?"
+  },
+  {
+   "fieldname": "ques_3",
+   "fieldtype": "Data",
+   "label": "Did you get along well with your team members?"
+  },
+  {
+   "fieldname": "ques_4",
+   "fieldtype": "Data",
+   "label": "Did you get along well with your reporting authority?"
+  },
+  {
+   "fieldname": "ques_5",
+   "fieldtype": "Data",
+   "label": "What did you enjoy the most about your job?"
+  },
+  {
+   "fieldname": "ques_6",
+   "fieldtype": "Data",
+   "label": "What did you dislike the most about your job?\""
+  },
+  {
+   "fieldname": "ques_7",
+   "fieldtype": "Data",
+   "label": "Feedback for us"
+  },
+  {
+   "fieldname": "comment",
+   "fieldtype": "Small Text",
+   "label": "Add a Comment"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-10-23 16:59:23.918791",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Exit Questionnaire",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

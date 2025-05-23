@@ -1,0 +1,32 @@
+{
+ "chart_name": "Attendance Count",
+ "chart_type": "Report",
+ "creation": "2024-04-29 15:30:17.362035",
+ "custom_options": "{\n\t\"type\": \"line\",\n\t\"axisOptions\": {\n\t\t\"shortenYAxisNumbers\": 1\n\t},\n\t\"tooltipOptions\": {}\n}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{\"month\":\"frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth() + 1\",\"year\":\"frappe.datetime.str_to_obj(frappe.datetime.get_today()).getFullYear();\",\"company\":\"frappe.defaults.get_user_default(\\\"Company\\\")\"}",
+ "filters_json": "{\"summarized_view\":0}",
+ "group_by_type": "Count",
+ "idx": 31,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2025-01-23 18:35:57.048776",
+ "modified_by": "hr@mphatek.com",
+ "module": "HR",
+ "name": "Attendance Count",
+ "number_of_groups": 0,
+ "owner": "infomphateksystems@gmail.com",
+ "report_name": "Monthly Attendance Sheet",
+ "roles": [
+  {
+   "role": "HR Manager"
+  }
+ ],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Line",
+ "use_report_chart": 1,
+ "y_axis": []
+}

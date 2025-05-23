@@ -1,0 +1,86 @@
+{
+ "charts": [
+  {
+   "chart_name": "Attendance Count",
+   "label": "Attendance"
+  }
+ ],
+ "content": "[{\"id\":\"ofsL2y41o7\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Attendance\",\"col\":12}},{\"id\":\"kb3XPLg8lb\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"JhV3fVlsd8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"id\":\"g3frs3ROBF\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Check-In / Out\",\"col\":3}},{\"id\":\"0LTAzk94jJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance\",\"col\":3}},{\"id\":\"uZR1JFlpBl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Leave Application\",\"col\":3}},{\"id\":\"4Lx4ri6Uqg\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Regulization\",\"col\":3}},{\"id\":\"d_KVM1gsf9\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "creation": "2020-01-23 13:46:38.833076",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "getting-started",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Home",
+ "links": [],
+ "modified": "2024-08-29 09:51:30.746890",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Home",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "HR",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "HR Manager"
+  },
+  {
+   "role": "Administrator"
+  }
+ ],
+ "sequence_id": 10.0,
+ "shortcuts": [
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Employee",
+   "link_to": "Employee",
+   "stats_filter": "[[\"Employee\",\"status\",\"=\",\"Active\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Pink",
+   "doc_view": "List",
+   "label": "Attendance",
+   "link_to": "Attendance",
+   "stats_filter": "[[\"Attendance\",\"attendance_date\",\"Timespan\",\"this month\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Check-In / Out",
+   "link_to": "Employee Checkin",
+   "stats_filter": "[[\"Employee Checkin\",\"time\",\"Timespan\",\"today\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "List",
+   "label": "Leave Application",
+   "link_to": "Leave Application",
+   "stats_filter": "[[\"Leave Application\",\"status\",\"=\",\"Open\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Cyan",
+   "doc_view": "List",
+   "label": "Attendance Regulization",
+   "link_to": "Attendance Request",
+   "stats_filter": "[[\"Attendance Request\",\"docstatus\",\"=\",\"0\",false]]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Home"
+}

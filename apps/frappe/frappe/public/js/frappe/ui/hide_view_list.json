@@ -1,0 +1,465 @@
+{
+    "Employee" :{
+        "system Manager" : ["Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban","Tree"]
+    },
+    "Leave Type" : {
+        "System Manager" : ["Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "HRMS Dashboard" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Application" : {
+        "System Manager" : [],
+        "Other User" : ["Dashboard", "Kanban", "Report"]
+    },
+    "Attendance Request" : {
+        "System Manager" : ["Dashboard", "Kanban"],
+        "Other User" : ["Dashboard", "Kanban", "Report"]
+    },
+    "Employee Checkin" : {
+        "System Manager" : ["Dashboard", "Kanban"],
+        "Other User" : ["Dashboard", "Kanban", "Report"]
+    },
+    "Employee Separation" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Full and Final Statement" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Full and Final Outstanding Statement" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Full and Final Asset" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Expense Claim" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Advance" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "HR Settings" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+   
+    "Shift Assignment" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Job Opening" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Shift Assignment Tool" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Vehicle Service Item" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Vehicle Service" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Vehicle Log" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Upload Attendance" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Travel Request Costing" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Travel Request" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Travel Itinerary" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Training Result Employee" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Training Result" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Training Program" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Training Feedback" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Training Event Employee" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Training Event" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Staffing Plan Detail" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Staffing Plan" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Skill Assessment" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Skill" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Shift Type" : {
+        "System Manager" : [],
+        "Other User" : ["Report","Dashboard","Kanban"]
+    },
+    "Shift Request" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "PWA Notification" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Purpose of Travel" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Offer Term" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Policy Detail" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Policy Assignment" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Policy" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Period" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Ledger Entry" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Encashment" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Control Panel" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Block List Date" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Block List Allow" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Block List" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Leave Allocation" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "KRA" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Job Requisition" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Job Offer Term Template" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Job Offer Term" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Job Offer" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Job Applicant Source" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Job Applicant" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Interviewer" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Interview Type" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Interview Round" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Interview Feedback" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Interview Detail" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Interview" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Interest" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Identification Document Type" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Grievance Type" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Goal" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Expense Taxes and Charges" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Expense Claim Type" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Expense Claim Detail" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Expense Claim Advance" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Expense Claim Account" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Expected Skill Set" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Exit Interview" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employment Type" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Transfer" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Training" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Skill Map" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Skill" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Separation Template" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Referral" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Property History" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Promotion" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Performance Feedback" :{
+        "System Manager" : [],
+        "Other User" : ["Dashboard", "Kanban"]
+    },
+    "Employee Onboarding Template" : {
+        "System Manager" : [],
+        "Other User" : ["Dashboard", "Kanban"]
+    },
+    "Employee Onboarding" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Health Insurance" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Grievance" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Grade" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Feedback Rating" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Feedback Criteria" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Boarding Activity" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Employee Attendance Tool" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Designation Skill" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Department Approver" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Daily Work Summary Group User" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Daily Work Summary Group" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Daily Work Summary" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Compensatory Leave Request" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appraisee" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appraisal Template Goal" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appraisal Template" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appraisal KRA" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appraisal Goal" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appraisal Cycle" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appraisal" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appointment Letter Template" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appointment Letter content" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Appointment Letter" : {
+        "System Manager" : [],
+        "Other User" : []
+    },
+    "Salary Slip" : {
+        "System Manager" : ["Kanban"],
+        "Other User" : ["Kanban", "Dashboard","Report"]
+    },
+    "HR Overview" :{
+        "Administrator" : ["Attendance", "Leave Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"],
+        "System Manager" : ["Edit","New", "Attendance", "Leave Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"],
+        "Other User" : ["Edit","New", "Attendance", "Leave Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"]
+        
+    },
+    "Dashboard" :{
+        "Administrator" : ["Dashboard", "Kanban", "Report"],
+        "System Manager" : ["Dashboard", "Kanban", "Report"],
+        "Other User" : ["Dashboard", "Kanban", "Report"]
+        
+    },
+    "Leave Overview" :{
+        "Administrator" : ["Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"],
+        "System Manager" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"],
+        "Other User" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"]
+    },
+    "Attendance" :{
+        "Administrator" : ["Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview"],
+        "System Manager" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview","Gantt", "Kanban"],
+        "Other User" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview","Gantt", "Kanban"]
+    },
+    "User" :{
+        "System Manager" : [],
+        "Other User" : ["Rename"]
+    }
+}

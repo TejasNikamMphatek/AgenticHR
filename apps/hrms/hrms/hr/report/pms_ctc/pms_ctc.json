@@ -1,0 +1,33 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2024-11-28 18:33:30.824011",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "mPHATEK UAE",
+ "letterhead": null,
+ "modified": "2024-11-28 18:33:30.824011",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "PMS CTC",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Employee Promotion",
+ "report_name": "PMS CTC",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "HR User"
+  },
+  {
+   "role": "HR Manager"
+  }
+ ]
+}

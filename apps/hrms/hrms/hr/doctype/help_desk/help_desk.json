@@ -1,0 +1,177 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:format:Help-{employee}-{application_date}-{priority}",
+ "creation": "2024-09-12 12:18:34.825070",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_gn94",
+  "employee",
+  "employee_name",
+  "employee_email",
+  "default_email_to",
+  "cc",
+  "bcc",
+  "column_break_wgfc",
+  "subject",
+  "category",
+  "priority",
+  "help_status",
+  "application_date",
+  "section_break_nrle",
+  "discription",
+  "attachment",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_gn94",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Help Desk",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name"
+  },
+  {
+   "fetch_from": "employee.user_id",
+   "fieldname": "employee_email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Email",
+   "reqd": 1
+  },
+  {
+   "default": "hr@mphatek.com",
+   "fieldname": "default_email_to",
+   "fieldtype": "Data",
+   "label": "Default Email To",
+   "reqd": 1
+  },
+  {
+   "description": "ex@gmail.com, ab@gmail.com",
+   "fieldname": "cc",
+   "fieldtype": "Data",
+   "label": "CC"
+  },
+  {
+   "description": "ex@gmail.com, ab@gmail.com",
+   "fieldname": "bcc",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "BCC"
+  },
+  {
+   "fieldname": "column_break_wgfc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "label": "Subject",
+   "reqd": 1
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "label": "Category",
+   "options": "\nAccount\nAdmin\nHuman Resources\nIT Support\nOthers",
+   "reqd": 1
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "\nHigh\nMedium\nLow",
+   "reqd": 1
+  },
+  {
+   "fieldname": "help_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Help Status",
+   "options": "\nAssigned\nIn Process\nPending\nCompleted\nRejected",
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager']) != 1"
+  },
+  {
+   "default": "Today",
+   "fieldname": "application_date",
+   "fieldtype": "Date",
+   "label": "Application Date",
+   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
+  },
+  {
+   "fieldname": "section_break_nrle",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "discription",
+   "fieldtype": "Small Text",
+   "label": "Discription",
+   "max_height": "100px",
+   "reqd": 1
+  },
+  {
+   "fieldname": "attachment",
+   "fieldtype": "Attach",
+   "label": "Attachment"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-01-13 11:32:00.670466",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Help Desk",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Employee",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

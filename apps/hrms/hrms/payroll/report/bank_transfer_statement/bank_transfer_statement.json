@@ -1,0 +1,23 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2024-11-28 18:05:57.956411",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "mPHATEK UAE",
+ "letterhead": null,
+ "modified": "2024-11-28 18:05:57.956411",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Bank Transfer Statement",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Salary Slip",
+ "report_name": "Bank Transfer Statement",
+ "report_type": "Script Report",
+ "roles": []
+}

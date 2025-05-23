@@ -1,0 +1,157 @@
+# -------------------------
+# General
+# -------------------------
+
+# Logs and runtime files
+*.log
+*.log.*
+*.pid
+*.seed
+*.pid.lock
+*.swp
+*.swo
+*.tmp
+*.temp
+
+# Compiled Python
+__pycache__/
+*.py[cod]
+*.so
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# -------------------------
+# Node / JS
+# -------------------------
+
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# -------------------------
+# Python environments
+# -------------------------
+
+env/
+ENV/
+env.bak/
+venv/
+venv.bak/
+.Python
+
+# -------------------------
+# Editors
+# -------------------------
+
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# -------------------------
+# Frappe/ERPNext Specific
+# -------------------------
+
+# Bench generated folders
+sites/assets/
+sites/currentsite.txt
+sites/apps.txt
+sites/common_site_config.json
+sites/*/site_config.json
+
+# Uploaded or private files
+sites/*/private/
+sites/*/public/files/
+sites/*/public/backups/
+sites/*/locks/
+sites/*/logs/
+sites/*/patches.txt
+sites/*/error-snapshots/
+
+# Backup and database exports
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+
+# -------------------------
+# Miscellaneous
+# -------------------------
+
+# Ignore frappe-bench logs
+logs/
+
+# Ignore patched or custom overrides if stored locally
+patches.txt
+
+# Frappe/ERPNext specific
+sites/private/files/
+sites/logs/
+sites/hr.mphatek.com/private/
+
+
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite3
+
+# Config files with sensitive data
+sites/*/site_config.json
+sites/*/site_config_dev.json
+
+# Environment variables
+.env
+env/
+
+# Node modules
+node_modules/
+npm-debug.log*
+
+# Build files
+*.min.js
+*.min.css
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+certs.zip
+
+# Backup files
+*.bak
+*.backup

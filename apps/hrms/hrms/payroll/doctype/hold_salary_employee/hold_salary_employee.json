@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:Salary-hold-{employee}-{salary_hold_date}",
+ "creation": "2024-11-12 14:54:23.730010",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "salary_hold",
+  "salary_hold_date",
+  "last_working_day",
+  "column_break_kukj",
+  "employee_name",
+  "salary_release",
+  "salary_release_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_kukj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name"
+  },
+  {
+   "default": "0",
+   "fieldname": "salary_hold",
+   "fieldtype": "Check",
+   "label": "Salary Hold"
+  },
+  {
+   "fieldname": "salary_hold_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Salary Hold Date"
+  },
+  {
+   "fieldname": "last_working_day",
+   "fieldtype": "Date",
+   "label": "Last Working Day"
+  },
+  {
+   "default": "0",
+   "fieldname": "salary_release",
+   "fieldtype": "Check",
+   "label": "Salary Release"
+  },
+  {
+   "fieldname": "salary_release_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Salary Release Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-12-23 10:36:28.037889",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Hold Salary Employee",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

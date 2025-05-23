@@ -1,0 +1,7 @@
+.page-head{
+    margin-top: 50px !important;
+}
+
+thead > tr > th{
+    width: auto !important;
+}
