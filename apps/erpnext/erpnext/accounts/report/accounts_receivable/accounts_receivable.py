@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Frappe Technologies Pvt. Ltd.
+# Copyright (c) 2025,  Pipal ERP Pvt. Ltd.
 # License: GNU General Public License v3. See license.txt
 
 

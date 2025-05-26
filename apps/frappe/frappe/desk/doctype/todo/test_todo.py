@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
+# Copyright (c) 2025,  Pipal ERP Pvt. Ltd. and Contributors
 # License: MIT. See LICENSE
 import frappe
 from frappe.core.doctype.doctype.doctype import clear_permissions_cache

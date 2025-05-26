@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Maxwell Morais and contributors
+# Copyright (c) 2025, Maxwell Morais and contributors
 # License: MIT. See LICENSE
 
 import functools

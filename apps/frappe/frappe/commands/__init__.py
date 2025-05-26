@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Web Notes Technologies Pvt. Ltd. and Contributors
+# Copyright (c) 2025, Web Notes Technologies Pvt. Ltd. and Contributors
 # License: MIT. See LICENSE
 
 import cProfile

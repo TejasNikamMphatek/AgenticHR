@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Frappe Technologies and Contributors
+# Copyright (c) 2025,  Pipal ERP and Contributors
 # License: MIT. See LICENSE
 import frappe
 from frappe.contacts.doctype.address_template.address_template import get_default_address_template
