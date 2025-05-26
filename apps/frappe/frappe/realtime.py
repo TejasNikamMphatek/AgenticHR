@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and contributors
+# Copyright (c) 2025,  Pipal ERP Pvt. Ltd. and contributors
 # License: MIT. See LICENSE
 
 from contextlib import suppress

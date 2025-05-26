@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
+# Copyright (c) 2025,  Pipal ERP Pvt. Ltd. and Contributors
 # License: MIT. See LICENSE
 import frappe
 from frappe.cache_manager import clear_controller_cache

@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
+# Copyright (c) 2025,  Pipal ERP Pvt. Ltd. and Contributors
 # License: MIT. See LICENSE
 import frappe
 from frappe.core.doctype.user_permission.test_user_permission import create_user

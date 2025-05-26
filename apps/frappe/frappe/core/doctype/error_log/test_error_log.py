@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Frappe Technologies and Contributors
+# Copyright (c) 2025,  Pipal ERP and Contributors
 # License: MIT. See LICENSE
 from unittest.mock import patch
 

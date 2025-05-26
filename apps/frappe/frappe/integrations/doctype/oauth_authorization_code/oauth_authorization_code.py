@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Frappe Technologies and contributors
+# Copyright (c) 2025,  Pipal ERP and contributors
 # License: MIT. See LICENSE
 
 import frappe
