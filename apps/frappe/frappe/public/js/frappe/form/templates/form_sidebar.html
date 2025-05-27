@@ -144,6 +144,7 @@
 	<a><li class="auto-repeat-status"><li></a>
 </ul>
 <ul class="list-unstyled sidebar-menu form-sidebar-stats">
+	{% if (frappe.user.has_role(['System Manager'])) { %}
 	<li class="flex">
 		<div class="form-stats d-flex">
 			<span class="form-stats-likes">
@@ -166,6 +167,7 @@
 			Follow
 		</a>
 	</li>
+	{% } %}
 </ul>
 <hr>
 <ul class="list-unstyled sidebar-menu text-muted">

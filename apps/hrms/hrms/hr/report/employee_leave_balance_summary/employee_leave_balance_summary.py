@@ -9,8 +9,24 @@ from hrms.hr.doctype.leave_application.leave_application import get_leave_detail
 
 
 def execute(filters=None):
-	leave_types = frappe.db.sql_list("select name from `tabLeave Type` order by name asc")
+	# leave_types = frappe.db.sql_list("select name from `tabLeave Type` order by name asc")
+	leave_types = frappe.db.sql_list(
+    "SELECT name FROM `tabLeave Type` WHERE company = %s ORDER BY name ASC",
+    (filters.get("company"),)
+)
 
+	
+	# leave_type_filters = {"company": filters.get("company")} if filters and filters.get("company") else {}
+	
+	# leave_type_docs = frappe.get_list(
+    #     "Leave Type",
+    #     filters=leave_type_filters,
+    #     fields=["name"],
+    #     order_by="name asc",
+    # )
+	# leave_types = [lt["name"] for lt in leave_type_docs]
+
+	print("Leave Types:", leave_types)
 	columns = get_columns(leave_types)
 	data = get_data(filters, leave_types)
 
