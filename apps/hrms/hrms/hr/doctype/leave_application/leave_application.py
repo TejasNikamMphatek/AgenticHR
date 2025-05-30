@@ -427,9 +427,17 @@ class LeaveApplication(Document, PWANotificationsMixin):
 		)
 
 		if block_dates:
-			frappe.msgprint(_("Warning: Leave application contains following block dates") + ":")
+			message = "<b>" + _("Warning: Leave application contains the following block dates") + ":</b><br><br>"
 			for d in block_dates:
-				frappe.msgprint(formatdate(d.block_date) + ": " + d.reason)
+				message += f"{formatdate(d.block_date)}: {d.reason}<br>"
+			
+			frappe.msgprint(message, title=_("Block Dates Found"), indicator="orange")
+
+
+			# message = _("Warning: Leave application contains the following block dates:") + "<br><br>"
+			# for d in block_dates:
+			# 	message += f"{formatdate(d.block_date)}: {d.reason}<br>"
+			# frappe.throw(message, title=_("Block Dates Found"))
 
 	def validate_block_days(self):
 		block_dates = get_applicable_block_dates(
@@ -437,7 +445,7 @@ class LeaveApplication(Document, PWANotificationsMixin):
 		)
 
 		if block_dates and self.status == "Approved":
-			frappe.throw(_("You are not authorized to approve leaves on Block Dates"), LeaveDayBlockedError)
+			frappe.throw(_("You have not Permission to approve leaves on Block Dates"), title=_("Approved Permission Not Allowed on Block Dates"))
 
 	def validate_balance_leaves(self):
 		if self.from_date and self.to_date:
