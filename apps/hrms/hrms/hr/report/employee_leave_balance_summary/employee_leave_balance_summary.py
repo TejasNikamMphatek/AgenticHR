@@ -26,7 +26,7 @@ def execute(filters=None):
     # )
 	# leave_types = [lt["name"] for lt in leave_type_docs]
 
-	print("Leave Types:", leave_types)
+	# print("Leave Types:", leave_types)
 	columns = get_columns(leave_types)
 	data = get_data(filters, leave_types)
 
