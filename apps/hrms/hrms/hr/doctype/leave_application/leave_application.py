@@ -1344,11 +1344,17 @@ def add_leaves(events, start, end, filters=None):
 
 	for d in leave_applications:
 		# print("d----",d)
-		if d['leave_type'] == "Privilege leave" :
+		if d['leave_type'] == "Privilege Leave" :
 			d['leave_type'] = "PL"
-		if d['leave_type'] == 'Sick Leave ( Confirmed )' or d['leave_type'] == 'Sick Leave ( Probation )':
+
+		if d['leave_type'] == 'Sick Leave (Confirmed)' or d['leave_type'] == 'Sick Leave (Probation)':
 			d['leave_type'] = 'SL'
-		d["title"] = f"{d['employee_name']} ({d['leave_type']})"
+
+		if d['leave_type'] == 'Loss Of Pay':
+			d['leave_type'] = 'LOP'
+			
+		# d["title"] = f"{d['employee_name']} ({d['leave_type']})"
+		d["title"] = f"{d['leave_type']}"
 		del d["employee_name"]
 		del d["leave_type"]
 		if d not in events:
