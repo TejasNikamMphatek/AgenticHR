@@ -215,6 +215,8 @@ frappe.ui.form.on("Number Card", {
 		$(`<p class="text-muted small">${__("Click table to edit")}</p>`).appendTo(wrapper);
 
 		let filters = JSON.parse(frm.doc.filters_json || "[]");
+		// let dynamic_filter = JSON.parse(frm.doc.dynamic_filters_json || "[]");
+		// filters.push(...dynamic_filter);
 		let filters_set = false;
 
 		// Set dynamic filters for reports
