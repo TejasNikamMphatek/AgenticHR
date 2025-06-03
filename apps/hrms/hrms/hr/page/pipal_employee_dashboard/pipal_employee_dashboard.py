@@ -9,6 +9,8 @@ from frappe.model.naming import make_autoname
 from frappe.query_builder import Order
 from frappe.query_builder.functions import Count, Sum
 import pytz
+from datetime import datetime
+
 @frappe.whitelist()
 
 
@@ -312,3 +314,9 @@ def getTaxProofSubmission(emp_id = None):
 				"exemption_amount" : "",
 			}
 		]
+
+@frappe.whitelist()
+def get_server_time():
+	return {
+        "server_time": datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+    }

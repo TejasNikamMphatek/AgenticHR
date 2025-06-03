@@ -300,7 +300,7 @@ def add_attendance(events, start, end, employee_id=None, conditions=None ):
 			"Present": "P",
 			"Absent": "A",
 			"Half Day": "HD",
-			"Work From Home": "WFH"  # Add more mappings if needed
+			"Work From Home": "WFH"
 		}
 
 		# Convert status dynamically

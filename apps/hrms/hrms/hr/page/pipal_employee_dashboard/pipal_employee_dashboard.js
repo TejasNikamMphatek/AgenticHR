@@ -67,7 +67,7 @@ else if(frappe.user.has_role("Employee")){
 				},
 			});
 			$('.page-head').addClass('hide');
-
+			me.updateTime();
 		},
 
 		send_data: function (data) {
@@ -276,16 +276,37 @@ else if(frappe.user.has_role("Employee")){
 			greetingMessage = me.displayGreeting(greetingMessage);
 		},
 
+		// updateTime: function () {
+		// 	const now = new Date();
+		// 	const hours = now.getHours().toString().padStart(2, '0');
+		// 	const minutes = now.getMinutes().toString().padStart(2, '0');
+		// 	const seconds = now.getSeconds().toString().padStart(2, '0');
+		// 	$('#liveTime').text(`${hours}:${minutes}:${seconds}`);
+		// },
+
+		// startClock: function () {
+		// 	setInterval(this.updateTime, 1000);
+		// },
+
 		updateTime: function () {
-			const now = new Date();
-			const hours = now.getHours().toString().padStart(2, '0');
-			const minutes = now.getMinutes().toString().padStart(2, '0');
-			const seconds = now.getSeconds().toString().padStart(2, '0');
-			$('#liveTime').text(`${hours}:${minutes}:${seconds}`);
+			frappe.call({
+				method: "hrms.hr.page.pipal_employee_dashboard.pipal_employee_dashboard.get_server_time",
+				callback: function (r) {
+					if (r.message && r.message.server_time) {
+						me.startClock(r.message.server_time);
+					}
+				}
+			});
 		},
 
-		startClock: function () {
-			setInterval(this.updateTime, 1000);
+		startClock: function (server_time) {
+			if(server_time){
+				let currentTime = new Date(server_time); 
+				setInterval(function () {
+					currentTime.setSeconds(currentTime.getSeconds() + 1);
+					$('#liveTime').text(currentTime.toLocaleTimeString());
+				}, 1000);
+			}
 		},
 
 		salaryPiechart: function (payslip_val) {
