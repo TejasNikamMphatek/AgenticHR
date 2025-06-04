@@ -43,6 +43,7 @@ frappe.Application = class Application {
 		this.add_browser_class();
 		this.setup_energy_point_listeners();
 		this.setup_copy_doc_listener();
+		this.start_session_check();
 
 		frappe.ui.keys.setup();
 
@@ -364,6 +365,25 @@ frappe.Application = class Application {
 			},
 		});
 	}
+	start_session_check() {
+			setInterval(() => {
+				frappe.call({
+					method: "frappe.auth.get_logged_user",
+					callback: (r) => {
+						console.log("! session valid");
+						if (r.exc || !r.message || r.message === 'Guest') {
+							console.log("Session expired")
+							this.handle_session_expired();
+						}
+					},
+					error: () => {
+						this.handle_session_expired();
+					}
+				});
+			}, 60000); 
+		}
+
+
 	handle_session_expired() {
 		frappe.app.redirect_to_login();
 	}
