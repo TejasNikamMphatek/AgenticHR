@@ -91,7 +91,8 @@ def getHelpDeskRequest():
 	help_desk_request =frappe.get_all(
 		"Help Desk",
 		filters={
-            "help_status": ["not in", ["Completed", "Rejected"]]
+            # "help_status": ["not in", ["Completed", "Rejected"]],
+			"docstatus": 0
         },
 		fields=[
 			"employee_name",
@@ -128,6 +129,7 @@ def getAttendanceReq():
 		"Attendance Request",
 		filters = [
 			["docstatus","=", 0],
+			["status", "=", "Open"],
 			],
 		fields=[
 			"employee_name",
