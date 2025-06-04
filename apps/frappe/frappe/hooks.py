@@ -4,7 +4,7 @@ from . import __version__ as app_version
 
 app_name = "Pipal"
 app_title = "PIPAL ERP"
-app_publisher = "Frappe Technologies"
+app_publisher = "Pipal Technologies"
 app_description = "Full stack web framework with Python, Javascript, MariaDB, Redis, Node"
 source_link = "https://github.com/frappe/frappe"
 app_license = "MIT"
@@ -537,9 +537,9 @@ standard_help_items = [
 		"is_standard": 1,
 	},
 	{
-		"item_label": "Frappe Support",
+		"item_label": "Pipal Support",
 		"item_type": "Route",
-		"route": "https://frappe.io/support",
+		"route": "https://hr.mphatek.com",
 		"is_standard": 1,
 	},
 ]
