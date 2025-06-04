@@ -250,6 +250,10 @@ class Employee(NestedSet):
 	def validate_reports_to(self):
 		if self.reports_to == self.name:
 			throw(_("Employee cannot report to himself."))
+		
+		if self.reports_to:
+			reports_to_name = frappe.db.get_value("Employee", self.reports_to, "employee_name")
+			self.report_to_name = reports_to_name
 
 	def on_trash(self):
 		self.update_nsm_model()

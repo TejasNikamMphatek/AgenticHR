@@ -39,6 +39,7 @@
   "column_break_25",
   "designation",
   "reports_to",
+  "report_to_name",
   "column_break_18",
   "branch",
   "employment_details",
@@ -1031,6 +1032,12 @@
    "fieldname": "employee_info_verified",
    "fieldtype": "Check",
    "label": "Employee Info Verified"
+  },
+  {
+   "fieldname": "report_to_name",
+   "fieldtype": "Data",
+   "label": "Report to Name",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-user",
@@ -1038,7 +1045,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-02-02 15:34:55.261877",
+ "modified": "2025-06-04 10:45:45.383252",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
