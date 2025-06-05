@@ -316,6 +316,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 		const login_user_role = frappe.user_roles.includes("System Manager")
 		// console.log("login_user_role = ",login_user_role)
 
+		const hide_print_icon_list = ["Employee"]
 
 		// Print
 		if (
@@ -332,15 +333,19 @@ frappe.ui.form.Toolbar = class Toolbar {
 					},
 					login_user_role ? true : "" ,
 				);
-				this.print_icon = this.page.add_action_icon(
-					"printer",
-					function () {
-						me.frm.print_doc();
-					},
-					login_user_role ? true : "" ,
 
-					__("Print")
-				);
+				// console.log(me.frm.doctype)
+				if (!hide_print_icon_list.includes(me.frm.doctype)) {
+					this.print_icon = this.page.add_action_icon(
+						"printer",
+						function () {
+							me.frm.print_doc();
+						},
+						login_user_role ? true : "" ,
+
+						__("Print")
+					);
+				}
 			}
 		}
 
@@ -351,7 +356,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 				function () {
 					me.frm.email_doc();
 				},
-				true,
+				login_user_role ? true : "" ,
 				{
 					shortcut: "Ctrl+E",
 					condition: () => !this.frm.is_new(),
