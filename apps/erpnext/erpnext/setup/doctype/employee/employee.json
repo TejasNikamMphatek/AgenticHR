@@ -250,7 +250,7 @@
    "fieldname": "employee_number",
    "fieldtype": "Data",
    "in_global_search": 1,
-   "label": "Employee Number",
+   "label": "Employee ID",
    "oldfieldname": "employee_number",
    "oldfieldtype": "Data"
   },
@@ -1045,7 +1045,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-06-04 11:50:56.945016",
+ "modified": "2025-06-05 11:32:23.137235",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
