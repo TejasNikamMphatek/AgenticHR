@@ -95,13 +95,12 @@
   "bank_ac_no",
   "iban",
   "personal_details",
-  "family_deatils_section",
   "marital_status",
   "family_background",
   "column_break6",
-  "blood_group",
-  "health_details",
   "family_details",
+  "health_details",
+  "blood_group",
   "section_break_bisv",
   "identity_documents",
   "section_break_ndag",
@@ -610,6 +609,7 @@
   {
    "fieldname": "blood_group",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Blood Group",
    "options": "\nA+\nA-\nB+\nB-\nAB+\nAB-\nO+\nO-"
   },
@@ -1042,11 +1042,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "family_deatils_section",
-   "fieldtype": "Section Break",
-   "label": "Family Deatils"
-  },
-  {
    "fieldname": "family_details",
    "fieldtype": "Link",
    "label": "Family Details",
@@ -1058,7 +1053,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-06-05 17:55:28.332082",
+ "modified": "2025-06-05 18:26:04.745049",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
