@@ -95,11 +95,13 @@
   "bank_ac_no",
   "iban",
   "personal_details",
+  "family_deatils_section",
   "marital_status",
   "family_background",
   "column_break6",
   "blood_group",
   "health_details",
+  "family_details",
   "section_break_bisv",
   "identity_documents",
   "section_break_ndag",
@@ -1038,6 +1040,17 @@
    "fieldtype": "Data",
    "label": "Report to Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "family_deatils_section",
+   "fieldtype": "Section Break",
+   "label": "Family Deatils"
+  },
+  {
+   "fieldname": "family_details",
+   "fieldtype": "Link",
+   "label": "Family Details",
+   "options": "Family Details"
   }
  ],
  "icon": "fa fa-user",
@@ -1045,7 +1058,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-06-05 11:32:23.137235",
+ "modified": "2025-06-05 17:55:28.332082",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
