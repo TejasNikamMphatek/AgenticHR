@@ -47,6 +47,8 @@ login.bind_events = function () {
 	});
 
 	$(".form-forgot").on("submit", function (event) {
+		const btn = event.target[1];
+		btn.setAttribute("disabled", "true");
 		event.preventDefault();
 		var args = {};
 		args.cmd = "frappe.core.doctype.user.user.reset_password";

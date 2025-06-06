@@ -649,9 +649,10 @@ class User(Document):
 
 		if self.username_exists():
 			if self.user_type == "System User":
-				frappe.msgprint(_("Username {0} already exists").format(self.username))
-				self.suggest_username()
-
+				message = _("Username <b>{0}</b> already exists.<br>Suggested Username: <b>{1}</b>").format(
+					self.username, self.suggest_username()
+				)
+				frappe.throw(message, title="Duplicate Entry")
 			self.username = ""
 
 	def password_strength_test(self):
