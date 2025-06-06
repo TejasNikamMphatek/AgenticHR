@@ -161,3 +161,5 @@ Procfile
 config/nginx.conf
 config/redis_cache.conf
 config/redis_queue.conf
+
+pipal_commands.txt
