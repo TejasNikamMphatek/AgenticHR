@@ -2,7 +2,7 @@ frappe.ui.form.ControlMultiCheck = class ControlMultiCheck extends frappe.ui.for
 	// UI: multiple checkboxes
 	// Value: Array of values
 	// Options: Array of label/value/checked option objects
-
+	
 	make() {
 		super.make();
 		if (this.df.label) {
@@ -163,8 +163,9 @@ frappe.ui.form.ControlMultiCheck = class ControlMultiCheck extends frappe.ui.for
 	}
 
 	get_select_buttons() {
+		const is_admin = frappe.user.has_role("Administrator")
 		return $(`
-		<div class="bulk-select-options">
+		<div class="bulk-select-options ${is_admin ? "" : "hide"}">
 			<button class="btn btn-xs btn-default select-all">
 				${__("Select All")}
 			</button>

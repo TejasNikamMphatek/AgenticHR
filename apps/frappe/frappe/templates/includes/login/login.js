@@ -87,7 +87,8 @@ login.bind_events = function () {
 			$(this).text({{ _("Hide") | tojson }})
 		} else {
 			input.attr("type", "password");
-			$(this).text({{ _("Show") | tojson }})
+			// $(this).text({{ _("Show") | tojson }})
+			$(this).text({{ _("👁️") | tojson }})
 		}
 	});
 
