@@ -6,6 +6,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, get_datetime
+from frappe.utils import now_datetime , get_datetime
 
 from hrms.hr.doctype.shift_assignment.shift_assignment import (
 	get_actual_start_end_datetime_of_shift,
@@ -60,6 +61,13 @@ class EmployeeCheckin(Document):
 		else:
 			self.shift = None
 
+	def before_save(self):
+		current_time = now_datetime().replace(microsecond=0)
+		self_time = get_datetime(self.time).replace(microsecond=0)
+
+		if self_time > current_time:
+			print("self.time is greater than current_time")
+			frappe.throw(_("Cannot create a log in the future. Please check the timestamp: {0}").format(self.time), title=_("Invalid Time"))
 
 @frappe.whitelist()
 def add_log_based_on_employee_field(
