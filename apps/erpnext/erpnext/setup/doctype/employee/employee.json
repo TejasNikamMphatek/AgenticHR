@@ -13,17 +13,17 @@
  "field_order": [
   "basic_details_tab",
   "basic_information",
-  "employee",
   "naming_series",
+  "employee",
   "employee_number",
   "first_name",
   "middle_name",
   "last_name",
   "employee_name",
   "column_break_9",
+  "salutation",
   "gender",
   "date_of_birth",
-  "salutation",
   "column_break1",
   "date_of_joining",
   "image",
@@ -95,13 +95,12 @@
   "bank_ac_no",
   "iban",
   "personal_details",
-  "family_deatils_section",
   "marital_status",
   "family_background",
-  "health_details",
   "column_break6",
-  "blood_group",
   "family_details",
+  "health_details",
+  "blood_group",
   "section_break_bisv",
   "identity_documents",
   "section_break_ndag",
@@ -610,6 +609,7 @@
   {
    "fieldname": "blood_group",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Blood Group",
    "options": "\nA+\nA-\nB+\nB-\nAB+\nAB-\nO+\nO-"
   },
@@ -618,14 +618,14 @@
    "fieldname": "family_background",
    "fieldtype": "Small Text",
    "label": "Family Background",
-   "max_height": "50px"
+   "max_height": "70px"
   },
   {
    "description": "Here you can maintain height, weight, allergies, medical concerns etc",
    "fieldname": "health_details",
    "fieldtype": "Small Text",
    "label": "Health Details",
-   "max_height": "50px"
+   "max_height": "70px"
   },
   {
    "collapsible": 1,
@@ -1046,11 +1046,6 @@
    "fieldtype": "Link",
    "label": "Family Details",
    "options": "Family Details"
-  },
-  {
-   "fieldname": "family_deatils_section",
-   "fieldtype": "Section Break",
-   "label": "Family Deatils"
   }
  ],
  "icon": "fa fa-user",
@@ -1058,7 +1053,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-06-10 18:15:18.741537",
+ "modified": "2025-06-11 14:56:39.297233",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
