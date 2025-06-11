@@ -43,6 +43,7 @@ class Employee(NestedSet):
 		self.validate_status()
 		self.validate_reports_to()
 		self.validate_preferred_email()
+		self.validate_future_dates()
 
 		if self.user_id:
 			self.validate_user_details()
@@ -54,6 +55,18 @@ class Employee(NestedSet):
 				user.save(ignore_permissions=True)
 				remove_user_permission("Employee", self.name, existing_user_id)
 	
+	def validate_future_dates(self):
+		current_date = getdate(today())
+		date_of_joining = getdate(self.date_of_joining)
+		date_of_birth = getdate(self.date_of_birth)
+		age = current_date.year - date_of_birth.year - ((current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day))
+
+		if current_date < date_of_joining:
+			frappe.throw(_("Cannot add the future Date. Please check the Date: {0}").format(self.date_of_joining), title=_("Invalid Date"))
+		
+		if age < 18:
+			frappe.throw(_("Employee must be at least 18 years old. Please check the Date of Birth: {0}").format(self.date_of_birth), title=_("Invalid Age"))
+
 	def before_save(self):
 		# Auto Calculate Total Year Experience of Previous companies.
 		ttl_prev_exp = 0
@@ -499,7 +512,7 @@ def get_user_details(employee_number):
         ],
         limit=1
     )
-    print("user Details:", user)
+    # print("user Details:", user)
     if not user:
         return None
         

@@ -66,7 +66,7 @@ class EmployeeCheckin(Document):
 		self_time = get_datetime(self.time).replace(microsecond=0)
 
 		if self_time > current_time:
-			print("self.time is greater than current_time")
+			# print("self.time is greater than current_time")
 			frappe.throw(_("Cannot create a log in the future. Please check the timestamp: {0}").format(self.time), title=_("Invalid Time"))
 
 @frappe.whitelist()
