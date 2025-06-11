@@ -10,19 +10,31 @@
   "user_details_tab",
   "enabled",
   "section_break_3",
-  "email",
+  "employee_number",
   "first_name",
   "middle_name",
   "last_name",
-  "column_break0",
   "full_name",
+  "column_break0",
+  "email",
   "username",
+  "date_of_joining",
   "column_break_11",
   "language",
   "time_zone",
   "send_welcome_email",
   "unsubscribed",
   "user_image",
+  "short_bio",
+  "gender",
+  "birth_date",
+  "mobile_no",
+  "column_break_26",
+  "location",
+  "phone",
+  "column_break_22",
+  "interest",
+  "bio",
   "roles_permissions_tab",
   "sb1",
   "role_profile_name",
@@ -33,16 +45,6 @@
   "modules_html",
   "block_modules",
   "home_settings",
-  "short_bio",
-  "gender",
-  "birth_date",
-  "interest",
-  "column_break_26",
-  "phone",
-  "location",
-  "bio",
-  "column_break_22",
-  "mobile_no",
   "settings_tab",
   "desk_settings_section",
   "mute_sounds",
@@ -249,7 +251,8 @@
    "depends_on": "enabled",
    "fieldname": "short_bio",
    "fieldtype": "Tab Break",
-   "label": "More Information"
+   "label": "Personal Information",
+   "max_height": "50px"
   },
   {
    "fieldname": "gender",
@@ -302,12 +305,14 @@
   {
    "fieldname": "interest",
    "fieldtype": "Small Text",
-   "label": "Interests"
+   "label": "Interests",
+   "max_height": "50px"
   },
   {
    "fieldname": "bio",
    "fieldtype": "Small Text",
    "label": "Bio",
+   "max_height": "50px",
    "no_copy": 1
   },
   {
@@ -731,6 +736,18 @@
    "fieldname": "workspace_section",
    "fieldtype": "Section Break",
    "label": "Workspace"
+  },
+  {
+   "fieldname": "employee_number",
+   "fieldtype": "Int",
+   "label": "Employee Number",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "date_of_joining",
+   "fieldtype": "Date",
+   "label": "Date Of Joining"
   }
  ],
  "icon": "fa fa-user",
@@ -794,7 +811,7 @@
   }
  ],
  "max_attachments": 5,
- "modified": "2025-02-05 11:07:05.444975",
+ "modified": "2025-06-11 10:40:00.225020",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",

@@ -476,3 +476,43 @@ def has_upload_permission(doc, ptype="read", user=None):
 	if get_doc_permissions(doc, user=user, ptype=ptype).get(ptype):
 		return True
 	return doc.user_id == user
+
+@frappe.whitelist()
+def get_user_details(employee_number):
+    if not employee_number:
+       return None
+	
+    user = frappe.get_all(
+        "User",
+        filters=[["employee_number", "=", employee_number]],
+        fields=[
+            "first_name",
+            "middle_name", 
+            "last_name",
+            "gender",
+			"birth_date",
+			"employee_number",
+			"mobile_no",
+			"name",
+			"date_of_joining"
+
+        ],
+        limit=1
+    )
+    print("user Details:", user)
+    if not user:
+        return None
+        
+    employee_data = user[0]
+    
+    return {
+        "first_name": employee_data.get("first_name"),
+        "middle_name": employee_data.get("middle_name"),
+        "last_name": employee_data.get("last_name"),
+		"gender": employee_data.get("gender"),
+		"birth_date":employee_data.get("birth_date"),
+		"employee_number": employee_data.get("employee_number"),
+		"mobile_no": employee_data.get("mobile_no"),
+		"email": employee_data.get("name"),
+		"date_of_joining": employee_data.get("date_of_joining")
+    }

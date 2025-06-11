@@ -51,6 +51,58 @@ frappe.ui.form.on("Employee", {
 		frm.set_value("prefered_email", frm.fields_dict[prefered_email_fieldname].value);
 	},
 
+	employee_number: function (frm) {
+		frm.events.setEmployeeDetails(frm);
+	},
+
+	setEmployeeDetails: function(frm) {
+    var employeeNumber = frappe.model.scrub(frm.doc.employee_number);
+
+		if (frm.doc.employee_number) {
+			frappe.call({
+				method: "erpnext.setup.doctype.employee.employee.get_user_details",
+				args: {
+					"employee_number": frm.doc.employee_number
+				},
+				callback: function(r) {
+					if (r.message) {
+						console.log(r.message);
+						
+						// Method 1: Using frm.set_value() for each field
+						if (r.message.first_name) {
+							frm.set_value("first_name", r.message.first_name);
+						}
+						if (r.message.middle_name) {
+							frm.set_value("middle_name", r.message.middle_name);
+						}
+						if (r.message.last_name) {
+							frm.set_value("last_name", r.message.last_name);
+						}
+						if (r.message.email) {
+							frm.set_value("company_email", r.message.email);
+						}
+						if (r.message.mobile_no) {
+							frm.set_value("cell_number", r.message.mobile_no);
+						}
+						if (r.message.gender) {
+							frm.set_value("gender", r.message.gender);
+						}
+						if (r.message.birth_date) {
+							frm.set_value("date_of_birth", r.message.birth_date);
+						}
+						if (r.message.email) {
+							frm.set_value("user_id", r.message.email);
+						}
+						if (r.message.date_of_joining) {
+							frm.set_value("date_of_joining", r.message.date_of_joining);
+						}
+					}
+				}
+			});
+		}
+	},
+
+	
 	status: function (frm) {
 		return frm.call({
 			method: "deactivate_sales_person",
