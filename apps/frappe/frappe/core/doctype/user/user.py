@@ -61,6 +61,7 @@ class User(Document):
 		birth_date: DF.Date | None
 		block_modules: DF.Table[BlockModule]
 		bypass_restrict_ip_check_if_2fa_enabled: DF.Check
+		date_of_joining: DF.Date | None
 		default_workspace: DF.Link | None
 		defaults: DF.Table[DefaultValue]
 		desk_theme: DF.Literal["Light", "Dark", "Automatic"]
@@ -68,6 +69,7 @@ class User(Document):
 		document_follow_notify: DF.Check
 		email: DF.Data
 		email_signature: DF.SmallText | None
+		employee_number: DF.Int
 		enabled: DF.Check
 		first_name: DF.Data
 		follow_assigned_documents: DF.Check
@@ -460,6 +462,7 @@ class User(Document):
 
 		args = {
 			"first_name": self.first_name or self.last_name or "user",
+			"employee_number": self.employee_number,
 			"user": self.name,
 			"title": subject,
 			"login_url": get_url(),
