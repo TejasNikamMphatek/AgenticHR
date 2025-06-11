@@ -456,7 +456,7 @@
     "Attendance" :{
         "Administrator" : ["Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview"],
         "System Manager" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview","Gantt", "Kanban"],
-        "Other User" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview","Gantt", "Kanban"]
+        "Other User" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview","Gantt", "Kanban","Dashboard"]
     },
     "User" :{
         "System Manager" : [],

@@ -187,6 +187,7 @@ frappe.ui.Page = class Page {
 	setup_sidebar_toggle() {
 		
 		let sidebar_toggle = $(".page-head").find(".sidebar-toggle-btn");
+		$('.page-head').removeClass('hide');
 		let sidebar_wrapper = this.wrapper.find(".layout-side-section");
 		if(frappe.user.has_role("HR Manager") || frappe.user.has_role("Administrator")){
 
