@@ -18,6 +18,7 @@
   "column_break0",
   "email",
   "username",
+  "date_of_joining",
   "column_break_11",
   "language",
   "time_zone",
@@ -27,13 +28,13 @@
   "short_bio",
   "gender",
   "birth_date",
-  "interest",
+  "mobile_no",
   "column_break_26",
   "phone",
   "location",
-  "bio",
   "column_break_22",
-  "mobile_no",
+  "interest",
+  "bio",
   "roles_permissions_tab",
   "sb1",
   "role_profile_name",
@@ -303,12 +304,14 @@
   {
    "fieldname": "interest",
    "fieldtype": "Small Text",
-   "label": "Interests"
+   "label": "Interests",
+   "max_height": "50px"
   },
   {
    "fieldname": "bio",
    "fieldtype": "Small Text",
    "label": "Bio",
+   "max_height": "50px",
    "no_copy": 1
   },
   {
@@ -736,8 +739,13 @@
   {
    "fieldname": "employee_number",
    "fieldtype": "Int",
-   "label": "Employee Number",
-   "reqd": 1
+   "label": "Employee Number"
+  },
+  {
+   "default": "Today",
+   "fieldname": "date_of_joining",
+   "fieldtype": "Date",
+   "label": "Date Of Joining"
   }
  ],
  "icon": "fa fa-user",
@@ -801,7 +809,7 @@
   }
  ],
  "max_attachments": 5,
- "modified": "2025-06-11 14:32:58.428309",
+ "modified": "2025-06-11 15:06:59.415390",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
