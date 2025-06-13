@@ -14,7 +14,7 @@
  "hide_custom": 0,
  "icon": "branch",
  "idx": 0,
- "indicator_color": "gray",
+ "indicator_color": "grey",
  "is_hidden": 0,
  "label": "Recruitment",
  "links": [
@@ -155,7 +155,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-06-13 14:34:03.392135",
+ "modified": "2025-06-13 14:47:45.298692",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Recruitment",
@@ -171,7 +171,7 @@
   }
  ],
  "roles": [],
- "sequence_id": 31.0,
+ "sequence_id": 32.0,
  "shortcuts": [
   {
    "color": "Grey",
