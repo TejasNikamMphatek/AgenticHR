@@ -14,7 +14,7 @@
  "hide_custom": 1,
  "icon": "liabilities",
  "idx": 0,
- "indicator_color": "",
+ "indicator_color": "gray",
  "is_hidden": 0,
  "label": "Expense Claims",
  "links": [
@@ -124,17 +124,17 @@
    "type": "Link"
   }
  ],
- "modified": "2025-06-13 14:36:40.869713",
+ "modified": "2025-06-13 14:46:08.287529",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claims",
  "number_cards": [],
  "owner": "Administrator",
- "parent_page": "Payroll",
+ "parent_page": "",
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 32.0,
+ "sequence_id": 31.0,
  "shortcuts": [
   {
    "color": "Grey",
