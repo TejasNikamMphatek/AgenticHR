@@ -9,7 +9,7 @@
  "hide_custom": 0,
  "icon": "quality",
  "idx": 0,
- "is_hidden": 1,
+ "is_hidden": 0,
  "label": "Quality",
  "links": [
   {
@@ -144,7 +144,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-07-11 10:55:38.360236",
+ "modified": "2025-06-13 12:46:28.015812",
  "modified_by": "Administrator",
  "module": "Quality Management",
  "name": "Quality",
