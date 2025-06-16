@@ -130,6 +130,9 @@ frappe.views.Calendar = class Calendar {
 			default: "blue",
 		};
 		this.get_default_options();
+
+		$(".sort-selector").addClass("hide"); // hide sort selector in calendar view customize by mahesh
+		
 	}
 	get_default_options() {
 		return new Promise((resolve) => {
