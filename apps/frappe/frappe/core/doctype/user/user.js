@@ -88,7 +88,7 @@ frappe.ui.form.on("User", {
 			["System User", "Website User"].includes(frm.doc.user_type)
 		) {
 			if (!frm.roles_editor) {
-				const role_area = $('<div class="role-editor">').appendTo(
+				const role_area = $('<div class="role-editor hide">').appendTo(
 					frm.fields_dict.roles_html.wrapper
 				);
 
@@ -99,7 +99,7 @@ frappe.ui.form.on("User", {
 				);
 
 				if (frm.doc.user_type == "System User") {
-					var module_area = $("<div>").appendTo(frm.fields_dict.modules_html.wrapper);
+					var module_area = $("<div class='hide'>").appendTo(frm.fields_dict.modules_html.wrapper); //added to hide module editor by default customize form by mahesh
 					frm.module_editor = new frappe.ModuleEditor(frm, module_area);
 				}
 			} else {
