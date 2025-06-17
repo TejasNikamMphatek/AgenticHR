@@ -25,12 +25,12 @@ frappe.query_reports["Employee Leave Balance"] = {
 			reqd: 1,
 			default: frappe.defaults.get_user_default("Company"),
 		},
-		{
-			fieldname: "department",
-			label: __("Department"),
-			fieldtype: "Link",
-			options: "Department",
-		},
+		// {
+		// 	fieldname: "department",
+		// 	label: __("Department"),
+		// 	fieldtype: "Link",
+		// 	options: "Department",
+		// },
 		{
 			fieldname: "employee",
 			label: __("Employee"),
@@ -59,6 +59,7 @@ frappe.query_reports["Employee Leave Balance"] = {
 		},
 	],
 	onload: () => {
+		console.log(frappe.session)
 		const today = frappe.datetime.now_date();
 
 		frappe.call({
