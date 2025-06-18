@@ -63,13 +63,21 @@
 				<svg class="es-icon ml-0 icon-sm">
 					<use href="#es-line-attachment"></use>
 				</svg>
+				{% if(frappe.user.has_role(['System Manager'])){ %}
 				<a class="pill-label ellipsis explore-link">
 					{%= __("Attachments") %}
 				</a>
+				<button class="add-attachment-btn btn btn-link icon-btn">
+					<svg class="es-icon icon-sm"><use href="#es-line-add"></use></svg>
+				</button>
+				{% } else{ %}
+
+				<span class="pill-label ellipsis">
+					{%= __("Attachments") %}
+				</span>
+				{% } %}
 			</span>
-			<button class="add-attachment-btn btn btn-link icon-btn">
-				<svg class="es-icon icon-sm"><use href="#es-line-add"></use></svg>
-			</button>
+			
 		</span>
 	</li>
 	<a class="show-all-btn hidden" href="">
