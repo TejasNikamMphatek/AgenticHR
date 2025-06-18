@@ -1093,6 +1093,9 @@ class SalarySlip(TransactionBase):
 			+ self.standard_tax_exemption_amount
 		)
 
+		if self.annual_taxable_amount < 0:
+			self.annual_taxable_amount = 0
+
 
 		# print("self.total_earnings = ",self.total_earnings)
 		# print("self.annual_taxable_amount = ",self.annual_taxable_amount)
