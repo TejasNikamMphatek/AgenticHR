@@ -461,5 +461,29 @@
     "User" :{
         "System Manager" : [],
         "Other User" : ["Rename"]
+    },
+    "Custom Appointment Letter" :{
+        "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "Increment Letter" : {
+        "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "Confirmation Letter": {
+        "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "Confirmation Letter with Increment" : {
+        "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "Relieving-Experience Letter": {
+        "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "NDA Letter": {
+        "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
     }
 }
