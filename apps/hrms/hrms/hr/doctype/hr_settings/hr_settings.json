@@ -231,6 +231,7 @@
    "label": "Restrict Backdated Leave Application"
   },
   {
+   "collapsible": 1,
    "fieldname": "hiring_settings_section",
    "fieldtype": "Section Break",
    "label": "Hiring Settings"
@@ -242,6 +243,7 @@
    "label": "Check Vacancies On Job Offer Creation"
   },
   {
+   "collapsible": 1,
    "fieldname": "employee_exit_section",
    "fieldtype": "Section Break",
    "label": "Employee Exit Settings"
@@ -301,6 +303,7 @@
    "label": "Allow Multiple Shift Assignments for Same Date"
   },
   {
+   "collapsible": 1,
    "fieldname": "shift_settings_section",
    "fieldtype": "Section Break",
    "label": "Shift Settings"
@@ -317,6 +320,7 @@
    "label": "Mobile Settings"
   },
   {
+   "collapsible": 1,
    "fieldname": "attendance_request_setting_section",
    "fieldtype": "Section Break",
    "label": "Attendance Request Setting "
@@ -345,7 +349,7 @@
   },
   {
    "default": "0",
-   "description": "f enabled, a holiday between two leaves is considered a leave.",
+   "description": "If enabled, a holiday between two leaves is considered a leave.",
    "fieldname": "sandwich_leave",
    "fieldtype": "Check",
    "label": "Sandwich Leave"
@@ -355,7 +359,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-03 15:52:24.029883",
+ "modified": "2025-06-19 11:41:48.743796",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

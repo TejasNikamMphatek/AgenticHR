@@ -1374,7 +1374,7 @@ def add_block_dates(events, start, end, employee, company):
 				"title": _("Leave Blocked") + ": " + block_date.reason,
 				"name": "_" + str(cnt),
 				"allDay": 1,
-				"color": "#f0cb51",
+				"color": "#fae8ad",
     			"textColor": "#fa0505",  
 			}
 		)
