@@ -10,11 +10,11 @@
   #awesomplete_list_1 > li:hover{
     background-color: lightblue !important;
   }
-  
+/*   
   #awesomplete_list_1{
     background-color: #474749 !important;
   }
-  
+   */
   #awesomplete_list_1 > li[aria-selected="true"] {
     background-color: cadetblue !important;
   }

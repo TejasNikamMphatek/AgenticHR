@@ -1834,6 +1834,15 @@ frappe.views.QueryReport = class QueryReport extends frappe.views.BaseList {
 			});
 		}
 
+		if (!frappe.user.has_role(["HR Manager"])) {
+			const allowedItems = ["Refresh", "Print", "PDF"];
+			items = items.filter(item => allowedItems.includes(item.label));
+		}
+		if (frappe.user.has_role(["HR Manager"])) {
+			const allowedItems = ["Refresh", "Edit", "Print", "PDF", "Export", "Add Column", "Save"];
+			items = items.filter(item => allowedItems.includes(item.label));
+		}
+
 		return items;
 	}
 
