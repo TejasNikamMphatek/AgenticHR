@@ -15,7 +15,7 @@ def execute(filters=None):
 
 def get_columns():
 	return [
-		_("Holiday List") + ":Link/Holiday List:150",
+		_("Holiday List") + ":Data:150",
 		_("Holiday Date") + ":Date:120",
 		_("Day") + ":Data:80",
 		_("Description") + ":Data:250",

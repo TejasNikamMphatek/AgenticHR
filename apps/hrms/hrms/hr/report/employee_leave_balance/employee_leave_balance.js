@@ -58,7 +58,7 @@ frappe.query_reports["Employee Leave Balance"] = {
 			depends_on: "eval: !doc.employee",
 		},
 	],
-	onload: () => {
+	onload: (report) => {
 		console.log(frappe.session)
 		const today = frappe.datetime.now_date();
 
@@ -76,5 +76,9 @@ frappe.query_reports["Employee Leave Balance"] = {
 				frappe.query_report.set_filter_value("to_date", data.message[0].to_date);
 			},
 		});
+
+		 report.page.add_inner_button("Leave Applications", function() {
+            frappe.set_route("List", "Leave Application");
+        });
 	},
 };
