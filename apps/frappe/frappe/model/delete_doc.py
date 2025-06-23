@@ -238,17 +238,17 @@ def check_permission_and_not_submitted(doc):
 			raise_exception=frappe.PermissionError,
 		)
 
-	# check if submitted
+	# Check if submitted
 	if doc.docstatus.is_submitted():
 		frappe.msgprint(
-			_("{0} {1}: Submitted Record cannot be deleted. You must {2} Cancel {3} it first.").format(
+			_("{0} : <b>{1} : </b> Submitted Record cannot be deleted. You must <a href='/app/salary-structure/{2}'>Cancel</a> it first.").format(
 				_(doc.doctype),
 				doc.name,
-				"<a href='https://docs.erpnext.com//docs/user/manual/en/setting-up/articles/delete-submitted-document' target='_blank'>",
-				"</a>",
+				doc.name  # Assuming you want to link to the same document
 			),
 			raise_exception=True,
 		)
+
 
 
 def check_if_doc_is_linked(doc, method="Delete"):

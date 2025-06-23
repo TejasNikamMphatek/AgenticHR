@@ -1290,7 +1290,7 @@ def get_events(start, end, filters=None):
 	if "Employee" in frappe.get_roles():
 		add_department_leaves(events, start, end, employee, company)
 
-	add_leaves(events, start, end, filters)
+	add_leaves(events, start, end, filters, employee)
 	add_block_dates(events, start, end, employee, company)
 	add_holidays(events, start, end, employee, company)
 
@@ -1302,13 +1302,14 @@ def add_department_leaves(events, start, end, employee, company):
 		department_employees = frappe.get_list(
 			"Employee", filters={"department": department, "company": company}, pluck="name"
 		)
-		filters = [["employee", "in", department_employees]]
-		add_leaves(events, start, end, filters=filters)
+		filters = [["employee", "in", department_employees],["employee", "=", employee]]
+		add_leaves(events, start, end, filters=filters, employee=employee)
 
 
-def add_leaves(events, start, end, filters=None):
+def add_leaves(events, start, end, filters=None, employee=None):
+	print("&&&&&&&",employee)
 	if not filters:
-		filters = []
+		filters = [["employee", "=", employee]]
 	filters.extend(
 		[
 			["from_date", "<=", getdate(end)],
@@ -1345,7 +1346,8 @@ def add_leaves(events, start, end, filters=None):
 	for d in leave_applications:
 		# print("d----",d)
 		if d['leave_type'] == "Privilege Leave" :
-			d['leave_type'] = "PL"
+			# d['leave_type'] = f"PL : {d['employee_name']}"
+			d['leave_type'] = f"PL"
 
 		if d['leave_type'] == 'Sick Leave (Confirmed)' or d['leave_type'] == 'Sick Leave (Probation)':
 			d['leave_type'] = 'SL'
