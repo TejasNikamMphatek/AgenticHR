@@ -10,7 +10,7 @@
  "is_standard": "Yes",
  "letter_head": "mPHATEK System",
  "letterhead": null,
- "modified": "2025-06-22 15:38:02.444070",
+ "modified": "2025-06-27 19:00:38.810204",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Pipal People",
@@ -21,16 +21,10 @@
  "report_type": "Script Report",
  "roles": [
   {
-   "role": "HR User"
-  },
-  {
    "role": "Employee"
   },
   {
    "role": "HR Manager"
-  },
-  {
-   "role": "Onboarding Employee"
   },
   {
    "role": "Projects Manager"
