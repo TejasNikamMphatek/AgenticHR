@@ -414,7 +414,8 @@ frappe.ui.form.Toolbar = class Toolbar {
 				function () {
 					me.frm.rename_doc();
 				},
-				true
+				login_user_role ? true : "" ,
+				// true
 			);
 		}
 
