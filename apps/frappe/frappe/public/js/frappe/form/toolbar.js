@@ -313,8 +313,9 @@ frappe.ui.form.Toolbar = class Toolbar {
 		const print_settings = frappe.model.get_doc(":Print Settings", "Print Settings");
 		const allow_print_for_draft = cint(print_settings.allow_print_for_draft);
 		const allow_print_for_cancelled = cint(print_settings.allow_print_for_cancelled);
-		const login_user_role = frappe.user_roles.includes("System Manager")
-		// console.log("login_user_role = ",login_user_role)
+		const is_system_manager = frappe.user_roles.includes("System Manager")
+		const is_admin = frappe.user.has_role("Administrator")
+		// console.log("is_system_manager = ",is_system_manager)
 
 		const hide_print_icon_list = ["Employee"]
 
@@ -331,7 +332,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 					function () {
 						me.frm.print_doc();
 					},
-					login_user_role ? true : "" ,
+					is_system_manager ? true : "" ,
 				);
 
 				// console.log(me.frm.doctype)
@@ -341,7 +342,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 						function () {
 							me.frm.print_doc();
 						},
-						login_user_role ? true : "" ,
+						is_system_manager ? true : "" ,
 
 						__("Print")
 					);
@@ -356,7 +357,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 				function () {
 					me.frm.email_doc();
 				},
-				login_user_role ? true : "" ,
+				is_system_manager ? true : "" ,
 				{
 					shortcut: "Ctrl+E",
 					condition: () => !this.frm.is_new(),
@@ -370,13 +371,13 @@ frappe.ui.form.Toolbar = class Toolbar {
 			function () {
 				me.show_jump_to_field_dialog();
 			},
-			login_user_role ? true : "" ,
+			is_system_manager ? true : "" ,
 			"Ctrl+J"
 		);
 
 		// Linked With
 		// console.log(" ------------------ " , me.frm.meta)
-		if (!me.frm.meta.issingle && login_user_role) {
+		if (!me.frm.meta.issingle && is_system_manager) {
 			this.page.add_menu_item(
 				__("Links"),
 				function () {
@@ -387,7 +388,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 		}
 
 		// duplicate
-		if (frappe.boot.user.can_create.includes(me.frm.doctype) && !me.frm.meta.allow_copy && login_user_role) {
+		if (frappe.boot.user.can_create.includes(me.frm.doctype) && !me.frm.meta.allow_copy && is_system_manager) {
 			this.page.add_menu_item(
 				__("Duplicate"),
 				function () {
@@ -404,7 +405,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 			function () {
 				frappe.utils.copy_to_clipboard(JSON.stringify(me.frm.doc));
 			},
-			// true
+			is_admin
 		);
 
 		// rename
@@ -414,7 +415,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 				function () {
 					me.frm.rename_doc();
 				},
-				login_user_role ? true : "" ,
+				is_system_manager ? true : "" ,
 				// true
 			);
 		}
@@ -455,7 +456,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 				let reminder_maanger = new ReminderManager({ frm: this.frm });
 				reminder_maanger.show();
 			},
-			login_user_role ? true : "" ,
+			is_admin ? true : "" ,
 			{
 				shortcut: "Shift+R",
 				condition: () => !this.frm.is_new(),
@@ -467,7 +468,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 			() => {
 				this.frm.undo_manager.undo();
 			},
-			login_user_role ? true : "" ,
+			is_admin ? true : "" ,
 			{
 				shortcut: "Ctrl+Z",
 				condition: () => !this.frm.is_form_builder(),
@@ -480,7 +481,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 			() => {
 				this.frm.undo_manager.redo();
 			},
-			login_user_role ? true : "" ,
+			is_admin ? true : "" ,
 			{
 				shortcut: "Ctrl+Y",
 				condition: () => !this.frm.is_form_builder(),
@@ -519,6 +520,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 
 	make_customize_buttons() {
 		let is_doctype_form = this.frm.doctype === "DocType";
+		const is_admin = frappe.user.has_role("Administrator")
 		if (
 			frappe.model.can_create("Custom Field") &&
 			frappe.model.can_create("Property Setter")
@@ -538,7 +540,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 							});
 						}
 					},
-					true
+					is_admin ? true : ""
 				);
 			}
 		}
@@ -551,7 +553,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 					() => {
 						frappe.set_route("Form", "DocType", this.frm.doctype);
 					},
-					true
+					is_admin ? true : ""
 				);
 			}
 		}
