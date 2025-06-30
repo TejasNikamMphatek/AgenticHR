@@ -10,7 +10,14 @@ from frappe.model.document import Document
 class LeavePolicy(Document):
 	def validate(self):
 		if self.leave_policy_details:
+			seen_leave_types = set()
 			for lp_detail in self.leave_policy_details:
+				# check duplicate leave types
+				leave_types = lp_detail.leave_type
+				if leave_types in seen_leave_types:
+					frappe.throw(f"Duplicate leave type not allowed: {leave_types}")
+				seen_leave_types.add(leave_types)
+				#-------------------------------------------
 				max_leaves_allowed = frappe.db.get_value(
 					"Leave Type", lp_detail.leave_type, "max_leaves_allowed"
 				)
