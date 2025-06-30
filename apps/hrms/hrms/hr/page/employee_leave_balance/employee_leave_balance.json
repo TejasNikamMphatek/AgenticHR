@@ -1,0 +1,29 @@
+{
+ "content": null,
+ "creation": "2025-06-23 15:14:36.051263",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2025-06-23 17:42:01.939842",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "employee-leave-balance",
+ "owner": "Administrator",
+ "page_name": "employee-leave-balance",
+ "roles": [
+  {
+   "role": "Administrator"
+  },
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "HR Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Employee Leave Balance"
+}

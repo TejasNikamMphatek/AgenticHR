@@ -140,11 +140,11 @@ frappe.show_message_page = function (opts) {
 	var page = frappe.pages[opts.page_name] || frappe.container.add_page(opts.page_name);
 	$(page).html(
 		repl(
-			'<div class="page message-page">\
+			'<div class="page message-page py-5 my-5" >\
 			<div class="text-center message-page-content">\
 				%(img)s\
 				<p class="lead">%(message)s</p>\
-				<a class="btn btn-default btn-sm btn-home" href="/app">%(home)s</a>\
+				<a class="btn btn-default btn-sm btn-home" href="/app/pipal-employee-dashboard">%(home)s</a>\
 			</div>\
 		</div>',
 			{
