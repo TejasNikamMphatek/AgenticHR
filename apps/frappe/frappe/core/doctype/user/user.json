@@ -30,8 +30,8 @@
   "birth_date",
   "mobile_no",
   "column_break_26",
-  "location",
   "phone",
+  "location",
   "column_break_22",
   "interest",
   "bio",
@@ -252,8 +252,7 @@
    "depends_on": "enabled",
    "fieldname": "short_bio",
    "fieldtype": "Tab Break",
-   "label": "Personal Information",
-   "max_height": "50px"
+   "label": "Personal Information"
   },
   {
    "fieldname": "gender",
@@ -742,8 +741,7 @@
   {
    "fieldname": "employee_number",
    "fieldtype": "Int",
-   "label": "Employee Number",
-   "reqd": 1
+   "label": "Employee Number"
   },
   {
    "default": "Today",
@@ -813,7 +811,7 @@
   }
  ],
  "max_attachments": 5,
- "modified": "2025-07-01 11:59:04.828234",
+ "modified": "2025-07-01 12:32:09.744870",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
