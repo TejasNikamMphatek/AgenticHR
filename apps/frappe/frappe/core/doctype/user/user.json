@@ -30,8 +30,8 @@
   "birth_date",
   "mobile_no",
   "column_break_26",
-  "phone",
   "location",
+  "phone",
   "column_break_22",
   "interest",
   "bio",
@@ -224,6 +224,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "Onboarding Employee",
    "fieldname": "role_profile_name",
    "fieldtype": "Link",
    "label": "Role Profile",
@@ -251,7 +252,8 @@
    "depends_on": "enabled",
    "fieldname": "short_bio",
    "fieldtype": "Tab Break",
-   "label": "Personal Information"
+   "label": "Personal Information",
+   "max_height": "50px"
   },
   {
    "fieldname": "gender",
@@ -633,6 +635,7 @@
    "options": "Light\nDark\nAutomatic"
   },
   {
+   "default": "Not Select Anything",
    "fieldname": "module_profile",
    "fieldtype": "Link",
    "label": "Module Profile",
@@ -739,7 +742,8 @@
   {
    "fieldname": "employee_number",
    "fieldtype": "Int",
-   "label": "Employee Number"
+   "label": "Employee Number",
+   "reqd": 1
   },
   {
    "default": "Today",
@@ -809,7 +813,7 @@
   }
  ],
  "max_attachments": 5,
- "modified": "2025-06-11 15:06:59.415390",
+ "modified": "2025-07-01 11:59:04.828234",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",

@@ -161,8 +161,9 @@
         "Other User" : []
     },
     "Leave Policy" : {
-        "System Manager" : [],
-        "Other User" : []
+        "Administrator" : ["Report", "Dashboard", "Kanban"],
+        "System Manager" : ["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
     },
     "Leave Period" : {
         "System Manager" : [],

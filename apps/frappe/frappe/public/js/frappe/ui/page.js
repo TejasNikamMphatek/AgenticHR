@@ -510,8 +510,6 @@ frappe.ui.Page = class Page {
 			// console.log(doctype+" = "+label)
 
 			if (frappe.user.has_role("System Manager")){
-				// console.log(docHideData['System Manager'])
-				// isLabelPresent = docHideData['System Manager'].includes(label);
 				isLabelPresent = (docHideData['System Manager'] || []).includes(label);
 				if (frappe.user.has_role("Administrator")){
 					isLabelPresent = (docHideData['Administrator'] || []).includes(label);
