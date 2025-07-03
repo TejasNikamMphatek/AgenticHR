@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Frappe Technologies and contributors
+# Copyright (c) 2024, mPHATEK Systems and contributors
 # For license information, please see license.txt
 """
 Basic system health check report to see how everything on site is functioning in one single page.

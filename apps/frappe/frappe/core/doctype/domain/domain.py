@@ -1,4 +1,4 @@
-# Copyright (c) 2017, Frappe Technologies and contributors
+# Copyright (c) 2017, mPHATEK Systems and contributors
 # License: MIT. See LICENSE
 
 import frappe

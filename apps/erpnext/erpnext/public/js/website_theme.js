@@ -1,4 +1,4 @@
-// Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and Contributors
+// Copyright (c) 2019, mPHATEK Systems Pvt. Ltd. and Contributors
 // MIT License. See license.txt
 
 frappe.ui.form.on("Website Theme", {

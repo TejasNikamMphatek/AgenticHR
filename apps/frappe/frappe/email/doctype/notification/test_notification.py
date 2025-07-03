@@ -1,4 +1,4 @@
-# Copyright (c) 2018, Frappe Technologies and Contributors
+# Copyright (c) 2018, mPHATEK Systems and Contributors
 # License: MIT. See LICENSE
 
 from contextlib import contextmanager

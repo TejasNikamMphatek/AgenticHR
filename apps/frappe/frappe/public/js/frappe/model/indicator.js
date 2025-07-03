@@ -1,4 +1,4 @@
-// Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
+// Copyright (c) 2015, mPHATEK Systems Pvt. Ltd. and Contributors
 
 frappe.has_indicator = function (doctype) {
 	// returns true if indicator is present

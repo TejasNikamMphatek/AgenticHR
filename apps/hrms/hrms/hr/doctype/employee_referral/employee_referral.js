@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and contributors
+// Copyright (c) 2021, mPHATEK Systems Pvt. Ltd. and contributors
 // For license information, please see license.txt
 if (frappe.user.has_role(['HR Manager'])) {
 

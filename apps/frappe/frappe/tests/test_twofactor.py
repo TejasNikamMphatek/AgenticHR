@@ -1,4 +1,4 @@
-# Copyright (c) 2017, Frappe Technologies Pvt. Ltd. and Contributors
+# Copyright (c) 2017, mPHATEK Systems Pvt. Ltd. and Contributors
 # License: MIT. See LICENSE
 import time
 
@@ -139,10 +139,10 @@ class TestTwoFactor(FrappeTestCase):
 
 	def test_render_string_template(self):
 		"""String template renders as expected with variables."""
-		args = {"issuer_name": "Frappe Technologies"}
+		args = {"issuer_name": "mPHATEK Systems"}
 		_str = "Verification Code from {{issuer_name}}"
 		_str = frappe.render_template(_str, args)
-		self.assertEqual(_str, "Verification Code from Frappe Technologies")
+		self.assertEqual(_str, "Verification Code from mPHATEK Systems")
 
 	def test_bypass_restict_ip(self):
 		"""

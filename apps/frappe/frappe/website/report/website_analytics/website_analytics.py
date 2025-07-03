@@ -1,4 +1,4 @@
-# Copyright (c) 2013, Frappe Technologies and contributors
+# Copyright (c) 2013, mPHATEK Systems and contributors
 # License: MIT. See LICENSE
 
 from datetime import datetime
