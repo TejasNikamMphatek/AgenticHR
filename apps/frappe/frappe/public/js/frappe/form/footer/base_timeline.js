@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Frappe Technologies Pvt. Ltd. and Contributors
+// Copyright (c) 2020, mPHATEK Systems Pvt. Ltd. and Contributors
 // MIT License. See license.txt
 
 class BaseTimeline {

@@ -1,5 +1,5 @@
 # Translations template for Frappe Framework.
-# Copyright (C) 2024 Frappe Technologies
+# Copyright (C) 2024 mPHATEK Systems
 # This file is distributed under the same license as the Frappe Framework project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
 #
@@ -59,7 +59,7 @@ msgid "#{0}"
 msgstr ""
 
 #: public/js/frappe/ui/toolbar/about.js:8
-msgid "&copy; Frappe Technologies Pvt. Ltd. and contributors"
+msgid "&copy; mPHATEK Systems Pvt. Ltd. and contributors"
 msgstr ""
 
 #. Label of a Code field in DocType 'Website Settings'

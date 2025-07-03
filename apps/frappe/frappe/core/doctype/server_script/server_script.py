@@ -1,4 +1,4 @@
-# Copyright (c) 2019, Frappe Technologies and contributors
+# Copyright (c) 2019, mPHATEK Systems and contributors
 # License: MIT. See LICENSE
 
 from functools import partial

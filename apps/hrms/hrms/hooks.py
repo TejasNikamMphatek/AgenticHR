@@ -1,6 +1,6 @@
 app_name = "hrms"
 app_title = "Frappe HR"
-app_publisher = "Frappe Technologies Pvt. Ltd."
+app_publisher = "mPHATEK Systems Pvt. Ltd."
 app_description = "Modern HR and Payroll Software"
 app_email = "contact@frappe.io"
 app_license = "GNU General Public License (v3)"

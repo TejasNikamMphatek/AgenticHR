@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Frappe Technologies Pvt. Ltd. and Contributors
+# Copyright (c) 2024, mPHATEK Systems Pvt. Ltd. and Contributors
 # See license.txt
 
 # import frappe

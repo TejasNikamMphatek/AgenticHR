@@ -1,4 +1,4 @@
-# Copyright (c) 2017, Frappe Technologies and Contributors
+# Copyright (c) 2017, mPHATEK Systems and Contributors
 # License: MIT. See LICENSE
 import json
 from contextlib import contextmanager
