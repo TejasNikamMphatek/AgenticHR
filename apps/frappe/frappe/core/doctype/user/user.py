@@ -165,6 +165,7 @@ class User(Document):
 		self.ensure_unique_roles()
 		self.remove_all_roles_for_guest()
 		self.validate_username()
+		self.validate_employee_number()
 		self.remove_disabled_roles()
 		self.validate_user_email_inbox()
 		ask_pass_update()
@@ -657,6 +658,28 @@ class User(Document):
 				)
 				frappe.throw(message, title="Duplicate Entry")
 			self.username = ""
+
+	def validate_employee_number(self):
+		if self.employee_number:
+			# Normalize the value
+			self.employee_number = frappe.scrub(self.employee_number)
+
+			# Check if another user has the same employee number
+			existing_user = frappe.db.get_value(
+				"User",
+				{
+					"employee_number": self.employee_number,
+					"name": ["!=", self.name]  # Exclude current record
+				},
+				"name"
+			)
+
+			if existing_user:
+				frappe.throw(
+					_("Employee Number <b>{0}</b> already exists for another user.").format(self.employee_number),
+					title="Duplicate Entry"
+				)
+
 
 	def password_strength_test(self):
 		"""test password strength"""
