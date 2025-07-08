@@ -20,6 +20,29 @@ class EmployeeSeparation(EmployeeBoardingController):
 		if self.final_decision_status in ['Exit Approved']: # here the issue is after save is not open to submit
 			self.stop_sal_process_date()
 
+		self.validate_resignation_form()
+
+
+	def validate_resignation_form(self):
+		if self.employee:
+			existing_resignation = frappe.get_all(
+				"Employee Separation",
+				filters={"employee": self.employee, "docstatus": ["!=", 2]},
+				fields=["approved_lwd", "final_decision_status", "resign_status", "docstatus"],
+				order_by="submission_date desc",
+				limit=1
+			)
+			if existing_resignation:
+				latest = existing_resignation[0]
+				if latest['final_decision_status'] in ["In Process", "Exit Approved"]:
+					frappe.throw(
+								f"You have already submitted a resignation request."
+								f"<br>Your current <b class='text-info'>Final Decision Status</b> is: <b>{latest['final_decision_status']}</b>."
+							)
+
+
+
+
 	def after_insert(self):
 		self.notify_resign_from_employee()
 	
