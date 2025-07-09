@@ -5,8 +5,13 @@ from frappe.desk.query_report import get_columns_dict
 import json
 from datetime import datetime
 from hrms.hr.doctype.leave_application.leave_application import get_leave_details
+from hrms.hr.doctype.leave_application.leave_application import get_leave_balance_on, get_leaves_for_period
+from hrms.hr.doctype.leave_application.leave_application import (
+	get_leave_balance_on,
+	get_leaves_for_period
+)
 
-
+from frappe.utils import getdate, add_days, flt
 @frappe.whitelist()
 def get_employee_leave_balance(employee=None, leave_type=None, year=None):
     
@@ -16,7 +21,6 @@ def get_employee_leave_balance(employee=None, leave_type=None, year=None):
             employee = emp.get("name")
             employee_name = emp.get("employee_name")
             company_email = emp.get("company_email")
-            print(employee, employee_name, company_email)
         else:
             employee = None
         
@@ -25,11 +29,8 @@ def get_employee_leave_balance(employee=None, leave_type=None, year=None):
         # Validate permissions first
         validate_permissions()
         
-        print(f"Fetching leave balance - Employee: {employee}, Leave Type: {leave_type}, Year: {year}")
-        
         filters = build_filters(employee, leave_type, year)
         data = get_leave_balance_data(filters)
-        print(get_employee_details(employee))
         return data
         
     except frappe.ValidationError:
@@ -71,93 +72,106 @@ def build_filters(employee, leave_type, year):
     filters['to_date'] = f"{filters['year']}-12-31"
     
     return filters
-
 def get_leave_balance_data(filters):
-   
     try:
-        # Base query conditions
-        conditions = ["la.docstatus = 1"]
-        values = {}
-        
-        # Add date range filter for the year
-        conditions.append("la.from_date >= %(from_date)s")
-        conditions.append("la.to_date <= %(to_date)s")
-        values['from_date'] = filters['from_date']
-        values['to_date'] = filters['to_date']
-        
-        # Add employee filter
-        if filters.get('employee'):
-            conditions.append("la.employee = %(employee)s")
-            values['employee'] = filters['employee']
-        
-        # Add leave type filter
-        if filters.get('leave_type'):
-            conditions.append("la.leave_type = %(leave_type)s")
-            values['leave_type'] = filters['leave_type']
-        
-        where_clause = " AND ".join(conditions)
-        
-        # Query to get leave application data
-        query = f"""
-            SELECT 
-                la.employee,
-                emp.employee_name,
-                emp.designation,
-                emp.department,
-                emp.company,
-                la.leave_type,
-                lt.leave_type_name,
-                SUM(CASE WHEN la.status = 'Approved' THEN la.total_leave_days ELSE 0 END) as total_leaves_taken,
-                COUNT(la.name) as total_applications,
-                MIN(la.from_date) as earliest_leave_date,
-                MAX(la.to_date) as latest_leave_date
-            FROM 
-                `tabLeave Application` la
-            INNER JOIN 
-                `tabEmployee` emp ON la.employee = emp.name
-            INNER JOIN 
-                `tabLeave Type` lt ON la.leave_type = lt.name
-            WHERE 
-                {where_clause}
-            GROUP BY 
-                la.employee, la.leave_type, emp.employee_name, 
-                emp.designation, emp.department, emp.company, lt.leave_type_name
-            ORDER BY 
-                emp.employee_name, la.leave_type
-        """
-        
-        print(f"Executing query: {query}")
-        data = frappe.db.sql(query, values, as_dict=True)
-        print(data)
-        # Process each row to add allocation data and calculate balance
-        for row in data:
-            allocation_data = get_leave_allocation_data(row.employee, row.leave_type, filters['year'])
-            row.update(allocation_data)
-            
-            # Calculate balance
-            row['balance'] = flt(row.get('total_allocated', 0)) - flt(row.get('total_leaves_taken', 0))
-            
-            # Get detailed leave applications for this employee and leave type
-            leave_details = get_leave_application_details(row.employee, row.leave_type, filters)
-            row['leave_applications'] = leave_details
-            
-            # Add additional calculated fields
-            row['utilization_percentage'] = calculate_utilization_percentage(
-                row.get('total_leaves_taken', 0), 
-                row.get('total_allocated', 0)
-            )
-            
-            row['status'] = get_balance_status(row['balance'])
-        
-        # If no leave applications found, get employees with allocations but no applications
-        if not data and not filters.get('leave_type'):
-            data = get_employees_with_allocations_only(filters)
-        
-        return data
-        
+        from_date = getdate(filters["from_date"])
+        to_date = getdate(filters["to_date"])
+        values = {
+            "from_date": filters["from_date"],
+            "to_date": filters["to_date"]
+        }
+
+        if filters.get("employee"):
+            values["employee"] = filters["employee"]
+        if filters.get("leave_type"):
+            values["leave_type"] = filters["leave_type"]
+
+        allocations = get_employees_with_allocated_leave_types(filters)
+        final_data = []
+
+        for row in allocations:
+            try:
+                employee = row["employee"]
+                leave_type = row["leave_type"]
+
+                # Opening as of 1 day before period
+                opening = get_leave_balance_on(employee, leave_type, add_days(from_date, -1))
+
+                # Final balance as of end of period
+                final_balance = get_leave_balance_on(employee, leave_type, to_date)
+
+                # Leaves taken during the period
+                taken = get_leaves_for_period(employee, leave_type, from_date, to_date) * -1
+
+                # Total Allocated
+                allocation_data = get_leave_allocation_data(employee, leave_type, filters["year"])
+                total_allocated = allocation_data.get("total_allocated", 0)
+                new_allocated = allocation_data.get("new_allocated", total_allocated)
+
+                # Get leave applications and use its count directly
+                leave_applications = get_leave_application_details(employee, leave_type, filters)
+
+                # Build response row
+                row["opening_balance"] = round(opening, 2)
+                row["total_leaves_taken"] = round(taken, 2)
+                row["balance"] = round(final_balance, 2)
+                row["total_allocated"] = round(total_allocated, 2)
+                row["new_allocated"] = round(new_allocated, 2)
+                row["total_applications"] = len(leave_applications)
+                row["utilization_percentage"] = calculate_utilization_percentage(taken, opening + new_allocated)
+                row["status"] = get_balance_status(row["balance"])
+                row["leave_applications"] = leave_applications
+
+                final_data.append(row)
+
+            except Exception as e:
+                frappe.logger().error(f"[get_leave_balance_data] Error processing {row['employee']}, {row['leave_type']}: {str(e)}")
+
+        return final_data
+
     except Exception as e:
-        frappe.logger().error(f"Error in get_leave_balance_data: {str(e)}")
+        frappe.logger().error(f"Error in get_leave_balance_data(): {str(e)}")
         raise
+
+    
+def get_leave_application_count(employee, leave_type, filters):
+    try:
+        return frappe.db.count("Leave Application", {
+            "employee": employee,
+            "leave_type": leave_type,
+            "docstatus": 1,
+            "status": "Approved",
+            "from_date": (">=", filters["from_date"]),
+            "to_date": ("<=", filters["to_date"])
+        })
+    except:
+        return 0
+
+def get_employees_with_allocated_leave_types(filters):
+    query = """
+        SELECT 
+            la.employee,
+            emp.employee_name,
+            emp.designation,
+            emp.department,
+            emp.company,
+            la.leave_type,
+            lt.leave_type_name
+        FROM `tabLeave Allocation` la
+        INNER JOIN `tabEmployee` emp ON la.employee = emp.name
+        INNER JOIN `tabLeave Type` lt ON la.leave_type = lt.name
+        WHERE la.docstatus = 1
+        AND la.from_date <= %(to_date)s
+        AND la.to_date >= %(from_date)s
+    """
+
+    if filters.get("employee"):
+        query += " AND la.employee = %(employee)s"
+
+    if filters.get("leave_type"):
+        query += " AND la.leave_type = %(leave_type)s"
+
+    return frappe.db.sql(query, filters, as_dict=True)
 
 def get_employees_with_allocations_only(filters):
     
@@ -205,9 +219,9 @@ def get_employees_with_allocations_only(filters):
             ORDER BY 
                 emp.employee_name, lalloc.leave_type
         """
-        print(query)
+    
         data = frappe.db.sql(query, values, as_dict=True)
-        print(data)
+        
         # Process each row
         for row in data:
             allocation_data = get_leave_allocation_data(row.employee, row.leave_type, filters['year'])
@@ -271,7 +285,7 @@ def get_leave_application_details(employee, leave_type, filters):
                 {where_clause}
             ORDER BY 
                 la.from_date DESC
-            LIMIT 10
+            
         """
         
         return frappe.db.sql(query, values, as_dict=True)

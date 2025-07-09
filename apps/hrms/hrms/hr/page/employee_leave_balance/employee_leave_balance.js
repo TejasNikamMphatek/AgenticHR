@@ -156,9 +156,26 @@ class EmployeeLeaveBalance {
 				console.log('Response received:', response);
 				this.hide_loading();
 				if (response.message && response.message.length > 0) {
-					this.data = response.message;
-					this.render_data();
-				} else {
+	// Round numeric fields to 1 decimal place for each record
+	this.data = response.message.map(item => {
+	const granted = Number(item.total_allocated || 0);
+	const balance = Number(item.balance || 0);
+	const consumed = granted - balance;
+
+	return {
+		...item,
+		total_allocated: granted.toFixed(1),
+		total_leaves_taken: Number(item.total_leaves_taken || 0).toFixed(2),
+		balance: balance.toFixed(2),
+		total_applications: Number(item.total_applications || 0).toFixed(0),
+		consumed: consumed.toFixed(2)  // 👈 Add this line
+	};
+});
+
+	this.render_data();
+}
+
+				else {
 					this.show_empty_state();
 				}
 			},
@@ -261,7 +278,9 @@ class EmployeeLeaveBalance {
 		const granted = parseFloat(leaveData.total_allocated || 0);
 		const taken = parseFloat(leaveData.total_leaves_taken || 0);
 		const balance = parseFloat(leaveData.balance || 0);
-		const consumed = granted - balance;
+		//const consumed = granted - balance;
+		const consumed = parseFloat(leaveData.consumed || 0);
+
 		
 		// Determine card color based on balance
 		let cardColor = '#28a745'; // Green for good balance
