@@ -270,7 +270,7 @@ def getTaxExemptionDeclaration(emp_id = None):
 			}
 		]
 
-	
+
 def getTaxProofSubmission(emp_id = None):
 	employee_proof_submission = frappe.get_all(
 		"Employee Tax Exemption Proof Submission",
@@ -303,3 +303,9 @@ def getTaxProofSubmission(emp_id = None):
 				"exemption_amount" : "",
 			}
 		]
+
+@frappe.whitelist()
+def get_server_time():
+	return {
+        "server_time": datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+    }

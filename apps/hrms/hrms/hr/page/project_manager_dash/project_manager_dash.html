@@ -1,52 +1,51 @@
 <div class="container-fluid">
    <div class="row">
        <div class="col-md-3">
-           <div class="sidebar border">
-               <div class="profile text-center">
-                   <div class="image-layer-first">
-                       <img src="{{emp_image}}" alt="Profile Image" class="profile-img">
-                   </div>
-                   <div class="profile-info">
-                       <a href="/app/employee/{{me.emp_id}}">View Profile <i class="fa fa-gear"></i></a>
-                       <h4 class="my-2">{{employee_name}}</h4>
-                       <p>{{designation}}</p>
-                   </div>
-               </div>
-               <div class="sidebar-link">
-                   <div class="parent-link active_test">
-                       <a href="/app/pipal-employee-dashboard">
-                           <i class="fa fa-home mx-2"></i>
-                           Home
-                       </a>
-                   </div>
-                   
-                   <div class="parent-link">
-                       <a href="javascript:void(0);">
-                           <i class="fa fa-calendar mx-2"></i>
-                           Leave
-                           <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
-                       </a>
-                       <div class="child-links">
-                           <a href="/app/leave-application">Leave Application</a>
-                           <a href="/app/query-report/Employee Leave Balance">Leave Balance</a>
-                           <a href="/app/leave-application/view/calendar">Leave Calendar</a>
-                       </div>
-                   </div>
-                   
-                   <div class="parent-link">
-                       <a  href="javascript:void(1);">
-                           <i class="fa fa-check-square mx-2"></i>
-                           Attendance
-                           <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
-                       </a>
-                       <div class="child-links">
-                           <a href="/app/attendance/view/calendar/default">Attendance Calendar</a>
-                           <a href="/app/attendance-request">Attendance Request</a>
-                       </div>
-                   </div>
+            <div class="sidebar border">
+                <div class="profile text-center">
+                    <div class="image-layer-first">
+                        <img src="{{emp_image}}" alt="Profile Image" class="profile-img">
+                    </div>
+                    <div class="profile-info">
+                        <a href="/app/employee/{{me.emp_id}}">View Profile <i class="fa fa-gear"></i></a>
+                        <h4 class="my-2">{{employee_name}}</h4>
+                        <p>{{designation}}</p>
+                    </div>
+                </div>
+                <div class="sidebar-link">
+                    <div class="parent-link active_test">
+                        <a href="/app/pipal-employee-dashboard">
+                            <i class="fa fa-home mx-2"></i>
+                            Home
+                        </a>
+                    </div>
+                    
+                    <div class="parent-link">
+                        <a href="javascript:void(0);">
+                            <i class="fa fa-calendar mx-2"></i>
+                            Leave
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/leave-application">Leave Application</a>
+                            <a href="/app/employee-leave-balance">Leave Balance</a>
+                            <a href="/app/leave-application/view/calendar">Leave Calendar</a>
+                        </div>
+                    </div>
+                    
+                    <div class="parent-link">
+                        <a  href="javascript:void(1);">
+                            <i class="fa fa-check-square mx-2"></i>
+                            Attendance
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/attendance/view/calendar/default">Attendance Calendar</a>
+                            <a href="/app/attendance-request">Attendance Request</a>
+                        </div>
+                    </div>
 
-
-                   <div class="parent-link">
+                    <div class="parent-link">
                         <a  href="javascript:void(2);">
                             <i class="fa fa-tasks mx-2"></i>
                             Projects
@@ -58,32 +57,75 @@
                         </div>
                     </div>
 
-                   <div class="parent-link">
-                       <a  href="javascript:void(3);">
-                           <i class="fa fa-bank mx-2"></i>
-                           Salary
-                           <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
-                       </a>
-                       <div class="child-links">
-                           <a href="/app/salary-slip">Salary Slip</a>
-                           <a href="/app/employee-tax-exemption-declaration">IT Declaration</a>
-                           <a href="/app/employee-tax-exemption-proof-submission">IT Proof Submission</a>
-                       </div>
-                   </div>
-                   
-                   <div class="parent-link">
-                       <a  href="javascript:void(4);">
-                           <i class="fa fa-hourglass-half mx-2"></i>
-                           Timeline
-                           <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
-                       </a>
-                       <div class="child-links">
-                           <a href="/app/employee-separation">Resign</a>
-                       </div>
-                   </div>
-                                      
-               </div>
-           </div>
+                    <div class="parent-link">
+                        <a  href="javascript:void(3);">
+                            <i class="fa fa-bank mx-2"></i>
+                            Salary
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/salary-slip?docstatus=1">Salary Slip</a>
+                            <a href="/app/employee-tax-exemption-declaration">IT Declaration</a>
+                            <a href="/app/employee-tax-exemption-proof-submission">IT Proof Submission</a>
+                            <a href="/app/query-report/Income Tax Deductions">IT Statement</a>
+                            <a href="/app/query-report/Salary Register">YTD Reports</a>
+                        </div>
+                    </div>
+                    
+                    <div class="parent-link">
+                        <a  href="javascript:void(4);">
+                            <i class="fa fa-hourglass-half mx-2"></i>
+                            Timeline
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/employee-separation">Resign</a>
+                        </div>
+                    </div>
+
+                    <div class="parent-link">
+                        <a  href="javascript:void(5);">
+                            <i class="fa fa-file mx-2"></i>
+                            Documents
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/custom-appointment-letter">Appointment Letter</a>
+                            <a href="/app/confirmation-letter">Confirmation Letter</a>
+                            <a href="/app/increment-letter">Increment Letter</a>
+                            <a href="/app/confirmation-letter-with-increment">Confirmation + Increment</a>
+                            <a href="/app/relieving-experience-letter">Relieving & Experience</a>
+                            <a href="/app/nda-letter">NDA Letter</a>
+                            <a href="/app/salary-slip?docstatus=1">Salary Slip</a>
+                            <a href="/app/query-report/Holiday Calendar">Holiday Calendar</a>
+                        </div>
+                    </div>
+
+                    <div class="parent-link">
+                        <a  href="javascript:void(6);">
+                            <i class="fa fa-address-book mx-2"></i>
+                            People
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/query-report/Pipal People">Pipal People</a>
+                        </div>
+                    </div>
+
+                    <div class="parent-link">
+                        <a  href="javascript:void(6);">
+                            <i class="fa fa-info-circle mx-2"></i>
+                            Help
+                            <span class="toggle-icon"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <div class="child-links">
+                            <a href="/app/help-desk">Help Desk</a>
+                        </div>
+                    </div>
+          
+                                       
+                </div>
+            </div>
        </div>
        <div class="col-md-9" >
            <div class="row">
