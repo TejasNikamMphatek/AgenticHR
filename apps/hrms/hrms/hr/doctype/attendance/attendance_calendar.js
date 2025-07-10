@@ -1,5 +1,6 @@
-// Copyright (c) 2018, mPHATEK Systems Pvt. Ltd. and contributors
+// Copyright (c) 2018, mPHATEK Systems Pvt. Ltd.
 // For license information, please see license.txt
+
 frappe.views.calendar["Attendance"] = {
 	field_map: {
 		start: "start",
@@ -24,6 +25,18 @@ frappe.views.calendar["Attendance"] = {
 			left: "prev,next today",
 			center: "title",
 			right: "month",
+		},
+
+		// Disable single click from opening day view
+		dateClick(info) {
+			// Block Frappe default
+			return;
+		},
+
+		// Disable drag-to-select
+		selectable: false,
+		select(info) {
+			return;
 		},
 	},
 	get_events_method: "hrms.hr.doctype.attendance.attendance.get_events",
