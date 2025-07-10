@@ -262,11 +262,30 @@ class Employee(NestedSet):
 
 	def validate_reports_to(self):
 		if self.reports_to == self.name:
-			throw(_("Employee cannot report to himself."))
-		
+			frappe.throw(_("Employee cannot report to himself."))
+
 		if self.reports_to:
-			reports_to_name = frappe.db.get_value("Employee", self.reports_to, "employee_name")
-			self.report_to_name = reports_to_name
+			reports_to = frappe.db.get_value(
+				"Employee",
+				{"name": self.reports_to, "status": "Active"},
+				["employee_name", "user_id"],
+				as_dict=True
+			)
+			print(reports_to.employee_name)
+			if reports_to:
+				self.report_to_name = reports_to.employee_name
+
+				# Assign approvers only if not set
+				if not self.expense_approver:
+					self.expense_approver = reports_to.user_id
+
+				if not self.shift_request_approver:
+					self.shift_request_approver = reports_to.user_id
+
+				if not self.leave_approver:
+					self.leave_approver = reports_to.user_id
+		else:
+			self.report_to_name = ""
 
 	def on_trash(self):
 		self.update_nsm_model()
