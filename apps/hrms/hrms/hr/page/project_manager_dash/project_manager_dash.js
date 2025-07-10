@@ -51,11 +51,12 @@ if(frappe.user.has_role("Projects Manager")){
 						}
 					},
 				});
+				me.updateTime();
 			},
 
 			send_data: function (data) 
 			{	
-				console.log("main data = ", data)
+				// console.log("main data = ", data)
 
 				emp_data = data[0].employee[0];
 				employee_name = emp_data['employee_name'];
@@ -265,17 +266,40 @@ if(frappe.user.has_role("Projects Manager")){
 				greetingMessage = me.displayGreeting(greetingMessage);
 			},
 
-			updateTime: function () {
-				const now = new Date();
-				const hours = now.getHours().toString().padStart(2, '0');
-				const minutes = now.getMinutes().toString().padStart(2, '0');
-				const seconds = now.getSeconds().toString().padStart(2, '0');
-				$('#liveTime').text(`${hours}:${minutes}:${seconds}`);
-			},
+			// updateTime: function () {
+			// 	const now = new Date();
+			// 	const hours = now.getHours().toString().padStart(2, '0');
+			// 	const minutes = now.getMinutes().toString().padStart(2, '0');
+			// 	const seconds = now.getSeconds().toString().padStart(2, '0');
+			// 	$('#liveTime').text(`${hours}:${minutes}:${seconds}`);
+			// },
 
-			startClock: function () {
-				setInterval(this.updateTime, 1000);
-			},
+			// startClock: function () {
+			// 	setInterval(this.updateTime, 1000);
+			// },
+
+
+		updateTime: function () {
+			frappe.call({
+				method: "hrms.hr.page.pipal_employee_dashboard.pipal_employee_dashboard.get_server_time",
+				callback: function (r) {
+					if (r.message && r.message.server_time) {
+						me.startClock(r.message.server_time);
+					}
+				}
+			});
+		},
+
+		startClock: function (server_time) {
+			if(server_time){
+				let currentTime = new Date(server_time); 
+				setInterval(function () {
+					currentTime.setSeconds(currentTime.getSeconds() + 1);
+					$('#liveTime').text(currentTime.toLocaleTimeString());
+				}, 1000);
+			}
+		},
+
 
 			salaryPiechart: function (payslip_val) {
 				try {
