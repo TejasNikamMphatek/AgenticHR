@@ -243,7 +243,7 @@ def get_events(start, end, filters=None):
 	employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user})
 	roles = frappe.get_roles(frappe.session.user)
 
-	if any(role in roles for role in ['Projects Manager', 'Leave Approver']):
+	if any(role in roles for role in ['HR Manager']):
 		employee = ''
 
 	if not employee:
@@ -262,7 +262,7 @@ def get_events(start, end, filters=None):
 				except IndexError as e:
 					frappe.msgprint(f"Error: Filter {i + 1} is incomplete: {filter_item}")
 		else:
-			frappe.msgprint("Invalid filter for Attendance Calendar. Employee Selection is Required.")
+			frappe.msgprint("Invalid filter for Attendance Info. Employee Selection is Required.")
 	
 	if not employee:
 		return events
