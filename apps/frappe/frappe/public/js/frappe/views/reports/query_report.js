@@ -1986,7 +1986,7 @@ frappe.views.QueryReport = class QueryReport extends frappe.views.BaseList {
 		const execution_time_msg = __("Execution Time: {0} sec", [this.execution_time || 0.1]);
 
 		this.$report_footer.append(`<div class="col-md-12">
-			<span">${message}</span><span class="pull-right">${execution_time_msg}</span>
+			<span">${message}</span><span class="pull-right hide">${execution_time_msg}</span>
 		</div>`);
 	}
 
