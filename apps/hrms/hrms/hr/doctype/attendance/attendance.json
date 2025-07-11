@@ -89,7 +89,7 @@
    "no_copy": 1,
    "oldfieldname": "status",
    "oldfieldtype": "Select",
-   "options": "\nPresent\nAbsent\nOn Leave\nHalf Day\nWork From Home",
+   "options": "Present\nAbsent",
    "reqd": 1,
    "search_index": 1
   },
@@ -206,11 +206,12 @@
    "fieldtype": "Column Break"
   }
  ],
+ "hide_toolbar": 1,
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-03 15:26:23.599637",
+ "modified": "2025-07-11 15:19:56.669815",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",

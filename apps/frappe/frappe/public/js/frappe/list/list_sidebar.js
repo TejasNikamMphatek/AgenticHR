@@ -300,12 +300,12 @@ frappe.views.ListSidebar = class ListSidebar {
 				this.insights_banner.remove();
 			}
 
-			const message = __("Get more insights with");
-			const link = "https://frappe.io/s/insights";
-			const cta = __("Frappe Insights");
+			const message = __("");
+			const link = "";
+			const cta = __("");
 
 			this.insights_banner = $(`
-				<div style="position: relative;">
+				<div style="position: relative; display: none;">
 					<div class="pr-3">
 						${message} <a href="${link}" target="_blank" style="color: var(--text-color)">${cta} &rarr; </a>
 					</div>
