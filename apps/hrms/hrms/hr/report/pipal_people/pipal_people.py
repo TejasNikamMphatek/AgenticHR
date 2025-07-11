@@ -58,7 +58,11 @@ def get_conditions(filters):
 	values = []
 
 	if filters.get("employee"):
-		conditions += " AND employee = %s"
-		values.append(filters["employee"])
+		conditions += " AND employee LIKE %s"
+		values.append(f"%{filters['employee']}%")
+
+	if filters.get("employee_name"):
+		conditions += " AND employee_name LIKE %s"
+		values.append(f"%{filters['employee_name']}%")
 
 	return conditions, values
