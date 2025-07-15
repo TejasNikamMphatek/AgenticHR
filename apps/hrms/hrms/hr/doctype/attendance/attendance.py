@@ -15,6 +15,8 @@ from frappe.utils import (
 	get_link_to_form,
 	getdate,
 	nowdate,
+	get_first_day,
+	get_last_day
 )
 
 from hrms.hr.doctype.shift_assignment.shift_assignment import has_overlapping_timings
@@ -23,6 +25,7 @@ from hrms.hr.utils import (
 	get_holidays_for_employee,
 	validate_active_employee,
 )
+from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
 
 
 class DuplicateAttendanceError(frappe.ValidationError):
@@ -44,6 +47,9 @@ class Attendance(Document):
 		self.validate_overlapping_shift_attendance()
 		self.validate_employee_status()
 		self.check_leave_record()
+		
+	def before_save(self):
+		self.validate_holiday_date_attendance()
 
 	def on_cancel(self):
 		self.unlink_attendance_from_checkins()
@@ -233,6 +239,40 @@ class Attendance(Document):
 				is_minimizable=True,
 				wide=True,
 			)
+
+
+	def validate_holiday_date_attendance(self):
+		if not self.attendance_date or not self.employee or self.status not in ["Present", "Absent", "Half Day"]:
+			return
+		
+		applicable_holiday_list = get_holiday_list_for_employee(self.employee)
+		if not applicable_holiday_list:
+			return
+
+		
+		from_date = self.attendance_date
+		to_date = self.attendance_date
+
+		holiday_list = frappe.db.sql(
+			"""
+			SELECT name, holiday_date, weekly_off, description
+			FROM `tabHoliday`
+			WHERE parent = %s AND holiday_date BETWEEN %s AND %s
+			""",
+			(applicable_holiday_list, from_date, to_date),
+			as_dict=True
+		)
+		
+		for holiday in holiday_list:
+			
+			holiday_date = getdate(holiday.holiday_date)
+			attendance_date = getdate(self.attendance_date)
+			if holiday_date == attendance_date:
+				frappe.throw(
+					_("Attendance date <b> {0} </b> is a holiday : <b> {1} </b>")
+					.format(self.attendance_date, holiday.description or "Holiday")
+				)
+
 
 
 @frappe.whitelist()
