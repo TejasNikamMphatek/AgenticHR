@@ -1307,7 +1307,7 @@ def add_department_leaves(events, start, end, employee, company):
 
 
 def add_leaves(events, start, end, filters=None, employee=None):
-	print("&&&&&&&",employee)
+	# print("&&&&&&&",employee)
 	if not filters:
 		filters = [["employee", "=", employee]]
 	filters.extend(
