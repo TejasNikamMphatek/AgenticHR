@@ -3,6 +3,7 @@
  "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2013-01-10 16:34:13",
+ "default_view": "List",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
@@ -88,7 +89,7 @@
    "no_copy": 1,
    "oldfieldname": "status",
    "oldfieldtype": "Select",
-   "options": "Present\nAbsent",
+   "options": "Present\nAbsent\nHalf Day",
    "reqd": 1,
    "search_index": 1
   },
@@ -205,11 +206,12 @@
    "fieldtype": "Column Break"
   }
  ],
+ "hide_toolbar": 1,
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-07-11 16:31:15.293530",
+ "modified": "2025-07-15 14:38:53.253620",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
