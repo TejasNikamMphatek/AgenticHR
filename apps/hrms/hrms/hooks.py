@@ -48,6 +48,9 @@ doctype_js = {
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
+doctype_calendar_js = {
+    "Attendance": "hr/hr/doctype/attendance/attendance_calendar.js"
+}
 
 # Home Pages
 # ----------
@@ -60,7 +63,8 @@ doctype_js = {
 # 	"Role": "home_page"
 # }
 
-calendars = ["Leave Application"]
+#calendars = ["Leave Application"]
+calendars = ["Leave Application", "Attendance"]
 
 # Generators
 # ----------
