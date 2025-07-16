@@ -15,8 +15,8 @@ from frappe.utils import (
 	get_link_to_form,
 	getdate,
 	nowdate,
+	format_time
 	get_first_day,
-	get_last_day
 )
 
 from hrms.hr.doctype.shift_assignment.shift_assignment import has_overlapping_timings
@@ -26,6 +26,10 @@ from hrms.hr.utils import (
 	validate_active_employee,
 )
 from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
+
+from datetime import datetime
+from frappe.desk.reportview import get_filters_cond
+from hrms.hr.doctype.shift_assignment.shift_assignment import get_employee_shift
 
 
 class DuplicateAttendanceError(frappe.ValidationError):
@@ -486,3 +490,69 @@ def get_unmarked_days(employee, from_date, to_date, exclude_holidays=0):
 		from_date = add_days(from_date, 1)
 
 	return unmarked_days
+
+
+
+@frappe.whitelist()
+def get_attendance_summary_for_date(date=None, filters=None):
+	
+	user = frappe.session.user
+	roles = frappe.get_roles(user)
+	employee = frappe.db.get_value("Employee", {"user_id": user})
+
+	if any(role in roles for role in ['Projects Manager', 'System Manager']):
+		try:
+			filters = json.loads(filters)
+			for filter_item in filters:
+				if (
+					len(filter_item) == 4 and
+					filter_item[0] == "Attendance" and
+					filter_item[1] == "employee"
+				):
+					employee = filter_item[3]  # override employee from filter
+		except Exception as e:
+			frappe.msgprint(f"Error parsing filters: {e}")
+			return
+
+	date = getdate(date)
+	checkins = frappe.get_all(
+		"Employee Checkin",
+		fields=["time", "log_type"],
+		filters={
+			"employee": employee,
+			"time": ["between", [f"{date} 00:00:00", f"{date} 23:59:59"]],
+		},
+		order_by="time asc"
+	)
+
+	swipes = [format_time(c.time) for c in checkins]
+	sessions = []
+	total_hours = 0
+
+	for i in range(0, len(checkins) - 1, 2):
+		in_time = checkins[i].time
+		out_time = checkins[i + 1].time
+		hours = (get_datetime(out_time) - get_datetime(in_time)).total_seconds() / 3600.0
+		sessions.append({
+			"in": format_time(in_time),
+			"out": format_time(out_time),
+			"hours": round(hours, 2)
+		})
+		total_hours += hours
+
+	shift_info = get_employee_shift(employee, get_datetime(f"{date} 00:00:00")) or {}
+
+	return {
+		"date": date,
+		"employee": employee,
+		"swipes": swipes,
+		"sessions": sessions,
+		"total_swipes": len(swipes),
+		"total_hours": round(total_hours, 2),
+		"average_hours": round(total_hours / len(sessions), 2) if sessions else 0,
+		"shift": {
+			"type": shift_info.get("shift_type", "Not Assigned"),
+			"timing": f"{shift_info.get('start_time')} - {shift_info.get('end_time')}"
+				if shift_info.get("start_time") else "N/A"
+		}
+	}
