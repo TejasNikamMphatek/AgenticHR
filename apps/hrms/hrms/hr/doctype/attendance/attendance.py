@@ -16,6 +16,7 @@ from frappe.utils import (
 	getdate,
 	nowdate,
 	format_time
+	get_first_day,
 )
 
 from hrms.hr.doctype.shift_assignment.shift_assignment import has_overlapping_timings
@@ -24,6 +25,7 @@ from hrms.hr.utils import (
 	get_holidays_for_employee,
 	validate_active_employee,
 )
+from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
 
 from datetime import datetime
 from frappe.desk.reportview import get_filters_cond
@@ -42,13 +44,16 @@ class Attendance(Document):
 	def validate(self):
 		from erpnext.controllers.status_updater import validate_status
 
-		validate_status(self.status, ["Present", "Absent", "On Leave", "Half Day", "Work From Home"])
+		validate_status(self.status, ["Present", "Absent", "On Leave", "Half Day"])
 		validate_active_employee(self.employee)
 		self.validate_attendance_date()
 		self.validate_duplicate_record()
 		self.validate_overlapping_shift_attendance()
 		self.validate_employee_status()
 		self.check_leave_record()
+		
+	def before_save(self):
+		self.validate_holiday_date_attendance()
 
 	def on_cancel(self):
 		self.unlink_attendance_from_checkins()
@@ -240,6 +245,40 @@ class Attendance(Document):
 			)
 
 
+	def validate_holiday_date_attendance(self):
+		if not self.attendance_date or not self.employee or self.status not in ["Present", "Absent", "Half Day"]:
+			return
+		
+		applicable_holiday_list = get_holiday_list_for_employee(self.employee)
+		if not applicable_holiday_list:
+			return
+
+		
+		from_date = self.attendance_date
+		to_date = self.attendance_date
+
+		holiday_list = frappe.db.sql(
+			"""
+			SELECT name, holiday_date, weekly_off, description
+			FROM `tabHoliday`
+			WHERE parent = %s AND holiday_date BETWEEN %s AND %s
+			""",
+			(applicable_holiday_list, from_date, to_date),
+			as_dict=True
+		)
+		
+		for holiday in holiday_list:
+			
+			holiday_date = getdate(holiday.holiday_date)
+			attendance_date = getdate(self.attendance_date)
+			if holiday_date == attendance_date:
+				frappe.throw(
+					_("Attendance date <b> {0} </b> is a holiday : <b> {1} </b>")
+					.format(self.attendance_date, holiday.description or "Holiday")
+				)
+
+
+
 @frappe.whitelist()
 def get_events(start, end, filters=None):
 	from frappe.desk.reportview import get_filters_cond
@@ -248,7 +287,7 @@ def get_events(start, end, filters=None):
 	employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user})
 	roles = frappe.get_roles(frappe.session.user)
 
-	if any(role in roles for role in ['Projects Manager', 'Leave Approver']):
+	if any(role in roles for role in ['HR Manager']):
 		employee = ''
 
 	if not employee:
@@ -267,7 +306,7 @@ def get_events(start, end, filters=None):
 				except IndexError as e:
 					frappe.msgprint(f"Error: Filter {i + 1} is incomplete: {filter_item}")
 		else:
-			frappe.msgprint("Invalid filter for Attendance Calendar. Employee Selection is Required.")
+			frappe.msgprint("Invalid filter for Attendance Info. Employee Selection is Required.")
 	
 	if not employee:
 		return events
