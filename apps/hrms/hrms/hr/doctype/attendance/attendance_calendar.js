@@ -71,36 +71,38 @@ if (isManager && employee_id) {
                                 return;
                             }
 
-                            let dialogFields = [
-                                {
-                                    fieldtype: "HTML",
-                                    label: __("Summary"),
-                                    options: `
-                                        <div>
-                                            <p><strong>Date:</strong> ${data.date || "N/A"}</p>
-                                            ${isManager ? `<p><strong>Employee:</strong> ${data.employee_name || "N/A"}</p>` : ""}
-                                            <p><strong>Total Hours:</strong> ${data.total_hours || 0}</p>
-                                            <p><strong>Swipes:</strong> ${data.swipes?.length ? data.swipes.join(", ") : "None"}</p>
-                                            <p><strong>Sessions:</strong></p>
-                                            <ul>
-                                                ${
-                                                    data.sessions?.length
-                                                        ? data.sessions
-                                                              .map(
-                                                                  (session) =>
-                                                                      `<li>IN: ${session.in}, OUT: ${session.out}, Hours: ${session.hours}</li>`
-                                                              )
-                                                              .join("")
-                                                        : "<li>No sessions recorded</li>"
-                                                }
-                                            </ul>
-                                        </div>
-                                    `,
-                                },
-                            ];
+                          let dialogFields = [
+    {
+        fieldtype: "HTML",
+        label: __("Summary"),
+        options: `
+            <div>
+                <!-- <p><strong>Date:</strong> ${data.date || "N/A"}</p> -->
+                ${isManager ? `<p><strong>Employee:</strong> ${data.employee_name || "N/A"}</p>` : ""}
+                <p><strong>Shift:</strong> ${data.shift?.type || "N/A"} (${data.shift?.timing || "N/A"})</p>
+                <p><strong>Total Hours:</strong> ${data.total_hours || 0} hrs</p>
+                <!--<p><strong>Swipes:</strong> ${data.swipes?.length ? data.swipes.join(", ") : "None"}</p>-->
+                <p><strong>Sessions:</strong></p>
+                <ul>
+                    ${
+                        data.sessions?.length
+                            ? data.sessions
+                                  .map(
+                                      (session) =>
+                                            `<li class='text-success'>IN: <span class='text-dark'>${session.in}</span></li>
+                                            <li class='text-danger'>OUT: <span class='text-dark'>${session.out}</span> </li>`
+                                  )
+                                  .join("")
+                            : "<li>No sessions recorded</li>"
+                    }
+                </ul>
+            </div>
+        `,
+    },
+];
 
                             let dialog = new frappe.ui.Dialog({
-                                title: __("Attendance Details for {0}", [
+                                title: __("<b>Attendance Details for {0} </b>", [
                                     event.start.format("MMMM D, YYYY"),
                                 ]),
                                 fields: dialogFields,

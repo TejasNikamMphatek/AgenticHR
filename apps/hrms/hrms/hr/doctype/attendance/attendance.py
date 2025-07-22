@@ -505,7 +505,29 @@ def get_attendance_summary_for_date(date=None, employee=None, is_manager=False, 
         })
         total_hours += hours
 
-    shift_info = get_employee_shift(employee, get_datetime(f"{date} 00:00:00")) or {}
+    shift_info = get_employee_shift(employee, get_datetime(f"{date} 12:00:00")) or {}
+    if not shift_info:
+        default_shift = frappe.db.get_value("Employee", employee, "default_shift")
+        if default_shift:
+            try:
+                shift_doc = frappe.get_doc("Shift Type", default_shift)
+                shift_info = {
+                "shift_type": default_shift,
+                "start_time": shift_doc.start_time,
+                "end_time": shift_doc.end_time
+            }
+            # Optional: log for debugging
+                frappe.log_error(f"Default shift used for {employee} on {date}", "Shift Debug")
+            except Exception as e:
+                frappe.log_error(f"Error loading default shift for {employee} on {date}: {e}", "Shift Debug")
+    shift_type = shift_info.get("shift_type") or "Not Assigned"
+    # print(f"shift_type:{shift_type}")
+    start = shift_info.get("start_time")
+    # print(f"start:{start}")
+    
+    end = shift_info.get("end_time")
+    timing = f"{start} - {end}" if start and end else "N/A"
+
     employee_name = frappe.db.get_value("Employee", employee, "employee_name")
 
     return {
@@ -519,7 +541,7 @@ def get_attendance_summary_for_date(date=None, employee=None, is_manager=False, 
         "average_hours": round(total_hours / len(sessions), 2) if sessions else 0,
         "shift": {
             "type": shift_info.get("shift_type", "Not Assigned"),
-            "timing": f"{shift_info.get('start_time')} - {shift_info.get('end_time')}"
+            "timing": f"{shift_info.get('start_time')} <b>to</b> {shift_info.get('end_time')}"
                 if shift_info.get("start_time") else "N/A"
         }
     }
