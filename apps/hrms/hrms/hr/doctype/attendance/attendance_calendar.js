@@ -36,22 +36,19 @@ frappe.views.calendar["Attendance"] = {
                 method: "hrms.hr.doctype.attendance.attendance.get_user_roles",
                 callback: function (r) {
                     let roles = r.message;
-                    //console.log("User Roles:", roles);
-
                     let isManager = roles.some(role =>
                         ['HR Manager', 'Projects Manager', 'System Manager'].includes(role)
                     );
                     let isEmployee = roles.includes('Employee');
 
-                   let employee_id = event.employee || event.employee_name || null;
-let employeeFilters = null;
-//console.log("Employee ID passed to backend:", employee_id);
+                    let employee_id = event.employee || event.employee_name || null;
+                    let employeeFilters = null;
 
-if (isManager && employee_id) {
-    employeeFilters = JSON.stringify([
-        ["Attendance", "employee", "=", employee_id]
-    ]);
-}
+                    if (isManager && employee_id) {
+                        employeeFilters = JSON.stringify([
+                            ["Attendance", "employee", "=", employee_id]
+                        ]);
+                    }
 
                     frappe.call({
                         method: "hrms.hr.doctype.attendance.attendance.get_attendance_summary_for_date",
@@ -64,42 +61,48 @@ if (isManager && employee_id) {
                         freeze_message: __("Fetching attendance details..."),
                         callback: function (r) {
                             let data = r.message;
-                            // console.log("Attendance Summary:", data);
 
                             if (!data || (!data.swipes?.length && !data.sessions?.length && !data.employee)) {
                                 frappe.msgprint(__("No attendance data found for this date."));
                                 return;
                             }
 
-                          let dialogFields = [
-    {
-        fieldtype: "HTML",
-        label: __("Summary"),
-        options: `
-            <div>
-                <!-- <p><strong>Date:</strong> ${data.date || "N/A"}</p> -->
-                ${isManager ? `<p><strong>Employee:</strong> ${data.employee_name || "N/A"}</p>` : ""}
-                <p><strong>Shift:</strong> ${data.shift?.type || "N/A"} (${data.shift?.timing || "N/A"})</p>
-                <p><strong>Total Hours:</strong> ${data.total_hours || 0} hrs</p>
-                <!--<p><strong>Swipes:</strong> ${data.swipes?.length ? data.swipes.join(", ") : "None"}</p>-->
-                <p><strong>Sessions:</strong></p>
-                <ul>
-                    ${
-                        data.sessions?.length
-                            ? data.sessions
-                                  .map(
-                                      (session) =>
-                                            `<li class='text-success'>IN: <span class='text-dark'>${session.in}</span></li>
-                                            <li class='text-danger'>OUT: <span class='text-dark'>${session.out}</span> </li>`
-                                  )
-                                  .join("")
-                            : "<li>No sessions recorded</li>"
-                    }
-                </ul>
-            </div>
-        `,
-    },
-];
+                            // ✅ Build shift line dynamically
+                            let shift_text = "";
+                            if (typeof data.shift?.type === "string") {
+                                shift_text = `Shift: ${data.shift.type}`;
+                                if (typeof data.shift.timing === "string" && data.shift.timing.trim()) {
+                                    shift_text += ` (${data.shift.timing})`;
+                                }
+                            }
+
+                            let dialogFields = [
+                                {
+                                    fieldtype: "HTML",
+                                    label: __("Summary"),
+                                    options: `
+                                        <div>
+                                            ${isManager ? `<p><strong>Employee:</strong> ${data.employee_name || "N/A"}</p>` : ""}
+                                            ${shift_text ? `<p><strong>${shift_text}</strong></p>` : ""}
+                                            <p><strong>Total Hours:</strong> ${data.total_hours || 0} hrs</p>
+                                            <p><strong>Sessions:</strong></p>
+                                            <ul>
+                                                ${
+                                                    data.sessions?.length
+                                                        ? data.sessions
+                                                              .map(
+                                                                  (session) =>
+                                                                      `<li class='text-success'>IN: <span class='text-dark'>${session.in}</span></li>
+                                                                       <li class='text-danger'>OUT: <span class='text-dark'>${session.out}</span></li>`
+                                                              )
+                                                              .join("")
+                                                        : "<li>No sessions recorded</li>"
+                                                }
+                                            </ul>
+                                        </div>
+                                    `,
+                                },
+                            ];
 
                             let dialog = new frappe.ui.Dialog({
                                 title: __("<b>Attendance Details for {0} </b>", [
@@ -126,8 +129,6 @@ if (isManager && employee_id) {
     get_events_method: "hrms.hr.doctype.attendance.attendance.get_events",
 
     refresh: function (calendar_view) {
-        // console.log("🔁 Calendar refreshed");
-
         if ($(".attendance-request-btn").length === 0) {
             setTimeout(() => {
                 let button_area = $(".calendar-actions");
@@ -141,9 +142,6 @@ if (isManager && employee_id) {
                         .on("click", function () {
                             frappe.new_doc("Attendance Request");
                         });
-                    // console.log("✅ Attendance Request button added");
-                } else {
-                    // console.log("⚠️ Button area not found");
                 }
             }, 300);
         }

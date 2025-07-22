@@ -526,22 +526,22 @@ def get_attendance_summary_for_date(date=None, employee=None, is_manager=False, 
     # print(f"start:{start}")
     
     end = shift_info.get("end_time")
-    timing = f"{start} - {end}" if start and end else "N/A"
+    timing = f"{start} - {end}" if start and end else ""
+
 
     employee_name = frappe.db.get_value("Employee", employee, "employee_name")
 
     return {
-        "date": date,
-        "employee": employee,
-        "employee_name": employee_name,
-        "swipes": swipes,
-        "sessions": sessions,
-        "total_swipes": len(swipes),
-        "total_hours": round(total_hours, 2),
-        "average_hours": round(total_hours / len(sessions), 2) if sessions else 0,
-        "shift": {
-            "type": shift_info.get("shift_type", "Not Assigned"),
-            "timing": f"{shift_info.get('start_time')} <b>to</b> {shift_info.get('end_time')}"
-                if shift_info.get("start_time") else "N/A"
-        }
+    "date": date,
+    "employee": employee,
+    "employee_name": employee_name,
+    "swipes": swipes,
+    "sessions": sessions,
+    "total_swipes": len(swipes),
+    "total_hours": round(total_hours, 2),
+    "average_hours": round(total_hours / len(sessions), 2) if sessions else 0,
+    "shift": {
+        "type": shift_type,
+        "timing": f"{start} - {end}" if start and end else "",
     }
+}
