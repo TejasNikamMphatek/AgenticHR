@@ -27,7 +27,7 @@ class EmployeeSeparation(EmployeeBoardingController):
 		if self.employee:
 			existing_resignation = frappe.get_all(
 				"Employee Separation",
-				filters={"employee": self.employee, "docstatus": ["!=", 2]},
+				filters={"employee": self.employee, "docstatus": ["!=", 2], "name":["!=",self.name]},
 				fields=["approved_lwd", "final_decision_status", "resign_status", "docstatus"],
 				order_by="submission_date desc",
 				limit=1

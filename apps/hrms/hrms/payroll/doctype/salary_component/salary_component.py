@@ -58,6 +58,19 @@ class SalaryComponent(Document):
 				indicator="orange",
 			)
 
+		check_dup_list = []
+		if self.accounts:
+			for acc in self.accounts:
+				current_entry = {acc.company: acc.account}
+				if current_entry in check_dup_list:
+					frappe.throw(
+						title="Duplicate Entry",
+						msg="Duplicate Entry Not Allowed"
+					)
+				check_dup_list.append(current_entry)
+
+
+
 	@frappe.whitelist()
 	def get_structures_to_be_updated(self):
 		SalaryStructure = frappe.qb.DocType("Salary Structure")
