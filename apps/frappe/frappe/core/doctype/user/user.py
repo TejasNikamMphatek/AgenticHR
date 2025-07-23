@@ -30,6 +30,7 @@ from frappe.utils import (
 	has_gravatar,
 	now_datetime,
 	today,
+	getdate
 )
 from frappe.utils.data import sha256_hash
 from frappe.utils.deprecations import deprecated
@@ -172,12 +173,27 @@ class User(Document):
 		self.validate_allowed_modules()
 		self.validate_user_image()
 		self.set_time_zone()
+		self.validate_age()
 
 		if self.language == "Loading...":
 			self.language = None
 
 		if (self.name not in ["Administrator", "Guest"]) and (not self.get_social_login_userid("frappe")):
 			self.set_social_login_userid("frappe", frappe.generate_hash(length=39))
+
+	def validate_age(self):
+		current_date = getdate(today())
+		date_of_joining = getdate(self.date_of_joining)
+		date_of_birth = getdate(self.birth_date)
+		age = current_date.year - date_of_birth.year - ((current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day))
+
+		# if current_date < date_of_joining:
+		# 	frappe.throw(_("Cannot add the future Date. Please check the Date: {0}").format(self.date_of_joining), title=_("Invalid Date"))
+		
+		if age < 18:
+			frappe.throw(_("Employee must be at least 18 years old. Please check the Date of Birth: {0}").format(self.birth_date), title=_("Invalid Age"))
+
+
 
 	def populate_role_profile_roles(self):
 		if self.role_profile_name:
