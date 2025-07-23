@@ -23,17 +23,20 @@ frappe.views.ListSidebar = class ListSidebar {
 			// Get the initial URL parts
 			let currentUrl = new URL(window.location.href);
 			let currentPath = currentUrl.pathname;
-		
-			setInterval(() => {
-				let newUrl = new URL(window.location.href);
-				let newPath = newUrl.pathname;
-		
-				if (currentPath !== newPath) {
-					location.reload(); // Reload the page
-				}
-				$('select[data-fieldname = "status"]').closest('div').find('button').remove()
-				$('select[data-fieldname = "status"]').closest('div').removeClass('dropdown bootstrap-select input-with-feedback form-control input-xs ellipsis')
-			}, 1000); // Check every 700ms
+			
+			setTimeout(() => {
+				$('select[data-fieldname="type"]').each(function () {
+					const $select = $(this);
+					const $wrapperDiv = $select.closest('div');
+
+					$wrapperDiv.removeAttr('class');
+
+					$wrapperDiv.find('button.btn.dropdown-toggle').remove();
+
+					$wrapperDiv.find('.dropdown-menu').remove();
+					
+				});
+			}, 100);
 		}
 		
 		
