@@ -30,6 +30,38 @@ frappe.views.calendar["Attendance"] = {
         },
         selectable: false,
 
+         // Initialize legend on calendar render
+        viewRender: function (view, element) {
+            let legendHtml = `
+                <div id="calendar-legend" style="margin: 10px; padding: 10px; background: #f9f9f9; border-radius: 5px;">
+                    <h6>Legend</h6>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                        <div>
+                            <span style="display: inline-block; width: 20px; height: 20px; background: #6c757d; margin-right: 5px;"></span>
+                            Holiday
+                        </div>
+                        <div>
+                            <span style="display: inline-block; width: 20px; height: 20px; background:red; margin-right: 5px;"></span>
+                            Absent / On Leave
+                        </div>
+                        <div>
+                            <span style="display: inline-block; width: 20px; height: 20px; background: #BD3E0C; margin-right: 5px;"></span>
+                            Half Day
+                        </div>
+                        <div>
+                            <span style="display: inline-block; width: 20px; height: 20px; background: #28a745; margin-right: 5px;"></span>
+                            Present
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Append legend to the bottom of the calendar container
+            if (!$("#calendar-legend").length) {
+                $(".fc-view-container").after(legendHtml);
+            }
+        },
+
         eventClick: function (event, jsEvent, view) {
             // Fetch user roles
             frappe.call({
