@@ -174,7 +174,7 @@ class ShiftType(Document):
             filters={
                 "skip_auto_attendance": 0,
                 "attendance": ("is", "not set"),
-                "time": ["between", [f"{processing_date} 00:00:00", f"{processing_date} 23:59:59"]],
+                "time": ["between", ["shift_actual_start", "shift_actual_end"]],
                 "shift": self.name,
             },
             order_by="employee,time",
