@@ -712,15 +712,12 @@ class SalarySlip(TransactionBase):
 			self.start_date,
 			self.end_date,
 		)
-		# print("leaves", leaves)
-		print("daily_wages_fraction_for_half_day",daily_wages_fraction_for_half_day)
+		
 		for d in working_days_list:
 			if self.relieving_date and d > self.relieving_date:
 				continue
 
 			leave = leaves.get(d)
-			print("date--",d)
-			print("leave--",leave)
 
 			if not leave:
 				continue
