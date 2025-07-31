@@ -360,16 +360,17 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 			});
 		}
 
-		this.columns.push({
-			type: "Tag",
-		});
+		// Second column: status
+		if (get_df("status")) {
+			this.columns.push({
+				type: "Field",
+				df: get_df("status")
+			});
+		}
 
 		// 2nd column: Status indicator
 		if (frappe.has_indicator(this.doctype)) {
-			// indicator
-			this.columns.push({
-				type: "Status",
-			});
+			// this.columns.push({ type: "Status" });
 		}
 
 		const fields_in_list_view = this.get_fields_in_list_view();
@@ -409,19 +410,20 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 
 		this.columns = this.columns.slice(0, this.list_view_settings.total_fields || total_fields);
 
-		if (
-			!this.settings.hide_name_column &&
-			this.meta.title_field &&
-			this.meta.title_field !== "name"
-		) {
-			this.columns.push({
-				type: "Field",
-				df: {
-					label: __("ID"),
-					fieldname: "name",
-				},
-			});
-		}
+		// // Here I am Hiding the ID /Name of doc. 
+		// if (
+		// 	!this.settings.hide_name_column &&
+		// 	this.meta.title_field &&
+		// 	this.meta.title_field !== "name"
+		// ) {
+		// 	this.columns.push({
+		// 		type: "Field",
+		// 		df: {
+		// 			label: __("ID"),
+		// 			fieldname: "name",
+		// 		},
+		// 	});
+		// }
 	}
 
 	reorder_listview_fields() {
@@ -438,7 +440,7 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 				let field = fields[fld];
 				let column = this.columns[col];
 
-				if (column.type == "Status" && field.fieldname == "status_field") {
+				if (column.type === "Status" && field.fieldname == "status_field") {
 					fields_order.push(column);
 					break;
 				} else if (column.type == "Field" && field.fieldname === column.df.fieldname) {
