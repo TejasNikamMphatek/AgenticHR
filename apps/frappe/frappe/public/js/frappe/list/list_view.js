@@ -410,7 +410,7 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 
 		this.columns = this.columns.slice(0, this.list_view_settings.total_fields || total_fields);
 
-		// // Here I am Hiding the ID /Name of doc. 
+		// // Here I am Hiding the ID /Name of doc............... 
 		// if (
 		// 	!this.settings.hide_name_column &&
 		// 	this.meta.title_field &&
