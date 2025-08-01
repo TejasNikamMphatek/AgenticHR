@@ -2,9 +2,19 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Full and Final Statement", {
-	refresh: function (frm) {
+refresh: function (frm) {
+		// 🔍 Filter "Hold Release Salary" field by selected employee and released flag
+		frm.set_query("hold_release_salary", function () {
+			return {
+				filters: {
+					employee: frm.doc.employee,
+					salary_release: 1
+				}
+			};
+		});
+          
 		frm.events.set_queries(frm, "payables");
-		frm.events.set_queries(frm, "receivables");
+		frm.events.set_queries(frm, "receivables");	
 
 		if (frm.doc.docstatus == 1 && frm.doc.status == "Unpaid") {
 			frm.add_custom_button(__("Create Journal Entry"), function () {
