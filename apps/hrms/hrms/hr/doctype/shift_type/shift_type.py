@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import itertools
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 
 import frappe
 from frappe.model.document import Document
@@ -19,6 +19,10 @@ from hrms.hr.doctype.employee_checkin.employee_checkin import (
 from hrms.hr.doctype.shift_assignment.shift_assignment import get_employee_shift, get_shift_details
 from hrms.utils import get_date_range
 from hrms.utils.holiday_list import get_holiday_dates_between
+
+from hrms.hr.doctype.shift_assignment.shift_assignment import (
+	get_actual_start_end_datetime_of_shift,
+)
 
 EMPLOYEE_CHUNK_SIZE = 50
 
@@ -102,23 +106,24 @@ class ShiftType(Document):
         )
 
     @frappe.whitelist()
-    def process_auto_attendance_for_date(self, processing_date):
-        """Process attendance for a specific date."""
+    def process_auto_attendance_for_date(self, processing_date, shift):
+        """Process attendance for a specific shift and date."""
+
         if not cint(self.enable_auto_attendance):
-            # print(f"Auto attendance disabled for shift: {self.name}", "Auto Attendance Debug")
             return
 
-        logs = self.get_employee_checkins_for_date(processing_date)
-        # print(f"Found {len(logs)} check-in logs for shift {self.name} on {processing_date}", "Auto Attendance Debug")
+        logs = self.get_employee_checkins_for_date(processing_date, shift)
 
         for key, group in itertools.groupby(logs, key=lambda x: (x["employee"], x["shift_start"])):
             single_shift_logs = list(group)
             attendance_date = key[1].date()
             employee = key[0]
 
+            # print(f"Processing attendance for employee: {employee} on {attendance_date}")
+
             if not self.should_mark_attendance(employee, attendance_date):
-                # print(f"Skipping attendance for {employee} on {attendance_date} (holiday or invalid)", "Auto Attendance Debug")
                 continue
+
             (
                 attendance_status,
                 working_hours,
@@ -127,11 +132,6 @@ class ShiftType(Document):
                 in_time,
                 out_time,
             ) = self.get_attendance(single_shift_logs)
-
-            # print(
-            #     f"Marking attendance for {employee} on {attendance_date}: Status={attendance_status}, Hours={working_hours}",
-            #     "Auto Attendance Debug"
-            # )
 
             mark_attendance_and_link_log(
                 single_shift_logs,
@@ -145,56 +145,76 @@ class ShiftType(Document):
                 self.name,
             )
 
-        # Commit after processing check-in logs
         frappe.db.commit()
 
-        # Mark absent for employees with no check-ins
         assigned_employees = self.get_assigned_employees(processing_date, True)
         for employee in assigned_employees:
             self.mark_absent_for_date(employee, processing_date)
 
         frappe.db.commit()
 
-   
-    def get_employee_checkins_for_date(self, processing_date):
+    def get_employee_checkins_for_date(self, processing_date, shift):
         try:
-            end_datetime = add_days(processing_date, 1)
-            end_datetime = f"{end_datetime} 04:00:00"
-            checkins = frappe.get_all(
-            "Employee Checkin",
-            fields=[
-                "name",
-                "employee",
-                "log_type",
-                "time",
-                "shift",
-                "shift_start",
-                "shift_end",
-                "shift_actual_start",
-                "shift_actual_end",
-                "device_id",
-            ],
-            filters={
-                "skip_auto_attendance": 0,
-                "attendance": ("is", "not set"),
-                "time": ["between", [f"{processing_date} 00:00:00", end_datetime]],
-                "shift": self.name,
-            },
-            order_by="employee,time",
-        )
-            frappe.log_error(f"Retrieved {len(checkins)} check-in logs for shift {self.name} on {processing_date}", "Checkin Debug")
-            for checkin in checkins:
-                frappe.log_error(
-                f"Checkin: {checkin.name}, Employee: {checkin.employee}, Time: {checkin.time}, "
-                f"Shift: {checkin.shift}, Shift Actual Start: {checkin.shift_actual_start}, "
-                f"Shift Actual End: {checkin.shift_actual_end}",
-                "Checkin Debug"
+            shift_details_list = frappe.get_all(
+                "Shift Type",
+                fields=[
+                    "start_time",
+                    "end_time",
+                    "begin_check_in_before_shift_start_time",
+                    "allow_check_out_after_shift_end_time",
+                ],
+                filters={"name": shift}
             )
+
+            if not shift_details_list:
+                # print(f"No shift details found for: {shift}")
+                return []
+
+            shift_details = shift_details_list[0]
+
+            # Extract shift times as timedelta
+            shift_start = shift_details["start_time"]               # timedelta
+            shift_end = shift_details["end_time"]                   # timedelta
+            buffer_before = shift_details["begin_check_in_before_shift_start_time"] or 0
+            buffer_after = shift_details["allow_check_out_after_shift_end_time"] or 0
+
+            # Convert to full datetime range
+            actual_shift_start = datetime.combine(processing_date, time(0)) + shift_start - timedelta(minutes=buffer_before)
+            actual_shift_end = datetime.combine(processing_date, time(0)) + shift_end + timedelta(minutes=buffer_after)
+
+            # print(f"Shift: {shift}, Actual Shift Time: {actual_shift_start} to {actual_shift_end}")
+
+            # Get check-ins in the time range
+            checkins = frappe.get_all(
+                "Employee Checkin",
+                fields=[
+                    "name",
+                    "employee",
+                    "log_type",
+                    "time",
+                    "shift",
+                    "shift_start",
+                    "shift_end",
+                    "shift_actual_start",
+                    "shift_actual_end",
+                    "device_id",
+                ],
+                filters={
+                    "skip_auto_attendance": 0,
+                    "attendance": ("is", "not set"),
+                    "time": ["between", [actual_shift_start, actual_shift_end]],
+                    "shift": self.name,
+                },
+                order_by="employee, time",
+            )
+
             return checkins
+
         except Exception as e:
-            frappe.log_error(f"Error retrieving check-ins for shift {self.name} on {processing_date}: {str(e)}", "Checkin Error")
-        return []
- 
+            frappe.throw(f"Error retrieving check-ins for shift {shift} on {processing_date}: {str(e)}")
+            return []
+
+    
     def mark_absent_for_date(self, employee, processing_date):
         """Mark absent for a specific date if no attendance exists."""
         if not self.should_mark_attendance(employee, processing_date):
@@ -413,24 +433,23 @@ class ShiftType(Document):
             return False
         return True
 
+
 def process_auto_attendance_for_all_shifts():
     """Process attendance for all shifts for the current day."""
+    processing_date = getdate(now_datetime())
     try:
-        processing_date = getdate(now_datetime())  # Process current day
-        frappe.log_error(f"Starting attendance processing for date: {processing_date}", "Auto Attendance Debug")
-
         shift_list = frappe.get_all("Shift Type", filters={"enable_auto_attendance": 1}, pluck="name")
-        frappe.log_error(f"Found {len(shift_list)} shifts with auto-attendance enabled", "Auto Attendance Debug")
-        
+
         for shift in shift_list:
+            # print(f"Processing shift: {shift}")
             try:
                 doc = frappe.get_cached_doc("Shift Type", shift)
-                doc.process_auto_attendance_for_date(processing_date)
+                doc.process_auto_attendance_for_date(processing_date, shift)
             except Exception as e:
-                frappe.log_error(f"Error processing shift {shift} for {processing_date}: {str(e)}", "Auto Attendance Error")
-        
+                frappe.throw(f"Error processing shift {shift} for {processing_date}: {str(e)}")
+
         frappe.db.commit()
-        frappe.log_error(f"Completed attendance processing for date: {processing_date}", "Auto Attendance Debug")
+
     except Exception as e:
-        frappe.log_error(f"Error in process_auto_attendance_for_all_shifts for {processing_date}: {str(e)}", "Auto Attendance Error")
         frappe.db.rollback()
+        frappe.throw(f"Error in process_auto_attendance_for_all_shifts for {processing_date}: {str(e)}")

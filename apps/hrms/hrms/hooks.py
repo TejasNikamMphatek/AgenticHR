@@ -1,9 +1,9 @@
 app_name = "hrms"
-app_title = "Frappe HR"
+app_title = "PIPAL HR"
 app_publisher = "mPHATEK Systems Pvt. Ltd."
 app_description = "Modern HR and Payroll Software"
-app_email = "contact@frappe.io"
-app_license = "GNU General Public License (v3)"
+app_email = "infomphateksystems@gmail.com"
+app_license = "mPHATEK Systems (V3)"
 required_apps = ["frappe/erpnext"]
 source_link = "http://github.com/frappe/hrms"
 
@@ -210,7 +210,7 @@ scheduler_events = {
 		"hrms.hr.doctype.daily_work_summary_group.daily_work_summary_group.trigger_emails",
 	],
 	"cron": {
-        "  59 23 * * *": [
+        "  30 23 * * *": [
             "hrms.hr.doctype.shift_type.shift_type.process_auto_attendance_for_all_shifts"
         ]
     },
