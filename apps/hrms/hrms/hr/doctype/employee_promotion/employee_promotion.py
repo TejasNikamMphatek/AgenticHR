@@ -30,11 +30,24 @@ class EmployeePromotion(Document):
 
 		employee.save()
 
+		salary_structure_assignment = frappe.get_all("Salary Structure Assignment", filters={"employee": self.employee}, order_by="from_date desc", limit=1)
+
+		if salary_structure_assignment and self.revised_ctc:
+			assignment_doc = frappe.get_doc("Salary Structure Assignment", salary_structure_assignment[0].name)
+			assignment_doc.base = self.revised_ctc
+			assignment_doc.save()
+
 	def on_cancel(self):
 		employee = frappe.get_doc("Employee", self.employee)
 		employee = update_employee_work_history(employee, self.promotion_details, cancel=True)
 
 		if self.revised_ctc:
 			employee.ctc = self.current_ctc
+			employee.save()
 
-		employee.save()
+		salary_structure_assignment = frappe.get_all("Salary Structure Assignment", filters={"employee": self.employee}, order_by="from_date desc", limit=1)
+
+		if salary_structure_assignment and self.revised_ctc:
+			assignment_doc = frappe.get_doc("Salary Structure Assignment", salary_structure_assignment[0].name)
+			assignment_doc.base = self.current_ctc
+			assignment_doc.save()
