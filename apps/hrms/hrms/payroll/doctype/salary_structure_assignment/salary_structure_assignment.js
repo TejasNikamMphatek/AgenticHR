@@ -77,6 +77,28 @@ frappe.ui.form.on("Salary Structure Assignment", {
 		if (frm.doc.employee) {
 			frm.trigger("set_payroll_cost_centers");
 			frm.trigger("valiadte_joining_date_and_salary_slips");
+
+			if (!frm.doc.salary_structure) {
+				frappe.call({
+					method: "frappe.client.get_list",
+					args: {
+						doctype: "Salary Structure",
+						filters: {
+							company: frm.doc.company,
+							is_default: "Yes",
+							docstatus: 1,
+							is_active: "Yes",
+						},
+						limit_page_length: 1,
+						fields: ["name"]
+					},
+					callback: function (r) {
+						if (r.message && r.message.length > 0) {
+							frm.set_value("salary_structure", r.message[0].name);
+						}
+					}
+				});
+			}
 		} else {
 			frm.set_value("payroll_cost_centers", []);
 		}
