@@ -12,7 +12,7 @@ refresh: function (frm) {
 				}
 			};
 		});
-
+        frm.events.set_employee_query(frm); 
         frm.events.set_employee_assets_query(frm);  
 		frm.events.set_queries(frm, "payables");
 		frm.events.set_queries(frm, "receivables");	
@@ -51,7 +51,16 @@ refresh: function (frm) {
 			frm.set_value("employee_assets_management", null);
 		}
 	},
-
+ set_employee_query: function (frm) {
+		// 🆕 Set query to show only employees with relieving_date set
+		frm.set_query("employee", function () {
+			return {
+				filters: {
+					"relieving_date": ["is", "set"]
+				}
+			};
+		});
+	},
 	
 	set_employee_assets_query: function (frm) {
 		frm.set_query("employee_assets_management", function () {
