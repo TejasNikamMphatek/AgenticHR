@@ -30,6 +30,46 @@ class SalaryStructure(Document):
 	def on_update(self):
 		self.reset_condition_and_formula_fields()
 
+	def on_submit(self):
+		if self.is_default == "Yes":
+			other_salary_structures = frappe.get_all(
+				"Salary Structure",
+				filters={
+					"is_default": "Yes",
+					"docstatus": 1,
+					"is_active": "Yes",
+					"name": ["!=", self.name]
+				},
+				fields=["name"]
+			)
+
+			for s in other_salary_structures:
+				other_doc = frappe.get_doc("Salary Structure", s.name)
+				other_doc.is_default = "No"
+				other_doc.flags.ignore_validate = True
+				other_doc.flags.ignore_mandatory = True
+				other_doc.save(ignore_permissions=True)
+
+	def before_update_after_submit(self):
+		if self.is_default == "Yes":
+			other_salary_structures = frappe.get_all(
+				"Salary Structure",
+				filters={
+					"is_default": "Yes",
+					"docstatus": 1,
+					"is_active": "Yes",
+					"name": ["!=", self.name]
+				},
+				fields=["name"]
+			)
+
+			for s in other_salary_structures:
+				other_doc = frappe.get_doc("Salary Structure", s.name)
+				other_doc.is_default = "No"
+				other_doc.flags.ignore_validate = True
+				other_doc.flags.ignore_mandatory = True
+				other_doc.save(ignore_permissions=True)
+
 	def validate_formula_setup(self):
 		for table in ["earnings", "deductions"]:
 			for row in self.get(table):

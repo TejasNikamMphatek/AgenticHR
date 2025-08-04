@@ -73,7 +73,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "grade.default_salary_structure",
    "fetch_if_empty": 1,
    "fieldname": "salary_structure",
    "fieldtype": "Link",
@@ -81,7 +80,6 @@
    "in_standard_filter": 1,
    "label": "Salary Structure",
    "options": "Salary Structure",
-   "reqd": 1,
    "search_index": 1
   },
   {
@@ -210,7 +208,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-02 18:45:51.703887",
+ "modified": "2025-08-04 16:11:08.023383",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure Assignment",

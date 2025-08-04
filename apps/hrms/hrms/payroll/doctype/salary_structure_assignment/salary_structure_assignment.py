@@ -21,6 +21,7 @@ class SalaryStructureAssignment(Document):
 			)
 
 	def validate(self):
+		self.validate_salary_structure()
 		self.validate_dates()
 		self.validate_company()
 		self.validate_income_tax_slab()
@@ -48,6 +49,27 @@ class SalaryStructureAssignment(Document):
 			self.set_payroll_cost_centers()
 
 		self.validate_cost_center_distribution()
+	
+	def validate_salary_structure(self):
+		if not self.salary_structure:
+			default_structure = frappe.get_all(
+				"Salary Structure",
+				filters={
+					"company": self.company,
+					"is_default": "Yes",
+					"is_active": "Yes",
+					"docstatus": 1,
+				},
+				fields=["name"],
+				limit=1
+			)
+			if default_structure:
+				self.salary_structure = default_structure[0]["name"]
+
+		if not self.salary_structure:
+			frappe.throw(
+				_("Salary Structure Not Selected Properly")
+			)
 
 	def validate_dates(self):
 		joining_date, relieving_date = frappe.db.get_value(
@@ -187,6 +209,10 @@ class SalaryStructureAssignment(Document):
 
 		else:
 			return False
+
+	# def on_submit(self):
+	# 	if not self.income_tax_slab:
+	# 		frappe.throw(title="Missing Field", msg="Please select Income Tax Slab.")
 
 
 def get_assigned_salary_structure(employee, on_date):
