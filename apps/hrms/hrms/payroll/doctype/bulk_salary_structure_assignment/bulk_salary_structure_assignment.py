@@ -36,29 +36,40 @@ class BulkSalaryStructureAssignment(Document):
 			.distinct()
 			.where((Assignment.from_date == self.from_date) & (Assignment.docstatus == 1))
 		)
+		already_assigned_salary_structure = frappe.db.get_all(
+			"Salary Structure Assignment",
+			filters={"docstatus": 1},
+			fields=["employee"]
+		)
+		already_assigned_ids = {d["employee"] for d in already_assigned_salary_structure}
+		# print(f"already_assigned_salary_structure == {len(already_assigned_salary_structure)}")
 
+		# QB query
 		Employee = frappe.qb.DocType("Employee")
-		Grade = frappe.qb.DocType("Employee Grade")
+		# Grade = frappe.qb.DocType("Employee Grade")
 		query = (
 			frappe.qb.get_query(
 				Employee,
-				fields=[Employee.employee, Employee.employee_name, Employee.grade],
+				fields=[Employee.employee, Employee.employee_name, Employee.ctc.as_("base") ],
 				filters=filters,
 			)
 			.where(
 				(Employee.status == "Active")
 				& (Employee.date_of_joining <= self.from_date)
 				& ((Employee.relieving_date > self.from_date) | (Employee.relieving_date.isnull()))
-				& (Employee.employee.notin(employees_with_assignments))
-			)
-			.left_join(Grade)
-			.on(Employee.grade == Grade.name)
-			.select(
-				Coalesce(Grade.default_base_pay, 0).as_("base"),
-				ConstantColumn(0).as_("variable"),
 			)
 		)
-		return query.run(as_dict=True)
+
+		filtered_employee = query.run(as_dict=True)
+
+		# print("before_filteration", (filtered_employee))
+		# Now filter out employees already assigned
+		filtered_employee = [
+			emp for emp in filtered_employee if emp["employee"] not in already_assigned_ids
+		]
+
+		# print(f"filtered_employee ==== {len(filtered_employee)}")
+		return filtered_employee
 
 	@frappe.whitelist()
 	def bulk_assign_structure(self, employees: list) -> None:
