@@ -167,23 +167,23 @@ frappe.ui.form.on("Bulk Salary Structure Assignment", {
 				editable: false,
 				focusable: false,
 			},
-			{
-				name: "grade",
-				id: "grade",
-				content: __("Grade"),
-				editable: false,
-				focusable: false,
-			},
+			// {
+			// 	name: "grade",
+			// 	id: "grade",
+			// 	content: __("Grade"),
+			// 	editable: false,
+			// 	focusable: false,
+			// },
 			{
 				name: "base",
 				id: "base",
 				content: __("Base"),
 			},
-			{
-				name: "variable",
-				id: "variable",
-				content: __("Variable"),
-			},
+			// {
+			// 	name: "variable",
+			// 	id: "variable",
+			// 	content: __("Variable"),
+			// },
 		].map((x) => ({
 			...x,
 			dropdown: false,
