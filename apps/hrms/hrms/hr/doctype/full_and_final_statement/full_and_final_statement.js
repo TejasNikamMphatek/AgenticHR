@@ -12,9 +12,11 @@ refresh: function (frm) {
 				}
 			};
 		});
-          
+
+        frm.events.set_employee_assets_query(frm);  
 		frm.events.set_queries(frm, "payables");
 		frm.events.set_queries(frm, "receivables");	
+		
 
 		if (frm.doc.docstatus == 1 && frm.doc.status == "Unpaid") {
 			frm.add_custom_button(__("Create Journal Entry"), function () {
@@ -22,6 +24,47 @@ refresh: function (frm) {
 			});
 		}
 	},
+	
+	employee: function (frm) {
+		frm.events.get_outstanding_statements(frm);
+
+		// 🔄 Reapply query for Employee Assets Management
+		frm.events.set_employee_assets_query(frm);
+
+		// 🔄 Auto-set "Employee Assets Management" if found
+		if (frm.doc.employee) {
+			frappe.db.get_list("Employee Assets Management", {
+				fields: ["name"],
+				filters: {
+					employee: frm.doc.employee
+				},
+				order_by: "modified desc",
+				limit: 1
+			}).then(res => {
+				if (res.length) {
+					frm.set_value("employee_assets_management", res[0].name);
+				} else {
+					frm.set_value("employee_assets_management", null);
+				}
+			});
+		} else {
+			frm.set_value("employee_assets_management", null);
+		}
+	},
+
+	
+	set_employee_assets_query: function (frm) {
+		frm.set_query("employee_assets_management", function () {
+			if (!frm.doc.employee) return {};
+			return {
+				filters: {
+					employee: frm.doc.employee
+				}
+			};
+		});
+	},
+
+
 
 	set_queries: function (frm, type) {
 		frm.set_query("reference_document_type", type, function () {
