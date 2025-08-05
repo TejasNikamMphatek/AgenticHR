@@ -167,22 +167,23 @@ class ShiftType(Document):
             )
 
             if not shift_details_list:
-                # print(f"No shift details found for: {shift}")
                 return []
 
             shift_details = shift_details_list[0]
 
             # Extract shift times as timedelta
-            shift_start = shift_details["start_time"]               # timedelta
-            shift_end = shift_details["end_time"]                   # timedelta
+            shift_start = shift_details["start_time"]
+            shift_end = shift_details["end_time"]
             buffer_before = shift_details["begin_check_in_before_shift_start_time"] or 0
             buffer_after = shift_details["allow_check_out_after_shift_end_time"] or 0
 
             # Convert to full datetime range
             actual_shift_start = datetime.combine(processing_date, time(0)) + shift_start - timedelta(minutes=buffer_before)
             actual_shift_end = datetime.combine(processing_date, time(0)) + shift_end + timedelta(minutes=buffer_after)
-
-            # print(f"Shift: {shift}, Actual Shift Time: {actual_shift_start} to {actual_shift_end}")
+            
+            # Calculate proper shift start/end times for attendance calculation
+            shift_start_datetime = datetime.combine(processing_date, time(0)) + shift_start
+            shift_end_datetime = datetime.combine(processing_date, time(0)) + shift_end
 
             # Get check-ins in the time range
             checkins = frappe.get_all(
@@ -192,28 +193,29 @@ class ShiftType(Document):
                     "employee",
                     "log_type",
                     "time",
-                    "shift",
-                    "shift_start",
-                    "shift_end",
-                    "shift_actual_start",
-                    "shift_actual_end",
                     "device_id",
                 ],
                 filters={
                     "skip_auto_attendance": 0,
                     "attendance": ("is", "not set"),
                     "time": ["between", [actual_shift_start, actual_shift_end]],
-                    "shift": self.name,
                 },
                 order_by="employee, time",
             )
+
+            # ADD THIS: Populate the missing shift fields for each checkin
+            for checkin in checkins:
+                checkin["shift"] = self.name
+                checkin["shift_start"] = shift_start_datetime
+                checkin["shift_end"] = shift_end_datetime
+                checkin["shift_actual_start"] = actual_shift_start
+                checkin["shift_actual_end"] = actual_shift_end
 
             return checkins
 
         except Exception as e:
             frappe.throw(f"Error retrieving check-ins for shift {shift} on {processing_date}: {str(e)}")
             return []
-
     
     def mark_absent_for_date(self, employee, processing_date):
         """Mark absent for a specific date if no attendance exists."""
@@ -441,15 +443,86 @@ def process_auto_attendance_for_all_shifts():
         shift_list = frappe.get_all("Shift Type", filters={"enable_auto_attendance": 1}, pluck="name")
 
         for shift in shift_list:
-            # print(f"Processing shift: {shift}")
             try:
                 doc = frappe.get_cached_doc("Shift Type", shift)
+                
+                # Process checkins first (your existing logic)
                 doc.process_auto_attendance_for_date(processing_date, shift)
+                
+                # Now handle employees without checkins - mark them absent
+                assigned_employees = doc.get_assigned_employees_for_date(processing_date)
+                
+                for employee in assigned_employees:
+                    # Check if attendance already exists for this employee
+                    existing_attendance = frappe.db.exists(
+                        "Attendance",
+                        {
+                            "employee": employee,
+                            "attendance_date": processing_date,
+                            "docstatus": ["<", 2],
+                        }
+                    )
+                    
+                    # If no attendance exists, mark absent
+                    if not existing_attendance:
+                        doc.mark_absent_for_date(employee, processing_date)
+                
             except Exception as e:
-                frappe.throw(f"Error processing shift {shift} for {processing_date}: {str(e)}")
+                print(f"Error processing shift {shift} for {processing_date}: {str(e)}")
+                continue
 
         frappe.db.commit()
 
     except Exception as e:
         frappe.db.rollback()
-        frappe.throw(f"Error in process_auto_attendance_for_all_shifts for {processing_date}: {str(e)}")
+        print(f"Error in process_auto_attendance_for_all_shifts for {processing_date}: {str(e)}")
+
+
+def get_assigned_employees_for_date(self, target_date):
+    """Get employees assigned to this shift for a specific date"""
+    
+    if isinstance(target_date, str):
+        target_date = getdate(target_date)
+    
+    # Get employees with active shift assignments for this date
+    assigned_employees = frappe.get_all(
+        "Shift Assignment",
+        filters={
+            "shift_type": self.name,
+            "docstatus": 1,
+            "status": "Active",
+            "start_date": ("<=", target_date),
+            "end_date": (">=", target_date)
+        },
+        pluck="employee"
+    )
+    
+    # Get employees with default shift (no other active assignment)
+    default_shift_employees = frappe.get_all(
+        "Employee", 
+        filters={"default_shift": self.name, "status": "Active"}, 
+        pluck="name"
+    )
+    
+    if default_shift_employees:
+        # Exclude those with other active assignments
+        other_assignments = frappe.get_all(
+            "Shift Assignment",
+            filters={
+                "employee": ("in", default_shift_employees),
+                "docstatus": 1,
+                "status": "Active",
+                "start_date": ("<=", target_date),
+                "end_date": (">=", target_date),
+                "shift_type": ("!=", self.name)
+            },
+            pluck="employee"
+        )
+        
+        for emp in default_shift_employees:
+            if emp not in other_assignments:
+                assigned_employees.append(emp)
+    
+    # Remove inactive employees
+    inactive_employees = frappe.get_all("Employee", {"status": "Inactive"}, pluck="name")
+    return list(set(assigned_employees) - set(inactive_employees))
