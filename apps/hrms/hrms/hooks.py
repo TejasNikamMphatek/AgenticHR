@@ -209,11 +209,11 @@ scheduler_events = {
 	"hourly": [
 		"hrms.hr.doctype.daily_work_summary_group.daily_work_summary_group.trigger_emails",
 	],
-	"cron": {
-        "  15 23 * * *": [
-            "hrms.hr.doctype.shift_type.shift_type.process_auto_attendance_for_all_shifts"
-        ]
-    },
+	# "cron": {
+    #     "  15 23 * * *": [
+    #         "hrms.hr.doctype.shift_type.shift_type.process_auto_attendance_for_all_shifts"
+    #     ]
+    # },
 	"daily": [
 		"hrms.controllers.employee_reminders.send_birthday_reminders",
 		"hrms.controllers.employee_reminders.send_work_anniversary_reminders",
