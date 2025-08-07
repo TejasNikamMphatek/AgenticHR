@@ -10,6 +10,7 @@ from frappe.utils import add_days, date_diff, format_date, get_link_to_form, get
 from erpnext.setup.doctype.employee.employee import is_holiday
 
 from hrms.hr.utils import validate_active_employee, validate_dates
+from datetime import timedelta
 
 
 class OverlappingAttendanceRequestError(frappe.ValidationError):
@@ -277,3 +278,32 @@ class AttendanceRequest(Document):
 					)
 
 		return attendance_warnings
+
+@frappe.whitelist()
+def get_missing_attendance_html(employee=None):
+    if not employee:
+        return "<div class='text-muted'>Please select an Employee.</div>"
+
+    attendance_records = frappe.get_all(
+        "Attendance",
+        filters={
+            "employee": employee,
+            "status": ["in", ["Absent", "Half Day"]]
+        },
+        fields=["attendance_date", "status"],
+        order_by="attendance_date desc",
+        limit_page_length=5
+    )
+
+    missing_entries = [
+        {
+            "date": getdate(att.attendance_date),
+            "status": att.status
+        }
+        for att in attendance_records
+    ]
+
+    return frappe.render_template(
+        "hrms/hr/doctype/attendance_request/missing_attendance.html",
+        {"missing_entries": missing_entries}
+    )
