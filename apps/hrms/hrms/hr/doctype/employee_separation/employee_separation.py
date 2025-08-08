@@ -116,34 +116,42 @@ class EmployeeSeparation(EmployeeBoardingController):
 
 	def notify_resign_from_employee(self):
 		if self.applying_to:
+			# Fetch the Employee Separation document data
 			parent_doc = frappe.get_doc("Employee Separation", self.name)
 			args = parent_doc.as_dict()
 
+			# Get the email template name from settings
 			template = frappe.db.get_single_value("Email Template Setting", "employee_resign_notification")
 			if not template:
 				frappe.msgprint(
-					_("Please set default template for Employee Resign Notification in Email Template Settings.")
+					_("Please set the default template for Employee Resign Notification in Email Template Settings.")
 				)
 				return
-			
+
 			email_template = frappe.get_doc("Email Template", template)
-			message = frappe.render_template(email_template.response_, args)
-			
-			# Check if manager data is found
+
+			# Get manager data
 			manager_data = self.getEmployeeReportTo(self.applying_to)
-			# breakpoint()
 			if not manager_data or not manager_data[0].get('user_id'):
 				frappe.throw(_("No manager found for employee {}. Please check the applying_to field.").format(self.applying_to))
-			
-			email_to = manager_data[0]['user_id']
-			cc = "hr@mphatek.com"
 
+			# Add manager's name into args so it can be used in template
+			args["applying_to_employee_name"] = manager_data[0].get("employee_name", "")
+
+			# Prepare email details
+			email_to = manager_data[0]['user_id']
+			cc = ["hr@mphatek.com"]
+
+			message = frappe.render_template(email_template.response_, args)
+
+			# Send notification
 			self.notify({
 				"message_to": email_to,
 				"cc": cc,
 				"subject": email_template.subject,
 				"message": message,
 			})
+
 	def notify_employee_for_resign_status(self):
 		if self.employee:
 			# Get employee email
