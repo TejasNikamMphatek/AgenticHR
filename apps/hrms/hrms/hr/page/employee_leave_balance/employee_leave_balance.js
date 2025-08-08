@@ -361,10 +361,10 @@ class EmployeeLeaveBalance {
 			this.show_leave_details(leaveData);
 		});
 
-		// Add click handler for card
-		card.on('click', () => {
-			this.show_employee_details(leaveData.employee);
-		});
+		// //Add click handler for card
+		// card.on('click', () => {
+		// 	this.show_employee_details(leaveData.employee);
+		// });
 
 		return card;
 	}
