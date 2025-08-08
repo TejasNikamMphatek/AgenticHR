@@ -463,10 +463,8 @@ email_brand_image = "assets/erpnext/images/mphatek_logo.png"
 
 default_mail_footer = """
 	<span>
-		Sent via
-		<a class="text-muted" href="">
-			Pipal ERP
-		</a>
+		<p>Sent Via</p>
+		<strong>PIPAL HR</strong>
 	</span>
 """
 
