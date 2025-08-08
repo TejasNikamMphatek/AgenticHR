@@ -539,7 +539,7 @@ standard_help_items = [
 	{
 		"item_label": "Pipal Support",
 		"item_type": "Route",
-		"route": "https://hr.mphatek.com",
+		"route": "",
 		"is_standard": 1,
 	},
 ]
