@@ -144,16 +144,30 @@ class EmployeeSeparation(EmployeeBoardingController):
 				"subject": email_template.subject,
 				"message": message,
 			})
-
 	def notify_employee_for_resign_status(self):
 		if self.employee:
+			# Get employee email
 			email_to = frappe.db.get_value("Employee", self.employee, "user_id", cache=True)
 			if not email_to:
-				frappe.throw(_("No email found for employee {}. Please check the employee UserId field.").format(self.employee))
+				frappe.throw(
+					_("No email found for employee {}. Please check the employee UserId field.").format(self.employee)
+				)
 
+			# Base data from Employee Separation document
 			parent_doc = frappe.get_doc("Employee Separation", self.name)
 			args = parent_doc.as_dict()
 
+			# Get manager details before rendering the template
+			manager_data = self.getEmployeeReportTo(self.applying_to)
+			if not manager_data or not manager_data[0].get('user_id'):
+				frappe.throw(
+					_("No manager found for employee {}. Please check the applying_to field.").format(self.applying_to)
+				)
+
+			manager_cc = manager_data[0]['user_id']
+			args["applying_to_employee_name"] = manager_data[0].get("employee_name", "")
+
+			# Get email template
 			template = frappe.db.get_single_value("Email Template Setting", "resign_status_update_to_employee")
 			if not template:
 				frappe.msgprint(
@@ -162,23 +176,21 @@ class EmployeeSeparation(EmployeeBoardingController):
 				return
 
 			email_template = frappe.get_doc("Email Template", template)
+
+			# Render template AFTER adding all required args
 			message = frappe.render_template(email_template.response_, args)
 
-			# Check if manager data is found
-			manager_data = self.getEmployeeReportTo(self.applying_to)
-			if not manager_data or not manager_data[0].get('user_id'):
-				frappe.throw(_("No manager found for employee {}. Please check the applying_to field.").format(self.applying_to))
-
-			manager_cc = manager_data[0]['user_id']
+			# CC list
 			cc = ["hr@mphatek.com", manager_cc]
 
+			# Send notification
 			self.notify({
 				"message": message,
 				"message_to": email_to,
 				"cc": cc,
 				"subject": email_template.subject,
 			})
-		
+			
 	def notify(self, args):
 		args = frappe._dict(args)
 		contact = args.message_to
