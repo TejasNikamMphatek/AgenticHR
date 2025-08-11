@@ -239,14 +239,13 @@ def check_permission_and_not_submitted(doc):
 		)
 
 	# Check if submitted
-	if doc.docstatus.is_submitted():
+	if doc.docstatus == 1:
 		frappe.msgprint(
-			_("{0} : <b>{1} : </b> Submitted Record cannot be deleted. You must <a href='/app/salary-structure/{2}'>Cancel</a> it first.").format(
+			_("{0} : <b>{1}</b> : Submitted record cannot be deleted. You must <b>Cancel</b> it first.").format(
 				_(doc.doctype),
-				doc.name,
-				doc.name  # Assuming you want to link to the same document
+				doc.name
 			),
-			raise_exception=True,
+			raise_exception=True
 		)
 
 
