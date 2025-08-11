@@ -12,6 +12,15 @@ frappe.ui.form.on("Exit Interview", {
 				frm.trigger("send_exit_questionnaire");
 			});
 		}
+
+		// Set query here so frm is defined
+        frm.set_query("ref_doctype", function () {
+            return {
+                filters: {
+                    employee: frm.doc.employee
+                }
+            };
+        });
 	},
 
 	employee: function (frm) {

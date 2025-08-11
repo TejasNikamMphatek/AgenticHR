@@ -27,7 +27,6 @@
   "ref_doctype",
   "questionnaire_email_sent",
   "column_break_10",
-  "reference_document_name",
   "interview_summary_section",
   "interviewers",
   "interview_summary",
@@ -98,14 +97,7 @@
    "fieldname": "ref_doctype",
    "fieldtype": "Link",
    "label": "Reference Document Type",
-   "options": "DocType"
-  },
-  {
-   "fieldname": "reference_document_name",
-   "fieldtype": "Dynamic Link",
-   "in_list_view": 1,
-   "label": "Reference Document Name",
-   "options": "ref_doctype"
+   "options": "Exit Questionnaire"
   },
   {
    "fieldname": "interview_summary_section",
@@ -212,13 +204,14 @@
   {
    "fieldname": "interview_summary",
    "fieldtype": "Text Editor",
-   "label": "Interview Summary"
+   "label": "Interview Summary",
+   "max_height": "80px"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-27 13:09:43.272097",
+ "modified": "2025-08-11 15:08:38.093215",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Exit Interview",
