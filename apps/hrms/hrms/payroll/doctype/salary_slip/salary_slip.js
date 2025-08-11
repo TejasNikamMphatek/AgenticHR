@@ -220,6 +220,10 @@ frappe.ui.form.on("Salary Slip", {
 		];
 		frm.fields_dict["earnings"].grid.set_column_disp(salary_detail_fields, false);
 		frm.fields_dict["deductions"].grid.set_column_disp(salary_detail_fields, false);
+		["leave_without_pay", "absent_days", "payment_days", "partially_paid_leave"].forEach(field => {
+        frm.set_df_property(field, "read_only", 1);
+    });
+	
 		frm.trigger("set_dynamic_labels");
 	},
 
