@@ -151,6 +151,7 @@
   {
    "fieldname": "naming_series",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Naming Series",
    "options": "HR-EXIT-INT-"
   },
@@ -205,13 +206,13 @@
    "fieldname": "interview_summary",
    "fieldtype": "Text Editor",
    "label": "Interview Summary",
-   "max_height": "80px"
+   "max_height": "100px"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-11 15:08:38.093215",
+ "modified": "2025-08-11 17:15:35.411349",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Exit Interview",
