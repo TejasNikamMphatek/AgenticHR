@@ -19,6 +19,7 @@ class Interview(Document):
 	def validate(self):
 		self.validate_duplicate_interview()
 		self.validate_designation()
+		self.validate_time_range()
 
 	def on_submit(self):
 		if self.status not in ["Cleared", "Rejected"]:
@@ -27,6 +28,11 @@ class Interview(Document):
 				title=_("Not Allowed"),
 			)
 		self.show_job_applicant_update_dialog()
+		
+	def validate_time_range(self):
+		if self.from_time and self.to_time:
+			if get_datetime(f"{self.scheduled_on} {self.from_time}") >= get_datetime(f"{self.scheduled_on} {self.to_time}"):
+				frappe.throw(_("From Time must be earlier than To Time."))
 
 	def validate_duplicate_interview(self):
 		duplicate_interview = frappe.db.exists(
