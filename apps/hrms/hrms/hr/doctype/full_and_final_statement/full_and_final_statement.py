@@ -232,14 +232,16 @@ class FullandFinalStatement(Document):
 
 
 @frappe.whitelist()
-def get_account_and_amount(ref_doctype, ref_document):
+def get_account_and_amount(ref_doctype, ref_document, employee=None):
 	if not ref_doctype or not ref_document:
 		return None
 
 	if ref_doctype == "Salary Slip":
 		salary_details = frappe.db.get_value(
-			"Salary Slip", ref_document, ["payroll_entry", "net_pay"], as_dict=1
+			"Salary Slip", ref_document, ["payroll_entry", "net_pay","employee"], as_dict=1
 		)
+		if employee and salary_details.employee != employee:
+			frappe.throw(_("Selected Salary Slip does not belong to employee {0}").format(employee))
 		amount = salary_details.net_pay
 		payable_account = (
 			frappe.db.get_value("Payroll Entry", salary_details.payroll_entry, "payroll_payable_account")
@@ -249,14 +251,14 @@ def get_account_and_amount(ref_doctype, ref_document):
 		return [payable_account, amount]
 
 	if ref_doctype == "Gratuity":
-		payable_account, amount = frappe.db.get_value("Gratuity", ref_document, ["payable_account", "amount"])
+		payable_account, amount = frappe.db.get_value("Gratuity", ref_document, ["payable_account", "amount","employee"])
 		return [payable_account, amount]
 
 	if ref_doctype == "Expense Claim":
 		details = frappe.db.get_value(
 			"Expense Claim",
 			ref_document,
-			["payable_account", "grand_total", "total_amount_reimbursed", "total_advance_amount"],
+			["payable_account", "grand_total", "total_amount_reimbursed", "total_advance_amount","employee"],
 			as_dict=True,
 		)
 		payable_account = details.payable_account
@@ -265,7 +267,7 @@ def get_account_and_amount(ref_doctype, ref_document):
 
 	if ref_doctype == "Loan":
 		details = frappe.db.get_value(
-			"Loan", ref_document, ["payment_account", "total_payment", "total_amount_paid"], as_dict=1
+			"Loan", ref_document, ["payment_account", "total_payment", "total_amount_paid","employee"], as_dict=1
 		)
 		payment_account = details.payment_account
 		amount = details.total_payment - details.total_amount_paid
@@ -275,7 +277,7 @@ def get_account_and_amount(ref_doctype, ref_document):
 		details = frappe.db.get_value(
 			"Employee Advance",
 			ref_document,
-			["advance_account", "paid_amount", "claimed_amount", "return_amount"],
+			["advance_account", "paid_amount", "claimed_amount", "return_amount","employee"],
 			as_dict=1,
 		)
 		payment_account = details.advance_account
