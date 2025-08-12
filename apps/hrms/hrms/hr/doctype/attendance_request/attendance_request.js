@@ -6,7 +6,12 @@ frappe.ui.form.on("Attendance Request", {
 
 
 		// Auto-select employee field for non-HR roles
-		if (frappe.user.has_role("Employee") && (!frappe.user.has_role("Administrator"))) {
+		if (
+            frappe.user.has_role("Employee") &&
+            !frappe.user.has_role("HR Manager") &&
+            !frappe.user.has_role("Administrator") &&
+            !frappe.user.has_role("Projects Manager")
+        ) {
 			// Hide the employee field and set current user’s employee record
 			frappe.call({
 				method: "frappe.client.get_value",
