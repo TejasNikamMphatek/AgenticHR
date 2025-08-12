@@ -27,7 +27,7 @@ class Interview(Document):
 				_("Only Interviews with Cleared or Rejected status can be submitted."),
 				title=_("Not Allowed"),
 			)
-		self.show_job_applicant_update_dialog()
+		#self.show_job_applicant_update_dialog()
 		
 	def validate_time_range(self):
 		if self.from_time and self.to_time:
@@ -191,28 +191,27 @@ def get_skill_wise_average_rating(interview: str) -> list[dict]:
 
 
 @frappe.whitelist()
-def update_job_applicant_status(status: str, job_applicant: str):
+def update_job_applicant_status(status, job_applicant):
 	try:
 		if not job_applicant:
 			frappe.throw(_("Please specify the job applicant to be updated."))
 
-		job_applicant = frappe.get_doc("Job Applicant", job_applicant)
-		job_applicant.status = status
-		job_applicant.save()
+		job_applicant_doc = frappe.get_doc("Job Applicant", job_applicant)
+		job_applicant_doc.status = status
+		job_applicant_doc.save()
 
 		frappe.msgprint(
-			_("Updated the Job Applicant status to {0}").format(job_applicant.status),
+			_("Updated the Job Applicant status to {0}").format(job_applicant_doc.status),
 			alert=True,
 			indicator="green",
 		)
 	except Exception:
-		job_applicant.log_error("Failed to update Job Applicant status")
+		frappe.log_error(frappe.get_traceback(), "Failed to update Job Applicant status")
 		frappe.msgprint(
 			_("Failed to update the Job Applicant status"),
 			alert=True,
 			indicator="red",
 		)
-
 
 def send_interview_reminder():
 	reminder_settings = frappe.db.get_value(

@@ -2,6 +2,39 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Interview", {
+	on_submit(frm) {
+        const status_map = {
+            "Cleared": "Accepted",
+            "Rejected": "Rejected"
+        };
+
+        if (["Cleared", "Rejected"].includes(frm.doc.status)) {
+            const new_status = status_map[frm.doc.status];
+
+            frappe.confirm(
+                `Do you want to update the Job Applicant <b>${frm.doc.job_applicant}</b> as <b>${new_status}</b>?`,
+                () => {
+                    frappe.call({
+                        method: "hrms.hr.doctype.interview.interview.update_job_applicant_status",
+                        args: {
+                            job_applicant: frm.doc.job_applicant,
+                            status: new_status
+                        },
+                        callback: function (r) {
+                            frappe.msgprint({
+                                message: __("Job Applicant status updated successfully."),
+                                indicator: "green",
+                                alert: true
+                            });
+                        }
+                    });
+                },
+                () => {
+                    frappe.show_alert({ message: __("No changes made."), indicator: "orange" });
+                }
+            );
+        }
+    },
 	refresh: function (frm) {
 		frm.set_query("job_applicant", function () {
 			let job_applicant_filters = {
