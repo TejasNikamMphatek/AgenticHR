@@ -44,6 +44,12 @@ frappe.ui.Page = class Page {
 		this.add_main_section();
 		this.setup_scroll_handler();
 		this.setup_sidebar_toggle();
+		
+		setTimeout(() => {
+			$('[data-fieldname="status"]').closest('div')
+				.removeClass('dropdown bootstrap-select input-with-feedback form-control input-xs ellipsis')
+				.find('button.btn.dropdown-toggle').remove();
+		}, 200);
 	}
 
 	setup_scroll_handler() {
