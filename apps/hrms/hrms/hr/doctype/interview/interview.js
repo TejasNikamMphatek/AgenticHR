@@ -40,12 +40,7 @@ frappe.ui.form.on("Interview", {
 			let job_applicant_filters = {
 				status: ["!=", "Rejected"],
 			};
-			if (frm.doc.designation) {
-				job_applicant_filters.designation = frm.doc.designation;
-			}
-			return {
-				filters: job_applicant_filters,
-			};
+			
 		});
 
 		frm.trigger("add_custom_buttons");
