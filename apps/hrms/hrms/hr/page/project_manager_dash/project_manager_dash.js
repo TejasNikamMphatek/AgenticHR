@@ -10,6 +10,12 @@ if(frappe.user.has_role("Projects Manager")){
 		frappe.project_manager_dash.make(page);
 	}
 
+	frappe.pages['project-manager-dash'].on_page_show = function(wrapper) {
+		$('.standard-actions.flex').addClass('hide');
+		$('.standard-actions.flex').remove();
+	};
+
+
 		frappe.project_manager_dash = {
 			start : 0,
 			start: 0,

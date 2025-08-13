@@ -23,6 +23,11 @@ else if(frappe.user.has_role("Employee")){
 
 	};
 
+	frappe.pages['pipal-employee-dashboard'].on_page_show = function(wrapper) {
+		$('.standard-actions.flex').addClass('hide');
+		$('.standard-actions.flex').remove();
+	};
+
 	data = []
 	me = frappe.pipal_employee_dashboard;
 	frappe.pipal_employee_dashboard = {

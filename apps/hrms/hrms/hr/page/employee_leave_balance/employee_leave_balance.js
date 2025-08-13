@@ -8,6 +8,12 @@ frappe.pages['employee-leave-balance'].on_page_load = function(wrapper) {
 	frappe.employee_leave_balance = new EmployeeLeaveBalance(page);
 };
 
+
+frappe.pages['employee-leave-balance'].on_page_show = function(wrapper) {
+	$('.standard-actions.flex').addClass('hide');
+	$('.standard-actions.flex').remove();
+};
+
 class EmployeeLeaveBalance {
 	constructor(page) {
 		this.page = page;

@@ -9,6 +9,11 @@ frappe.pages['confirmation-list'].on_page_load = function(wrapper) {
 	frappe.confirmation_list.make(page);
 }
 
+	frappe.pages['confirmation-list'].on_page_show = function(wrapper) {
+		$('.standard-actions.flex').addClass('hide');
+		$('.standard-actions.flex').remove();
+	};
+
 
 frappe.confirmation_list = {
 	confirmed_emp_element : "",
