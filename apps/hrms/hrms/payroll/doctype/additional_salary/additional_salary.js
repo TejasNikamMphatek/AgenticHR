@@ -58,16 +58,18 @@ frappe.ui.form.on("Additional Salary", {
 		frm.set_value("type", "");
 		frm.trigger("set_component_query");
 	},
-
 	set_component_query: function (frm) {
 		if (!frm.doc.company) return;
-		let filters = { company: frm.doc.company };
-		if (frm.doc.type) {
-			filters.type = frm.doc.type;
-		}
+
+		let filters = {
+			company: frm.doc.company,
+			type: "Earning", // ✅ Filter to show only Earning type
+		};
+
 		frm.set_query("salary_component", function () {
 			return {
 				filters: filters,
+				page_length: 0,
 			};
 		});
 	},
