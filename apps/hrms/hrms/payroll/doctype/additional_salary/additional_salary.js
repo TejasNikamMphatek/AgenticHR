@@ -68,6 +68,7 @@ frappe.ui.form.on("Additional Salary", {
 		frm.set_query("salary_component", function () {
 			return {
 				filters: filters,
+				page_length: 0,
 			};
 		});
 	},
