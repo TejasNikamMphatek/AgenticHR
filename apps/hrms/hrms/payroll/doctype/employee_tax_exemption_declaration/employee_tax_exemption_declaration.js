@@ -7,6 +7,7 @@ frappe.ui.form.on("Employee Tax Exemption Declaration", {
 			return {
 				filters: {
 					status: "Active",
+					user_id: frappe.session.user 
 				},
 			};
 		});
@@ -39,6 +40,21 @@ frappe.ui.form.on("Employee Tax Exemption Declaration", {
 	},
 
 	refresh: function (frm) {
+		frappe.call({
+			method: "frappe.client.get_value",
+			args: {
+				doctype: "Employee",
+				filters: { user_id: frappe.session.user },
+				fieldname: "name"
+			},
+			callback: function (r) {
+				if (r.message) {
+					frm.set_value("employee", r.message.name);
+					frm.set_df_property("employee", "read_only", 1); // prevent change
+				}
+			}
+		});
+
 		if (frm.doc.docstatus == 1) {
 			frm.add_custom_button(__("Submit Proof"), function () {
 				frappe.model.open_mapped_doc({

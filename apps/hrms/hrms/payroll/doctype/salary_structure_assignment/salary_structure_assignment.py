@@ -79,7 +79,7 @@ class SalaryStructureAssignment(Document):
 		if self.from_date:
 			if frappe.db.exists(
 				"Salary Structure Assignment",
-				{"employee": self.employee, "docstatus": ["!=", 2]},
+				{"employee": self.employee, "docstatus": 1},
 			):
 				frappe.throw(
 					_("A Salary Structure Assignment already exists for this employee."), DuplicateAssignment

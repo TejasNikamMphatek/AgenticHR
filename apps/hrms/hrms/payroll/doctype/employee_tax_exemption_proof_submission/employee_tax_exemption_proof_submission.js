@@ -54,6 +54,10 @@ frappe.ui.form.on("Employee Tax Exemption Proof Submission", {
 				});
 			});
 		}
+
+		$('li a[href="/app/employee-tax-exemption-proof-submission/New Employee Tax Exemption Proof Submission "]')
+            .closest('li')
+            .addClass('d-none');
 	},
 
 	currency: function (frm) {
