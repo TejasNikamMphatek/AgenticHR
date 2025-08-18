@@ -225,7 +225,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-07-16 12:18:24.534961",
+ "modified": "2025-08-18 15:38:28.442914",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Payout",
@@ -235,7 +235,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 22.0,
+ "sequence_id": 11.0,
  "shortcuts": [
   {
    "color": "Red",
