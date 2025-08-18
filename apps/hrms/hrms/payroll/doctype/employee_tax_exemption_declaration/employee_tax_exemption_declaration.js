@@ -1,26 +1,35 @@
-// Copyright (c) 2018, mPHATEK Systems Pvt. Ltd. and contributors
-// For license information, please see license.txt
-
 frappe.ui.form.on("Employee Tax Exemption Declaration", {
 	setup: function (frm) {
 		frm.set_query("employee", function () {
-			return {
-				filters: {
-					status: "Active",
-					user_id: frappe.session.user 
-				},
-			};
+			// Admin or HR can choose from all employees
+			if (
+				frappe.user.has_role("HR Manager") ||
+				frappe.user.has_role("HR User") ||
+				frappe.session.user === "Administrator"
+			) {
+				return {
+					filters: {
+						status: "Active"
+					}
+				};
+			} else {
+				// Normal users can only see themselves
+				return {
+					filters: {
+						status: "Active",
+						user_id: frappe.session.user
+					}
+				};
+			}
 		});
 
 		frm.set_query("payroll_period", function () {
 			const fields = { employee: "Employee", company: "Company" };
-
 			for (let [field, label] of Object.entries(fields)) {
 				if (!frm.doc[field]) {
 					frappe.msgprint(__("Please select {0}", [label]));
 				}
 			}
-
 			if (frm.doc.employee && frm.doc.company) {
 				return {
 					filters: {
@@ -40,20 +49,30 @@ frappe.ui.form.on("Employee Tax Exemption Declaration", {
 	},
 
 	refresh: function (frm) {
-		frappe.call({
-			method: "frappe.client.get_value",
-			args: {
-				doctype: "Employee",
-				filters: { user_id: frappe.session.user },
-				fieldname: "name"
-			},
-			callback: function (r) {
-				if (r.message) {
-					frm.set_value("employee", r.message.name);
-					frm.set_df_property("employee", "read_only", 1); // prevent change
+		// Only auto-fill employee for non-HR users
+		if (
+			!frappe.user.has_role("HR Manager") &&
+			!frappe.user.has_role("HR User") &&
+			frappe.session.user !== "Administrator"
+		) {
+			frappe.call({
+				method: "frappe.client.get_value",
+				args: {
+					doctype: "Employee",
+					filters: { user_id: frappe.session.user },
+					fieldname: "name"
+				},
+				callback: function (r) {
+					if (r.message) {
+						frm.set_value("employee", r.message.name);
+						frm.set_df_property("employee", "read_only", 1); // make it read-only
+					}
 				}
-			}
-		});
+			});
+		} else {
+			// HR/Admin can select manually
+			frm.set_df_property("employee", "read_only", 0);
+		}
 
 		if (frm.doc.docstatus == 1) {
 			frm.add_custom_button(__("Submit Proof"), function () {
