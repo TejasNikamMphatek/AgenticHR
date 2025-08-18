@@ -4,12 +4,28 @@
 frappe.ui.form.on("Employee Tax Exemption Proof Submission", {
 	setup: function (frm) {
 		frm.set_query("employee", function () {
-			return {
-				filters: {
-					status: "Active",
-				},
-			};
+			// Admin or HR can choose from all employees
+			if (
+				frappe.user.has_role("HR Manager") ||
+				frappe.user.has_role("HR User") ||
+				frappe.session.user === "Administrator"
+			) {
+				return {
+					filters: {
+						status: "Active"
+					}
+				};
+			} else {
+				// Normal users can only see themselves
+				return {
+					filters: {
+						status: "Active",
+						user_id: frappe.session.user
+					}
+				};
+			}
 		});
+
 
 		frm.set_query("payroll_period", function () {
 			if (frm.doc.employee && frm.doc.company) {
