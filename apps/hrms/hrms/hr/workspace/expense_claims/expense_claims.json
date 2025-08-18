@@ -124,17 +124,17 @@
    "type": "Link"
   }
  ],
- "modified": "2025-06-18 10:49:18.052608",
+ "modified": "2025-08-18 15:38:28.697553",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claims",
  "number_cards": [],
  "owner": "Administrator",
- "parent_page": "HR",
+ "parent_page": "Payroll",
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 31.0,
+ "sequence_id": 13.0,
  "shortcuts": [
   {
    "color": "Grey",

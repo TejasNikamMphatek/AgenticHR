@@ -419,7 +419,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-07-16 13:19:25.657744",
+ "modified": "2025-08-18 15:38:31.519464",
  "modified_by": "Administrator",
  "module": "CRM",
  "name": "CRM",
@@ -430,7 +430,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 24.0,
+ "sequence_id": 27.0,
  "shortcuts": [
   {
    "color": "Blue",
