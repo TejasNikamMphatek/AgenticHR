@@ -293,7 +293,17 @@ override_doctype_dashboards = {
 	"Project": "hrms.overrides.dashboard_overrides.get_dashboard_for_project",
 	"Timesheet": "hrms.overrides.dashboard_overrides.get_dashboard_for_timesheet",
 }
+# Add this to your existing hooks.py file
 
+# Permission Queries
+permission_query_conditions = {
+    "Employee Tax Exemption Declaration": "hrms.payroll.doctype.employee_tax_exemption_declaration.Permission.get_permission_query_conditions"
+}
+
+# If you want to use the has_permission function from Permission.py as well
+has_permission = {
+    "Employee Tax Exemption Declaration": "hrms.payroll.doctype.employee_tax_exemption_declaration.Permission.has_permission"
+}
 # exempt linked doctypes from being automatically cancelled
 #
 # auto_cancel_exempted_doctypes = ["Auto Repeat"]

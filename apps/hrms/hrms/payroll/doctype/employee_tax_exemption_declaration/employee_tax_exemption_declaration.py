@@ -6,6 +6,7 @@ import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import flt
+from frappe import _
 
 from hrms.hr.utils import (
 	calculate_annual_eligible_hra_exemption,
@@ -26,6 +27,48 @@ class EmployeeTaxExemptionDeclaration(Document):
 		self.set_total_declared_amount()
 		self.set_total_exemption_amount()
 		self.calculate_hra_exemption()
+
+	def before_insert(self):
+		self.validate_employee_access()
+
+	def before_save(self):
+		self.validate_employee_access()
+
+	def validate_employee_access(self):
+		"""Ensure only the employee themselves can create/modify their tax declaration"""
+		if not self.employee:
+			return
+		
+		# Get the user_id of the employee in the document
+		employee_user = frappe.db.get_value("Employee", self.employee, "user_id")
+		
+		# Check if current user is the same as employee's user
+		if employee_user != frappe.session.user:
+			# Allow HR users and System Managers to bypass this check
+			user_roles = frappe.get_roles(frappe.session.user)
+			allowed_roles = ["System Manager", "HR Manager", "HR User"]
+			
+			if not any(role in user_roles for role in allowed_roles):
+				frappe.throw(_("You can only create/modify tax exemption declarations for yourself"))
+
+	def has_permission(self, doc, user=None, permission_type="read"):
+		"""Override permission check to restrict access to own records only"""
+		if not user:
+			user = frappe.session.user
+		
+		# System Manager and HR roles have full access
+		user_roles = frappe.get_roles(user)
+		allowed_roles = ["System Manager", "HR Manager", "HR User"]
+		
+		if any(role in user_roles for role in allowed_roles):
+			return True
+		
+		# For other users, only allow access to their own records
+		if self.employee:
+			employee_user = frappe.db.get_value("Employee", self.employee, "user_id")
+			return employee_user == user
+		
+		return False
 
 	def set_total_declared_amount(self):
 		income_tax_slab = frappe.db.get_value(
@@ -87,6 +130,13 @@ class EmployeeTaxExemptionDeclaration(Document):
 
 @frappe.whitelist()
 def make_proof_submission(source_name, target_doc=None):
+	# Validate access before creating proof submission
+	source_doc = frappe.get_doc("Employee Tax Exemption Declaration", source_name)
+	
+	# Check if user has permission to access this document
+	if not source_doc.has_permission(source_doc, frappe.session.user):
+		frappe.throw(_("You don't have permission to create proof submission for this declaration"))
+	
 	doclist = get_mapped_doc(
 		"Employee Tax Exemption Declaration",
 		source_name,
