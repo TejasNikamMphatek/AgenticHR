@@ -1,9 +1,7 @@
 import frappe
 from frappe import _
 
-
 @frappe.whitelist()
-
 def get_permission_query_conditions(user):
     if not user or user == "Administrator":
         return ""
@@ -16,7 +14,7 @@ def get_permission_query_conditions(user):
     if not employee:
         return "1 = 0"
 
-    return f"`tabEmployee Tax Exemption Declaration`.employee = '{employee.name}'"
+    return f"`tabEmployee Tax Exemption Proof Submission`.employee = '{employee.name}'"
 
 @frappe.whitelist(allow_guest=False)
 def has_permission(doc, user):
