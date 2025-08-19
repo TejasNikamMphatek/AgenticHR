@@ -11,7 +11,7 @@
  "idx": 0,
  "indicator_color": "",
  "is_hidden": 0,
- "label": "Pipal Integrations",
+ "label": "PIPAL Integrations",
  "links": [
   {
    "hidden": 0,
@@ -219,10 +219,10 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-18 15:38:32.091515",
+ "modified": "2025-08-19 16:47:26.651890",
  "modified_by": "Administrator",
  "module": "Integrations",
- "name": "Pipal Integrations",
+ "name": "PIPAL Integrations",
  "number_cards": [],
  "owner": "Administrator",
  "parent_page": "",
@@ -230,7 +230,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 30.0,
+ "sequence_id": 29.0,
  "shortcuts": [],
- "title": "Pipal Integrations"
+ "title": "PIPAL Integrations"
 }

@@ -260,7 +260,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-18 15:38:30.529719",
+ "modified": "2025-08-19 16:47:23.812130",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Financial Reports",
@@ -271,7 +271,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 21.0,
+ "sequence_id": 17.0,
  "shortcuts": [],
  "title": "Financial Reports"
 }

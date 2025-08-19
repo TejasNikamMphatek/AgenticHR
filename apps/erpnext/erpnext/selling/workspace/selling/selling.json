@@ -621,7 +621,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-18 15:38:29.523052",
+ "modified": "2025-08-19 16:47:24.303130",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Selling",
@@ -632,7 +632,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 16.0,
+ "sequence_id": 19.0,
  "shortcuts": [
   {
    "color": "Grey",
