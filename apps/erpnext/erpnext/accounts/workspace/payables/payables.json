@@ -162,7 +162,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-18 15:38:30.264112",
+ "modified": "2025-08-19 16:47:23.521358",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payables",
@@ -173,7 +173,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 19.0,
+ "sequence_id": 15.0,
  "shortcuts": [
   {
    "doc_view": "",

@@ -13,10 +13,10 @@
  "for_user": "",
  "hide_custom": 1,
  "icon": "hr",
- "idx": 0,
+ "idx": 1,
  "indicator_color": "",
  "is_hidden": 0,
- "label": "Pipal HR",
+ "label": "PIPAL HR",
  "links": [
   {
    "hidden": 0,
@@ -229,10 +229,10 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-18 15:38:27.254502",
+ "modified": "2025-08-19 16:47:21.833631",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Pipal HR",
+ "name": "PIPAL HR",
  "number_cards": [],
  "owner": "Administrator",
  "parent_page": "",
@@ -240,7 +240,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 1.0,
+ "sequence_id": 2.0,
  "shortcuts": [
   {
    "color": "Cyan",
@@ -275,5 +275,5 @@
    "type": "DocType"
   }
  ],
- "title": "Pipal HR"
+ "title": "PIPAL HR"
 }
