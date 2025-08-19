@@ -42,15 +42,19 @@ class BulkSalaryStructureAssignment(Document):
 			fields=["employee"]
 		)
 		already_assigned_ids = {d["employee"] for d in already_assigned_salary_structure}
-		# print(f"already_assigned_salary_structure == {len(already_assigned_salary_structure)}")
 
 		# QB query
 		Employee = frappe.qb.DocType("Employee")
-		# Grade = frappe.qb.DocType("Employee Grade")
 		query = (
 			frappe.qb.get_query(
 				Employee,
-				fields=[Employee.employee, Employee.employee_name, Employee.ctc.as_("base") ],
+				fields=[
+					Employee.employee, 
+					Employee.employee_name, 
+					Employee.ctc.as_("base"),
+					# Add a default value for variable if not present
+					ConstantColumn(0).as_("variable")
+				],
 				filters=filters,
 			)
 			.where(
@@ -62,13 +66,16 @@ class BulkSalaryStructureAssignment(Document):
 
 		filtered_employee = query.run(as_dict=True)
 
-		# print("before_filteration", (filtered_employee))
 		# Now filter out employees already assigned
 		filtered_employee = [
 			emp for emp in filtered_employee if emp["employee"] not in already_assigned_ids
 		]
 
-		# print(f"filtered_employee ==== {len(filtered_employee)}")
+		# Ensure base and variable have default values
+		for emp in filtered_employee:
+			emp["base"] = emp.get("base") or 0
+			emp["variable"] = emp.get("variable") or 0
+
 		return filtered_employee
 
 	@frappe.whitelist()
@@ -101,8 +108,8 @@ class BulkSalaryStructureAssignment(Document):
 					currency=self.currency,
 					payroll_payable_account=self.payroll_payable_account,
 					from_date=self.from_date,
-					base=d["base"],
-					variable=d["variable"],
+					base=d.get("base", 0),  # Use get() with default value
+					variable=d.get("variable", 0),  # Use get() with default value
 					income_tax_slab=self.income_tax_slab,
 				)
 			except Exception:
