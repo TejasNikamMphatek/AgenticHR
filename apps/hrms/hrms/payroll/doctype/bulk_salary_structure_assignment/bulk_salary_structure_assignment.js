@@ -150,84 +150,102 @@ frappe.ui.form.on("Bulk Salary Structure Assignment", {
 			events,
 		);
 	},
-
-	get_employees_datatable_columns() {
-		return [
-			{
-				name: "employee",
-				id: "employee",
-				content: __("Employee"),
-				editable: false,
-				focusable: false,
-			},
-			{
-				name: "employee_name",
-				id: "employee_name",
-				content: __("Name"),
-				editable: false,
-				focusable: false,
-			},
-			// {
-			// 	name: "grade",
-			// 	id: "grade",
-			// 	content: __("Grade"),
-			// 	editable: false,
-			// 	focusable: false,
-			// },
-			{
-				name: "base",
-				id: "base",
-				content: __("Base"),
-			},
-			// {
-			// 	name: "variable",
-			// 	id: "variable",
-			// 	content: __("Variable"),
-			// },
-		].map((x) => ({
-			...x,
-			dropdown: false,
-			align: "left",
-		}));
-	},
-
+get_employees_datatable_columns() {
+	return [
+		{
+			name: "employee",
+			id: "employee",
+			content: __("Employee"),
+			editable: false,
+			focusable: false,
+		},
+		{
+			name: "employee_name",
+			id: "employee_name",
+			content: __("Name"),
+			editable: false,
+			focusable: false,
+		},
+		{
+			name: "base",
+			id: "base",
+			content: __("Base"),
+			editable: true,
+			focusable: true,
+		},
+		{
+			name: "variable",
+			id: "variable",
+			content: __("Variable"),
+			editable: true,
+			focusable: true,
+		},
+	].map((x) => ({
+		...x,
+		dropdown: false,
+		align: "left",
+	}));
+},
 	render_update_button(frm) {
-		["Base", "Variable"].forEach((d) =>
-			frm.add_custom_button(
-				__(d),
-				function () {
-					const dialog = new frappe.ui.Dialog({
-						title: __("Set {0} for Selected Employees", [__(d)]),
-						fields: [
-							{
-								label: __(d),
-								fieldname: d,
-								fieldtype: "Currency",
-							},
-						],
-						primary_action_label: __("Update"),
-						primary_action(values) {
-							const col_idx = frm.employees_datatable.datamanager.columns.find(
-								(col) => col.content === d,
-							).colIndex;
-							frm.checked_rows_indexes.forEach((row_idx) => {
-								frm.employees_datatable.cellmanager.updateCell(
-									col_idx,
-									row_idx,
-									values[d],
-									true,
-								);
-							});
-							dialog.hide();
+	["Base", "Variable"].forEach((d) =>
+		frm.add_custom_button(
+			__(d),
+			function () {
+				const dialog = new frappe.ui.Dialog({
+					title: __("Set {0} for Selected Employees", [__(d)]),
+					fields: [
+						{
+							label: __(d),
+							fieldname: d.toLowerCase(),
+							fieldtype: "Currency",
 						},
-					});
-					dialog.show();
-				},
-				__("Update"),
-			),
-		);
-		frm.update_button_rendered = true;
-	},
+					],
+					primary_action_label: __("Update"),
+					primary_action(values) {
+						const field_name = d.toLowerCase(); // "Base" -> "base", "Variable" -> "variable"
+						const new_value = values[field_name];
+						
+						// Find column by name, not by content
+						let col_idx = -1;
+						if (frm.employees_datatable && frm.employees_datatable.datamanager) {
+							frm.employees_datatable.datamanager.columns.forEach((col, index) => {
+								if (col.name === field_name) {
+									col_idx = index;
+								}
+							});
+						}
+						
+						if (col_idx === -1) {
+							frappe.msgprint(__("Could not find column for {0}", [d]));
+							return;
+						}
+						
+						// Update each selected row
+						frm.checked_rows_indexes.forEach((row_idx) => {
+							frm.employees_datatable.cellmanager.updateCell(
+								col_idx,
+								row_idx,
+								new_value
+							);
+						});
+						
+						frappe.show_alert({
+							message: __("{0} updated for {1} employee(s)", [d, frm.checked_rows_indexes.length]),
+							indicator: "green"
+						});
+						
+						dialog.hide();
+					},
+				});
+				dialog.show();
+			},
+			__("Update"),
+		),
+	);
+	frm.update_button_rendered = true;
+},
+
+	
 
 	handle_row_check(frm) {
 		frm.checked_rows_indexes = frm.employees_datatable.rowmanager.getCheckedRows();
