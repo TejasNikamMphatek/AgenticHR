@@ -106,7 +106,7 @@
    "label": "Raw Printing"
   },
   {
-   "depends_on": "eval:!doc.raw_printing",
+   "depends_on": "eval:frappe.user.has_role(['Administrator']) == 1 && !doc.raw_printing\n",
    "fieldname": "html",
    "fieldtype": "Code",
    "label": "HTML",
@@ -169,6 +169,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "depends_on": "eval:frappe.user.has_role(['Administrator']) == 1 && !doc.raw_printing\n",
    "fieldname": "css",
    "fieldtype": "Code",
    "label": "Custom CSS",
@@ -264,7 +265,7 @@
  "icon": "fa fa-print",
  "idx": 1,
  "links": [],
- "modified": "2025-01-29 11:12:06.038607",
+ "modified": "2025-08-20 11:12:41.410007",
  "modified_by": "Administrator",
  "module": "Printing",
  "name": "Print Format",
