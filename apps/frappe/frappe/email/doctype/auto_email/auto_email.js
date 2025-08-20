@@ -1,7 +1,7 @@
 // Copyright (c) 2016, mPHATEK Systems and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on("Auto Email Report", {
+frappe.ui.form.on("Auto Email", {
 	refresh: function (frm) {
 		frm.trigger("fetch_report_filters");
 		if (!frm.is_new()) {

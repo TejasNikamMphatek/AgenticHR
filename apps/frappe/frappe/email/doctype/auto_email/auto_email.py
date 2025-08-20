@@ -32,7 +32,7 @@ from frappe.utils.csvutils import to_csv
 from frappe.utils.xlsxutils import make_xlsx
 
 
-class AutoEmailReport(Document):
+class AutoEmail(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -98,7 +98,7 @@ class AutoEmailReport(Document):
 
 		max_reports_per_user = (
 			cint(frappe.local.conf.max_reports_per_user)  # kept for backward compatibilty
-			or cint(frappe.db.get_single_value("System Settings", "max_auto_email_report_per_user"))
+			or cint(frappe.db.get_single_value("System Settings", "max_auto_email_per_user"))
 			or 20
 		)
 
@@ -192,7 +192,7 @@ class AutoEmailReport(Document):
 		report_doctype = frappe.db.get_value("Report", self.report, "ref_doctype")
 
 		return frappe.render_template(
-			"frappe/templates/emails/auto_email_report.html",
+			"frappe/templates/emails/auto_email.html",
 			{
 				"title": self.name,
 				"description": self.description,
@@ -280,9 +280,9 @@ class AutoEmailReport(Document):
 @frappe.whitelist()
 def download(name):
 	"""Download report locally"""
-	auto_email_report = frappe.get_doc("Auto Email Report", name)
-	auto_email_report.check_permission()
-	data = auto_email_report.get_report_content()
+	auto_email = frappe.get_doc("Auto Email Report", name)
+	auto_email.check_permission()
+	data = auto_email.get_report_content()
 
 	if not data:
 		frappe.msgprint(_("No Data"))
@@ -290,15 +290,15 @@ def download(name):
 
 	frappe.local.response.filecontent = data
 	frappe.local.response.type = "download"
-	frappe.local.response.filename = auto_email_report.get_file_name()
+	frappe.local.response.filename = auto_email.get_file_name()
 
 
 @frappe.whitelist()
 def send_now(name):
 	"""Send Auto Email report now"""
-	auto_email_report = frappe.get_doc("Auto Email Report", name)
-	auto_email_report.check_permission()
-	auto_email_report.send()
+	auto_email = frappe.get_doc("Auto Email Report", name)
+	auto_email.check_permission()
+	auto_email.send()
 
 
 def send_daily():
@@ -310,19 +310,19 @@ def send_daily():
 	)
 
 	for report in enabled_reports:
-		auto_email_report = frappe.get_doc("Auto Email Report", report.name)
+		auto_email = frappe.get_doc("Auto Email Report", report.name)
 
 		# if not correct weekday, skip
-		if auto_email_report.frequency == "Weekdays":
+		if auto_email.frequency == "Weekdays":
 			if current_day in ("Saturday", "Sunday"):
 				continue
-		elif auto_email_report.frequency == "Weekly":
-			if auto_email_report.day_of_week != current_day:
+		elif auto_email.frequency == "Weekly":
+			if auto_email.day_of_week != current_day:
 				continue
 		try:
-			auto_email_report.send()
+			auto_email.send()
 		except Exception:
-			auto_email_report.log_error(f"Failed to send {auto_email_report.name} Auto Email Report")
+			auto_email.log_error(f"Failed to send {auto_email.name} Auto Email Report")
 
 
 def send_monthly():

@@ -13,7 +13,7 @@
     },
     "Leave Application" : {
         "System Manager" : [],
-        "Other User" : ["Dashboard", "Kanban", "Report"]
+        "Other User" : ["Dashboard", "Kanban", "Report", "Gantt"]
     },
     "Attendance Request" : {
         "System Manager" : ["Dashboard", "Kanban"],
@@ -484,6 +484,10 @@
         "Other User" : ["Report", "Dashboard", "Kanban"]
     },
     "NDA Letter": {
+        "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "Auto Email Report": {
         "System Manager" :["Report", "Dashboard", "Kanban"],
         "Other User" : ["Report", "Dashboard", "Kanban"]
     }
