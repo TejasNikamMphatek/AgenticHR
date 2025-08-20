@@ -597,7 +597,7 @@
   {
    "fieldname": "ctc",
    "fieldtype": "Currency",
-   "label": "CTC",
+   "label": "Yearly Gross CTC",
    "options": "currency",
    "read_only": 1
   },
@@ -754,7 +754,7 @@
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-20 11:04:35.141620",
+ "modified": "2025-08-20 15:28:16.757559",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
