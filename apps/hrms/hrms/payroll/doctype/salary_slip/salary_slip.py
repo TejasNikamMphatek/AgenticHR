@@ -975,7 +975,7 @@ class SalarySlip(TransactionBase):
 		self.total_exemption_amount = self.get_total_exemption_amount()
 
 		# Employee Other Incomes
-		self.other_incomes = self.get_income_form_other_sources() or 0.0
+		# self.other_incomes = self.get_income_form_other_sources() or 0.0
 
 		# Total taxable earnings including additional and other incomes
 		self.total_taxable_earnings = (
@@ -983,7 +983,7 @@ class SalarySlip(TransactionBase):
 			+ self.current_structured_taxable_earnings
 			+ self.future_structured_taxable_earnings
 			+ self.current_additional_earnings
-			+ self.other_incomes
+			# + self.other_incomes
 			+ self.unclaimed_taxable_benefits
 			- self.total_exemption_amount
 		)
@@ -1064,9 +1064,11 @@ class SalarySlip(TransactionBase):
 		self.ctc = self.compute_ctc()
 		# print("ctc = ",self.ctc)
 
-		self.income_from_other_sources = self.get_income_form_other_sources()
+		# self.income_from_other_sources = self.get_income_form_other_sources()
 
-		self.total_earnings = self.ctc + self.income_from_other_sources
+		# self.total_earnings = self.ctc + self.income_from_other_sources
+		self.total_earnings = self.ctc
+
 		# print("total_earnings = ",self.total_earnings)
 
 		if hasattr(self, "tax_slab"):
@@ -1137,7 +1139,7 @@ class SalarySlip(TransactionBase):
 				+ self.current_structured_taxable_earnings_before_exemption
 				+ self.future_structured_taxable_earnings_before_exemption
 				+ self.current_additional_earnings
-				+ self.other_incomes
+				# + self.other_incomes
 				+ self.unclaimed_taxable_benefits
 				+ self.non_taxable_earnings
 
