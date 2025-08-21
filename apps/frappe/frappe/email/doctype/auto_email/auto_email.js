@@ -3,7 +3,11 @@
 
 frappe.ui.form.on("Auto Email", {
 	refresh: function (frm) {
-		frm.trigger("fetch_report_filters");
+		// Prevent redundant trigger if report already set
+		if (frm.script_setup_for !== frm.doc.report) {
+			frm.trigger("fetch_report_filters");
+		}
+
 		if (!frm.is_new()) {
 			frm.add_custom_button(__("Download"), function () {
 				var w = window.open(
@@ -45,10 +49,15 @@ frappe.ui.form.on("Auto Email", {
 			};
 		});
 	},
+
 	report: function (frm) {
+		// Prevent repeated re-trigger for same report
+		if (frm.script_setup_for === frm.doc.report) return;
+
 		frm.set_value("filters", "");
 		frm.trigger("fetch_report_filters");
 	},
+
 	fetch_report_filters(frm) {
 		if (
 			frm.doc.report &&
@@ -70,20 +79,22 @@ frappe.ui.form.on("Auto Email", {
 			frm.trigger("show_filters");
 		}
 	},
+
 	show_filters: async function (frm) {
 		var wrapper = $(frm.get_field("filters_display").wrapper);
 		wrapper.empty();
+
 		let reference_report = frappe.query_reports[frm.doc.report];
 		if (!reference_report || !reference_report.filters) {
 			reference_report = await frappe.model.with_doc("Report", frm.doc.report);
 		}
+
 		if (
 			frm.doc.report_type === "Custom Report" ||
 			(frm.doc.report_type !== "Report Builder" &&
 				reference_report &&
 				reference_report.filters)
 		) {
-			// make a table to show filters
 			var table = $(
 				'<table class="table table-bordered" style="cursor:pointer; margin:0px;"><thead>\
 				<tr><th style="width: 50%">' +
@@ -93,12 +104,10 @@ frappe.ui.form.on("Auto Email", {
 					"</th></tr>\
 				</thead><tbody></tbody></table>"
 			).appendTo(wrapper);
-			$('<p class="text-muted small">' + __("Click table to edit") + "</p>").appendTo(
-				wrapper
-			);
+
+			$('<p class="text-muted small">' + __("Click table to edit") + "</p>").appendTo(wrapper);
 
 			var filters = {};
-
 			let report_filters;
 
 			if (
@@ -115,7 +124,6 @@ frappe.ui.form.on("Auto Email", {
 						}
 					});
 				}
-
 				report_filters = frappe.query_reports[frm.doc.reference_report].filters;
 			} else {
 				filters = JSON.parse(frm.doc.filters || "{}");
@@ -131,7 +139,6 @@ frappe.ui.form.on("Auto Email", {
 
 			var report_filters_list = [];
 			$.each(report_filters, function (key, val) {
-				// Remove break fieldtype from the filters
 				if (val.fieldtype != "Break") {
 					report_filters_list.push(val);
 				}
@@ -159,8 +166,13 @@ frappe.ui.form.on("Auto Email", {
 						var values = this.get_values();
 						if (values) {
 							this.hide();
-							frm.set_value("filters", JSON.stringify(values));
-							frm.trigger("show_filters");
+							const new_filter_string = JSON.stringify(values);
+
+							// Only update if values have changed
+							if (frm.doc.filters !== new_filter_string) {
+								frm.set_value("filters", new_filter_string);
+								frm.trigger("show_filters");
+							}
 						}
 					},
 				});
@@ -168,10 +180,10 @@ frappe.ui.form.on("Auto Email", {
 				dialog.set_values(filters);
 			});
 
-			// populate dynamic date field selection
 			let date_fields = report_filters
 				.filter((df) => df.fieldtype === "Date")
 				.map((df) => ({ label: df.label, value: df.fieldname }));
+
 			frm.set_df_property("from_date_field", "options", date_fields);
 			frm.set_df_property("to_date_field", "options", date_fields);
 			frm.toggle_display("dynamic_report_filters_section", date_fields.length > 0);
