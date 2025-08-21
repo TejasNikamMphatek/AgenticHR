@@ -67,8 +67,8 @@ class AutoEmail(Document):
 
 	def autoname(self):
 		self.name = _(self.report)
-		if frappe.db.exists("Auto Email Report", self.name):
-			self.name = append_number_if_name_exists("Auto Email Report", self.name)
+		if frappe.db.exists("Auto Email", self.name):
+			self.name = append_number_if_name_exists("Auto Email", self.name)
 
 	def validate(self):
 		self.validate_report_count()
@@ -94,11 +94,10 @@ class AutoEmail(Document):
 		self.email_to = "\n".join(valid)
 
 	def validate_report_count(self):
-		count = frappe.db.count("Auto Email Report", {"user": self.user, "enabled": 1})
-
+		count = frappe.db.count("Auto Email", {"user": self.user, "enabled": 1})
 		max_reports_per_user = (
-			cint(frappe.local.conf.max_reports_per_user)  # kept for backward compatibilty
-			or cint(frappe.db.get_single_value("System Settings", "max_auto_email_per_user"))
+			cint(frappe.local.conf.max_reports_per_user)  # kept for backward compatibility
+			or cint(frappe.db.get_single_value("System Settings", "max_auto_email_report_per_user"))
 			or 20
 		)
 
@@ -173,7 +172,7 @@ class AutoEmail(Document):
 			report_data["result"] = data
 
 			xlsx_data, column_widths = build_xlsx_data(report_data, [], 1, ignore_visible_idx=True)
-			xlsx_file = make_xlsx(xlsx_data, "Auto Email Report", column_widths=column_widths)
+			xlsx_file = make_xlsx(xlsx_data, "Auto Email", column_widths=column_widths)
 			return xlsx_file.getvalue()
 
 		elif self.format == "CSV":
@@ -201,7 +200,7 @@ class AutoEmail(Document):
 				"data": data,
 				"report_url": get_url_to_report(self.report, self.report_type, report_doctype),
 				"report_name": self.report,
-				"edit_report_settings": get_link_to_form("Auto Email Report", self.name),
+				"edit_report_settings": get_link_to_form("Auto Email", self.name),
 			},
 		)
 
@@ -280,7 +279,7 @@ class AutoEmail(Document):
 @frappe.whitelist()
 def download(name):
 	"""Download report locally"""
-	auto_email = frappe.get_doc("Auto Email Report", name)
+	auto_email = frappe.get_doc("Auto Email", name)
 	auto_email.check_permission()
 	data = auto_email.get_report_content()
 
@@ -295,8 +294,8 @@ def download(name):
 
 @frappe.whitelist()
 def send_now(name):
-	"""Send Auto Email report now"""
-	auto_email = frappe.get_doc("Auto Email Report", name)
+	"""Send Auto Email now"""
+	auto_email = frappe.get_doc("Auto Email", name)
 	auto_email.check_permission()
 	auto_email.send()
 
@@ -306,11 +305,11 @@ def send_daily():
 
 	current_day = calendar.day_name[now_datetime().weekday()]
 	enabled_reports = frappe.get_all(
-		"Auto Email Report", filters={"enabled": 1, "frequency": ("in", ("Daily", "Weekdays", "Weekly"))}
+		"Auto Email", filters={"enabled": 1, "frequency": ("in", ("Daily", "Weekdays", "Weekly"))}
 	)
 
 	for report in enabled_reports:
-		auto_email = frappe.get_doc("Auto Email Report", report.name)
+		auto_email = frappe.get_doc("Auto Email", report.name)
 
 		# if not correct weekday, skip
 		if auto_email.frequency == "Weekdays":
@@ -322,13 +321,13 @@ def send_daily():
 		try:
 			auto_email.send()
 		except Exception:
-			auto_email.log_error(f"Failed to send {auto_email.name} Auto Email Report")
+			auto_email.log_error(f"Failed to send {auto_email.name} Auto Email")
 
 
 def send_monthly():
 	"""Check reports to be sent monthly"""
-	for report in frappe.get_all("Auto Email Report", {"enabled": 1, "frequency": "Monthly"}):
-		frappe.get_doc("Auto Email Report", report.name).send()
+	for report in frappe.get_all("Auto Email", {"enabled": 1, "frequency": "Monthly"}):
+		frappe.get_doc("Auto Email", report.name).send()
 
 
 def make_links(columns, data):
