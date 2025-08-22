@@ -1314,8 +1314,9 @@ def add_leaves(events, start, end, filters=None, employee=None):
 		[
 			["from_date", "<=", getdate(end)],
 			["to_date", ">=", getdate(start)],
-			["status", "in", ["Approved", "Open"]],
-			["docstatus", "<", 2],
+			["status", "=", "Approved"],        # ← FIXED: Only approved leaves (was ["status", "in", ["Approved", "Open"]])
+			["docstatus", "=", 1],   
+			
 		]
 	)
 
