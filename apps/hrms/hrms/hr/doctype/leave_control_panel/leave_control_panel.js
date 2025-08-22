@@ -177,32 +177,47 @@ frappe.ui.form.on("Leave Control Panel", {
 			frm.trigger("allocate_leave");
 		});
 	},
+    allocate_leave(frm) {
+    const check_map = frm.employees_datatable.rowmanager.checkMap;
+    const selected_employees = [];
+    check_map.forEach((is_checked, idx) => {
+        if (is_checked)
+            selected_employees.push(frm.employees_datatable.datamanager.data[idx].employee);
+    });
 
-	allocate_leave(frm) {
-		const check_map = frm.employees_datatable.rowmanager.checkMap;
-		const selected_employees = [];
-		check_map.forEach((is_checked, idx) => {
-			if (is_checked)
-				selected_employees.push(frm.employees_datatable.datamanager.data[idx].employee);
-		});
-		frm.call({
-			method: "allocate_leave",
-			doc: frm.doc,
-			args: {
-				employees: selected_employees,
-			},
-			freeze: true,
-			freeze_message: __("Allocating Leave"),
-		}).then((r) => {
-			// don't refresh on complete failure
-			if (r.message.failed && !r.message.success) return;
-			frm.refresh();
-		});
+    // Only proceed if there are selected employees
+    if (!selected_employees.length) return;
 
-		hrms.validate_mandatory_fields(frm, selected_employees);
-		frm.events.show_confirm_dialog(frm, selected_employees);
-	},
+    frm.call({
+        method: "allocate_leave",
+        doc: frm.doc,
+        args: {
+            employees: selected_employees,
+        },
+        freeze: true,
+        freeze_message: __("Allocating Leave"),
+    }).then((r) => {
+        // Prevent re-calling allocate_leave if allocation succeeded
+        if (r.message && r.message.success && r.message.success.length > 0) {
+            // Allocation succeeded, no need to show confirm dialog
+            frm.refresh();
+            frappe.show_alert({
+                message: __("Leave allocated successfully for {0} employee(s)", [r.message.success.length]),
+                indicator: "green",
+            });
+            return;
+        }
 
+        // Only show confirm dialog if some employees failed
+        if (r.message && r.message.failed && r.message.failed.length > 0) {
+            frm.events.show_confirm_dialog(frm, r.message.failed);
+        }
+    });
+
+    hrms.validate_mandatory_fields(frm, selected_employees);
+},
+
+	
 	show_confirm_dialog(frm, selected_employees) {
 		frappe.confirm(
 			__("Allocate Leave to {0} employee(s)?", [selected_employees.length]),
