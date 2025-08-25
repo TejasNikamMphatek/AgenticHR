@@ -974,29 +974,15 @@ class SalarySlip(TransactionBase):
 		# Total exemption amount based on tax exemption declaration
 		self.total_exemption_amount = self.get_total_exemption_amount()
 
-		# Employee Other Incomes
-		# self.other_incomes = self.get_income_form_other_sources() or 0.0
-
-		# Total taxable earnings including additional and other incomes
 		self.total_taxable_earnings = (
 			self.previous_taxable_earnings
 			+ self.current_structured_taxable_earnings
 			+ self.future_structured_taxable_earnings
 			+ self.current_additional_earnings
-			# + self.other_incomes
 			+ self.unclaimed_taxable_benefits
 			- self.total_exemption_amount
 		)
-		# print("**#** previous_taxable_earnings", self.previous_taxable_earnings)
-		# print("**#** current_structured_taxable_earnings", self.current_structured_taxable_earnings)
-		# print("**#** future_structured_taxable_earnings", self.future_structured_taxable_earnings)
-		# print("**#** current_additional_earnings", self.current_additional_earnings)
-		# print("**#** other_incomes", self.other_incomes)
-		# print("**#** unclaimed_taxable_benefits", self.unclaimed_taxable_benefits)
-		# print("**#** total_exemption_amount", self.total_exemption_amount)
-
-		# print("self.total_taxable_earnings= vvimp ===== ",self.total_taxable_earnings)
-
+		
 		# Total taxable earnings without additional earnings with full tax
 		self.total_taxable_earnings_without_full_tax_addl_components = (
 			self.total_taxable_earnings - self.current_additional_earnings_with_full_tax
@@ -1005,6 +991,7 @@ class SalarySlip(TransactionBase):
 	def compute_current_and_future_taxable_earnings(self):
 		# get taxable_earnings for current period (all days)
 		self.current_taxable_earnings = self.get_taxable_earnings(self.tax_slab.allow_tax_exemption)
+
 		self.future_structured_taxable_earnings = self.current_taxable_earnings.taxable_earnings * (
 			ceil(self.remaining_sub_periods) - 1
 		)
@@ -1016,17 +1003,10 @@ class SalarySlip(TransactionBase):
 			+ self.current_taxable_earnings.amount_exempted_from_income_tax
 		)
 
-		# print("self.current_taxable_earnings.taxable_earnings=-=-=-= imp " , self.current_taxable_earnings)
-		# print("current_taxable_earnings_before_exemption = ",current_taxable_earnings_before_exemption)
-		# print("(ceil(self.remaining_sub_periods) - 1) = ",(ceil(self.remaining_sub_periods) - 1))
-
 		self.future_structured_taxable_earnings_before_exemption = (
 			current_taxable_earnings_before_exemption * (ceil(self.remaining_sub_periods) - 1)
 		)
-		# print("current_taxable_earnings_before_exemption -=-=-=-=- ***", current_taxable_earnings_before_exemption)
-		# print("(ceil(self.remaining_sub_periods) - 1)===#####",(ceil(self.remaining_sub_periods) - 1))
-		# print("self.future_structured_taxable_earnings_before_exemption =+==++== ",self.future_structured_taxable_earnings_before_exemption)
-
+		
 		# get taxable_earnings, addition_earnings for current actual payment days
 		self.current_taxable_earnings_for_payment_days = self.get_taxable_earnings(
 			self.tax_slab.allow_tax_exemption, based_on_payment_days=1
@@ -1036,8 +1016,6 @@ class SalarySlip(TransactionBase):
 			self.current_taxable_earnings_for_payment_days.taxable_earnings
 		)
 
-		# print("current_structured_taxable_earnings = = ",self.current_structured_taxable_earnings) # - 1800 - 200
-		# print("self.current_taxable_earnings_for_payment_days = = ",self.current_taxable_earnings_for_payment_days)
 		
 		self.current_structured_taxable_earnings_before_exemption = (
 			self.current_structured_taxable_earnings
@@ -1062,11 +1040,7 @@ class SalarySlip(TransactionBase):
 		# print("non_taxable_earnings = ",self.non_taxable_earnings)
 
 		self.ctc = self.compute_ctc()
-		# print("ctc = ",self.ctc)
-
-		# self.income_from_other_sources = self.get_income_form_other_sources()
-
-		# self.total_earnings = self.ctc + self.income_from_other_sources
+		
 		self.total_earnings = self.ctc
 
 		# print("total_earnings = ",self.total_earnings)
@@ -1074,10 +1048,11 @@ class SalarySlip(TransactionBase):
 		if hasattr(self, "tax_slab"):
 			if self.tax_slab.allow_tax_exemption:
 				self.standard_tax_exemption_amount = self.tax_slab.standard_tax_exemption_amount
-				self.deductions_before_tax_calculation = (
-					self.compute_annual_deductions_before_tax_calculation()
-				)
-			# print("self.tax_slab.exemption_category ==",self.employee_tax_exemption_proof_submission)
+				if not self.tax_slab.is_new_regime:
+					self.deductions_before_tax_calculation = (
+						self.compute_annual_deductions_before_tax_calculation()
+					)
+
 			if not self.tax_slab.allow_tax_exemption:
 				self.standard_tax_exemption_amount = self.tax_slab.standard_tax_exemption_amount
 
@@ -1085,9 +1060,10 @@ class SalarySlip(TransactionBase):
 				self.get_total_exemption_amount() - self.standard_tax_exemption_amount
 			)
 
+		# while calculating annual taxable amount:
 		self.annual_taxable_amount = self.total_earnings - (
 			self.non_taxable_earnings
-			+ self.deductions_before_tax_calculation
+			+ (0 if self.tax_slab.is_new_regime else getattr(self, "deductions_before_tax_calculation", 0))
 			+ self.tax_exemption_declaration
 			+ self.standard_tax_exemption_amount
 		)
@@ -1096,11 +1072,6 @@ class SalarySlip(TransactionBase):
 			self.annual_taxable_amount = 0
 
 
-		# print("self.total_earnings = ",self.total_earnings)
-		# print("self.annual_taxable_amount = ",self.annual_taxable_amount)
-		# print("self.non_taxable_earnings = ",self.non_taxable_earnings)
-		# print("self.deductions_before_tax_calculation = ",self.deductions_before_tax_calculation)
-		# print("self.standard_tax_exemption_amount = ",self.standard_tax_exemption_amount)
 
 		self.income_tax_deducted_till_date = self.get_income_tax_deducted_till_date()
 
@@ -1109,41 +1080,20 @@ class SalarySlip(TransactionBase):
 				self.total_structured_tax_amount - self.income_tax_deducted_till_date
 			)
 
-			# print("self.total_structured_tax_amount",self.total_structured_tax_amount)
-
 			self.current_month_income_tax = self.current_structured_tax_amount
-			# self.current_month_income_tax = self.current_month_income_tax_amount
-
-			# non included current_month_income_tax separately as its already considered
-			# while calculating income_tax_deducted_till_date
-
+			
 			self.total_income_tax = self.income_tax_deducted_till_date + self.future_income_tax_deductions
 			
-			# print("self.total_income_tax==",self.total_income_tax)
-			# print("sself.income_tax_deducted_till_date==",self.income_tax_deducted_till_date)
-			# print("self.future_income_tax_deductions==",self.future_income_tax_deductions)
 		
 	def compute_ctc(self):
-		
 		if hasattr(self, "previous_taxable_earnings"):
-
-			# print("1 OK self.previous_taxable_earnings_before_exemption==",self.previous_taxable_earnings_before_exemption)
-			# print("2 OK self.current_structured_taxable_earnings_before_exemption==",self.current_structured_taxable_earnings_before_exemption)
-			# print("3 OK self.future_structured_taxable_earnings_before_exemption",self.future_structured_taxable_earnings_before_exemption)
-			# print("4 self.current_additional_earnings",self.current_additional_earnings)
-			# print("5 self.other_incomes",self.other_incomes)
-			# print("6 self.unclaimed_taxable_benefits",self.unclaimed_taxable_benefits)
-			# print("7 self.non_taxable_earnings",self.non_taxable_earnings)
 			return (
 				self.previous_taxable_earnings_before_exemption
 				+ self.current_structured_taxable_earnings_before_exemption
 				+ self.future_structured_taxable_earnings_before_exemption
 				+ self.current_additional_earnings
-				# + self.other_incomes
 				+ self.unclaimed_taxable_benefits
 				+ self.non_taxable_earnings
-
-				# frappe.db.get_value("Employee", self.employee, "ctc", cache=True)
 			)
 
 		return 0.0
@@ -1265,10 +1215,7 @@ class SalarySlip(TransactionBase):
 
 	def get_income_tax_deducted_till_date(self):
 		tax_deducted = 0.0
-		
 		for tax_component in self.get("_component_based_variable_tax") or {}:
-			# print("tax_component ========= ",tax_component)
-		
 			tax_deducted += (
 				self._component_based_variable_tax[tax_component]["previous_total_paid_taxes"]
 				+ self._component_based_variable_tax[tax_component]["current_tax_amount"]
@@ -1505,9 +1452,8 @@ class SalarySlip(TransactionBase):
 		self._component_based_variable_tax = {}
 		for d in tax_components:
 			self._component_based_variable_tax.setdefault(d, {})
-			# print(self._component_based_variable_tax.setdefault(d, {}))
 			tax_amount = self.calculate_variable_based_on_taxable_salary(d)
-			# print("tax_amount--------------",self.calculate_variable_based_on_taxable_salary(d))
+
 			
 			tax_row = get_salary_component_data(d)
 			# print("tax_row == ",tax_row)
@@ -1874,24 +1820,17 @@ class SalarySlip(TransactionBase):
 		flexi_benefits = 0
 		amount_exempted_from_income_tax = 0
 
-		# print("****self.earnings*******",self.earnings)
-
 		for earning in self.earnings:
-			# print("earning in loop=", earning)
 
 			if based_on_payment_days:
 				amount, additional_amount = self.get_amount_based_on_payment_days(earning)
-				# print("self.get_amount_based_on_payment_days(earning)-=====-", self.get_amount_based_on_payment_days(earning))
-				# print("amount current slip= 1", amount)
-				# print("additional_amount=", additional_amount)
+				
 			else:
 				if earning.additional_amount:
 					amount, additional_amount = earning.amount, earning.additional_amount
 				else:
 					amount, additional_amount = earning.default_amount, earning.additional_amount
-					# print("earning.default_amount (future slip)**** 2",earning.default_amount)
-					# print("amount= 2", amount)
-					# print("additional_amount=", additional_amount)
+
 			if earning.is_tax_applicable:
 				if earning.is_flexible_benefit:
 					flexi_benefits += amount
@@ -1914,9 +1853,12 @@ class SalarySlip(TransactionBase):
 					amount, additional_amount = ded.amount, ded.additional_amount
 					if based_on_payment_days:
 						amount, additional_amount = self.get_amount_based_on_payment_days(ded)
-
-					taxable_earnings -= flt(amount - additional_amount)
-					additional_income -= additional_amount
+					
+					# print("********&&&&&&&&&&&&&********** DEDUCTION AMOUNT === ",amount)
+					if not self.tax_slab.is_new_regime:
+						taxable_earnings -= flt(amount - additional_amount)
+						additional_income -= additional_amount
+					# print("additional_amount",additional_amount)
 					amount_exempted_from_income_tax += flt(amount - additional_amount)
 
 					if additional_amount and ded.is_recurring_additional_salary:
@@ -1924,15 +1866,21 @@ class SalarySlip(TransactionBase):
 							ded.additional_salary, ded.additional_amount
 						)  # Used ded.additional_amount to consider the amount for the full month
 
-					# print("amount_exempted_from_income_tax =-=--= ",amount_exempted_from_income_tax)
+					# print({
+					# 	"taxable_earnings": round(taxable_earnings),
+					# 	"additional_income": round(additional_income),
+					# 	"amount_exempted_from_income_tax": round(amount_exempted_from_income_tax),
+					# 	"additional_income_with_full_tax": round(additional_income_with_full_tax),
+					# 	"flexi_benefits": round(flexi_benefits),
+					# })
 
 		return frappe._dict(
 			{
-				"taxable_earnings": taxable_earnings,
-				"additional_income": additional_income,
-				"amount_exempted_from_income_tax": amount_exempted_from_income_tax,
-				"additional_income_with_full_tax": additional_income_with_full_tax,
-				"flexi_benefits": flexi_benefits,
+				"taxable_earnings": round(taxable_earnings),
+				"additional_income": round(additional_income),
+				"amount_exempted_from_income_tax": round(amount_exempted_from_income_tax),
+				"additional_income_with_full_tax": round(additional_income_with_full_tax),
+				"flexi_benefits": round(flexi_benefits),
 			}
 		)
 
@@ -1972,8 +1920,7 @@ class SalarySlip(TransactionBase):
 		return future_recurring_additional_amount
 
 	def get_amount_based_on_payment_days(self, row):
-		# print("self",self)
-		# print("row",row.default_amount)
+		
 		amount, additional_amount = row.amount, row.additional_amount
 		timesheet_component = self._salary_structure_doc.salary_component
 		if (
@@ -2009,8 +1956,7 @@ class SalarySlip(TransactionBase):
 			amount, additional_amount = 0, 0
 		elif not row.amount:
 			amount = flt(row.default_amount) + flt(row.additional_amount)
-			# print("row",row)
-
+			
 		# apply rounding
 		if frappe.db.get_value(
 			"Salary Component", row.salary_component, "round_to_the_nearest_integer", cache=True
@@ -2020,7 +1966,7 @@ class SalarySlip(TransactionBase):
 		return amount, additional_amount
 
 	def calculate_unclaimed_taxable_benefits(self):
-		# get total sum of benefits paid
+		
 		total_benefits_paid = self.get_salary_slip_details(
 			self.payroll_period.start_date,
 			self.start_date,
@@ -2049,7 +1995,7 @@ class SalarySlip(TransactionBase):
 
 	def get_total_exemption_amount(self):
 		total_exemption_amount = 0
-		# print("allow_tax_exemption = ",self.tax_slab.is_new_regime)
+		
 		if not self.tax_slab.allow_tax_exemption and self.tax_slab.is_new_regime:
 			if self.deduct_tax_for_unsubmitted_tax_exemption_proof:
 				exemption_proof = frappe.db.get_value(
@@ -2094,8 +2040,7 @@ class SalarySlip(TransactionBase):
 		if self.tax_slab.standard_tax_exemption_amount:
 			total_exemption_amount += flt(self.tax_slab.standard_tax_exemption_amount)
 
-		# print("self.tax_slab.standard_tax_exemption_amount = ", self.tax_slab.standard_tax_exemption_amount)
-		# print("total_exemption_amount = ", total_exemption_amount)
+		
 		return total_exemption_amount
 
 	def get_income_form_other_sources(self):
@@ -2201,7 +2146,7 @@ class SalarySlip(TransactionBase):
 
 	@frappe.whitelist()
 	def process_salary_based_on_working_days(self):
-		print("self.leave_without_pay --- ",self.leave_without_pay)
+		# print("self.leave_without_pay --- ",self.leave_without_pay)
 		self.get_working_days_details(lwp=self.leave_without_pay)
 		self.calculate_net_pay()
 
@@ -2411,17 +2356,16 @@ def get_payroll_payable_account(company, payroll_entry):
 
 
 def calculate_tax_by_tax_slab(annual_taxable_earning, tax_slab, eval_globals=None, eval_locals=None, is_new_regime=None):
-	# print("annual_taxable_earning ==== ",annual_taxable_earning)
-	# print("is_new_regime = ",is_new_regime)
 
 	eval_locals.update({"annual_taxable_earning": annual_taxable_earning})
 	tax_amount = 0
 	tax_amount_data = []
-	# Tax Rebate under Section 87A is a provision in the Indian Income Tax Act that offers relief to individual taxpayers by reducing their tax liability. This rebate is available to resident individuals whose total taxable income is Rs. 7,00,000 under the new tax regime and Rs. 12,500 for income up to Rs 5,00,000. As per Section 87A, eligible taxpayers can claim a rebate of up to a certain amount from the total tax payable, thereby reducing the tax burden.
-	if annual_taxable_earning <= 700000 and is_new_regime :
-		tax_amount_data.append(0)
-	elif annual_taxable_earning > 700000 and is_new_regime :
-		tax_amount_data.append(annual_taxable_earning - 700000)
+	
+	if is_new_regime:
+	# if annual_taxable_earning <= 700000 and is_new_regime :
+	# 	tax_amount_data.append(0)
+	# elif annual_taxable_earning > 700000 and is_new_regime :
+	# 	tax_amount_data.append(annual_taxable_earning - 700000)
 
 		for slab in tax_slab.slabs:
 			cond = cstr(slab.condition).strip()
