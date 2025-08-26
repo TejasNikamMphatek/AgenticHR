@@ -658,7 +658,7 @@
   {
    "fieldname": "income_tax_deducted_till_date",
    "fieldtype": "Currency",
-   "label": "Income Tax Deducted Till Month",
+   "label": "Income Tax Deducted Till Date",
    "options": "currency",
    "read_only": 1
   },
@@ -755,7 +755,7 @@
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-20 17:56:45.111452",
+ "modified": "2025-08-25 17:50:07.569610",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
