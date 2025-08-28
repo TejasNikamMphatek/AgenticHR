@@ -1,7 +1,6 @@
 # Copyright (c) 2025,  Pipal ERP Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
-
 import frappe
 from frappe.model.document import Document
 from frappe.utils import cint, flt, get_link_to_form
@@ -98,10 +97,14 @@ class LeaveControlPanel(Document):
 						"employee": employee,
 					}
 				)
-			except Exception:
+			except Exception as e:
 				frappe.db.rollback(save_point=savepoint)
+				message = frappe.get_message_log()[-1] if frappe.get_message_log() else str(e)
 				assignment.log_error(f"Leave Policy Assignment failed for employee {employee}")
-				failure.append(employee)
+				failure.append({
+					"employee": employee,
+					"error": frappe.utils.strip_html(message)
+				})
 
 		frappe.clear_messages()
 		frappe.publish_realtime(
@@ -110,6 +113,8 @@ class LeaveControlPanel(Document):
 			doctype="Bulk Salary Structure Assignment",
 			after_commit=True,
 		)
+
+		return {"success": success, "failed": failure}
 
 	def get_from_to_date(self):
 		if self.dates_based_on == "Joining Date":
