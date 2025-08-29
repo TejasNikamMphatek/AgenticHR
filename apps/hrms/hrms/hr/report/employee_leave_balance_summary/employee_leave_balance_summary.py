@@ -50,12 +50,16 @@ def get_conditions(filters):
 	conditions = {
 		"company": filters.company,
 	}
+
 	if filters.get("employee_status"):
 		conditions.update({"status": filters.get("employee_status")})
-	if filters.get("department"):
+
+	# Only apply department filter if it is NOT "All Departments"
+	if filters.get("department") and filters.get("department") != "All Departments":
 		conditions.update({"department": filters.get("department")})
+
 	if filters.get("employee"):
-		conditions.update({"employee": filters.get("employee")})
+		conditions.update({"name": filters.get("employee")})
 
 	return conditions
 

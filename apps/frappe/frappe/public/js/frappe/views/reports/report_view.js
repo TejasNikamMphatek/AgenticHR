@@ -1619,7 +1619,7 @@ frappe.views.ReportView = class ReportView extends frappe.views.ListView {
 			label: __("Setup Auto Email"),
 			action: () => {
 				if (this.report_name) {
-					frappe.set_route("List", "Auto Email Report", { report: this.report_name });
+					frappe.set_route("List", "Auto Email", { report: this.report_name });
 				} else {
 					frappe.msgprint(__("Please save the report first"));
 				}
