@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:{document_type}-{employee}-{publish_date}",
+ "autoname": "format:{document_type}-{employee}-{document_name}",
  "creation": "2025-08-29 11:25:21.464759",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -65,7 +65,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-29 15:28:28.821990",
+ "modified": "2025-08-29 18:24:52.113755",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Document Center",
