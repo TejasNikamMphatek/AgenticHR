@@ -1,0 +1,134 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:form-16-{title}",
+ "creation": "2025-08-28 10:29:34.633880",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "section_break_zktd",
+  "upload_part_a",
+  "extract_part_a",
+  "column_break_wkly",
+  "upload_part_b",
+  "extract_part_b",
+  "section_break_rbyo",
+  "apply_digital_signature_part_a",
+  "column_break_uuuw",
+  "apply_digital_signature_part_b",
+  "publish_form_16_section",
+  "publish_part_a",
+  "column_break_pthc",
+  "publish_part_b"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Title",
+   "no_copy": 1,
+   "reqd": 1,
+   "set_only_once": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_zktd",
+   "fieldtype": "Section Break",
+   "label": "UPLOAD & EXTRACT"
+  },
+  {
+   "fieldname": "upload_part_a",
+   "fieldtype": "Attach",
+   "label": "Upload Part A",
+   "options": "zip"
+  },
+  {
+   "depends_on": "eval:doc.upload_part_a",
+   "fieldname": "extract_part_a",
+   "fieldtype": "Button",
+   "label": "Extract Part A"
+  },
+  {
+   "fieldname": "column_break_wkly",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "upload_part_b",
+   "fieldtype": "Attach",
+   "label": "Upload Part B",
+   "options": "zip"
+  },
+  {
+   "depends_on": "eval:doc.upload_part_b",
+   "fieldname": "extract_part_b",
+   "fieldtype": "Button",
+   "label": "Extract Part B"
+  },
+  {
+   "fieldname": "section_break_rbyo",
+   "fieldtype": "Section Break",
+   "label": "Apply Digital Signature"
+  },
+  {
+   "fieldname": "apply_digital_signature_part_a",
+   "fieldtype": "Button",
+   "label": "Apply Digital Signature Part A"
+  },
+  {
+   "fieldname": "column_break_uuuw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "apply_digital_signature_part_b",
+   "fieldtype": "Button",
+   "label": "Apply Digital Signature Part B"
+  },
+  {
+   "fieldname": "publish_form_16_section",
+   "fieldtype": "Section Break",
+   "label": "Publish Form 16"
+  },
+  {
+   "fieldname": "publish_part_a",
+   "fieldtype": "Button",
+   "label": "Publish Part A"
+  },
+  {
+   "fieldname": "column_break_pthc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "publish_part_b",
+   "fieldtype": "Button",
+   "label": "Publish Part B"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-08-29 11:22:32.616817",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Form-16-Upload",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
