@@ -314,6 +314,8 @@ frappe.ui.form.Toolbar = class Toolbar {
 		const allow_print_for_draft = cint(print_settings.allow_print_for_draft);
 		const allow_print_for_cancelled = cint(print_settings.allow_print_for_cancelled);
 		const is_system_manager = frappe.user_roles.includes("System Manager")
+		const is_onboarding_employee = frappe.user_roles.includes("Onboarding Employee")
+		
 		const is_admin = frappe.user.has_role("Administrator")
 		// console.log("is_system_manager = ",is_system_manager)
 
@@ -509,7 +511,8 @@ frappe.ui.form.Toolbar = class Toolbar {
 				function () {
 					frappe.new_doc(me.frm.doctype, true);
 				},
-				true,
+				
+				!is_onboarding_employee ? true : "" ,
 				{
 					shortcut: "Ctrl+B",
 					condition: () => !this.frm.is_new(),
