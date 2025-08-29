@@ -10,11 +10,19 @@ frappe.ui.form.on("Auto Email", {
 
 		if (!frm.is_new()) {
 			frm.add_custom_button(__("Download"), function () {
+				// Ensure the document is saved before downloading
+				if (frm.is_dirty()) {
+					frappe.msgprint(__("Please save the document first"));
+					return;
+				}
+				
 				var w = window.open(
 					frappe.urllib.get_full_url(
-						"/api/method/frappe.email.doctype.auto_email_report.auto_email_report.download?" +
+						"/api/method/frappe.email.doctype.auto_email.auto_email.download?" +
 							"name=" +
-							encodeURIComponent(frm.doc.name)
+							encodeURIComponent(frm.doc.name) +
+							"&format=" +
+							encodeURIComponent(frm.doc.format || "HTML")
 					)
 				);
 				if (!w) {
@@ -22,9 +30,10 @@ frappe.ui.form.on("Auto Email", {
 					return;
 				}
 			});
+			
 			frm.add_custom_button(__("Send Now"), function () {
 				frappe.call({
-					method: "frappe.email.doctype.auto_email_report.auto_email_report.send_now",
+					method: "frappe.email.doctype.auto_email.auto_email.send_now",
 					args: { name: frm.doc.name },
 					callback: function () {
 						frappe.msgprint(__("Scheduled to send"));
@@ -48,6 +57,14 @@ frappe.ui.form.on("Auto Email", {
 				},
 			};
 		});
+	},
+
+	// Add a trigger when format changes to ensure it's properly set
+	format: function(frm) {
+		if (frm.doc.format) {
+			// Optionally show a message about the selected format
+			console.log("Format changed to:", frm.doc.format);
+		}
 	},
 
 	report: function (frm) {
