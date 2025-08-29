@@ -1,0 +1,98 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-08-28 15:21:48.070461",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "is_active",
+  "signer_name",
+  "column_break_rwqp",
+  "signer_designation",
+  "location",
+  "section_break_ikmq",
+  "digital_signature_file",
+  "private_key_file",
+  "column_break_lpbk",
+  "certificate_file"
+ ],
+ "fields": [
+  {
+   "fieldname": "digital_signature_file",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Digital Signature File",
+   "reqd": 1
+  },
+  {
+   "fieldname": "private_key_file",
+   "fieldtype": "Attach",
+   "label": "Private Key File"
+  },
+  {
+   "fieldname": "column_break_lpbk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "certificate_file",
+   "fieldtype": "Attach",
+   "label": "Certificate File"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "is Active"
+  },
+  {
+   "fieldname": "section_break_ikmq",
+   "fieldtype": "Section Break",
+   "label": "DIGITAL FILES"
+  },
+  {
+   "fieldname": "signer_name",
+   "fieldtype": "Data",
+   "label": "Signer Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_rwqp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "signer_designation",
+   "fieldtype": "Data",
+   "label": "Signer Designation",
+   "reqd": 1
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-08-28 15:47:37.910238",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Upload Digital Sign",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
