@@ -28,8 +28,12 @@
    "fieldname": "title",
    "fieldtype": "Data",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Title",
-   "reqd": 1
+   "no_copy": 1,
+   "reqd": 1,
+   "set_only_once": 1,
+   "unique": 1
   },
   {
    "fieldname": "section_break_cdre",
@@ -65,6 +69,7 @@
   {
    "fieldname": "section_break_xdtt",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Apply Digital Signature"
   },
   {
@@ -107,7 +112,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-29 18:39:06.230629",
+ "modified": "2025-08-29 19:04:00.675083",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Form-16-Upload",
