@@ -326,8 +326,8 @@
         "Other User" : []
     },
     "Employee Promotion" : {
-        "System Manager" : [],
-        "Other User" : []
+        "System Manager" : ["Kanban"],
+        "Other User" : ["Kanban"]
     },
     "Employee Performance Feedback" :{
         "System Manager" : [],
@@ -495,5 +495,11 @@
         "System Manager" :["Dashboard", "Kanban"],
         "Administrator" : ["Dashboard", "Kanban"],
         "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "Payroll" :{
+        "Administrator" : ["Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"],
+        "System Manager" : ["Edit","New", "Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"],
+        "Other User" : ["Edit","New", "Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"]
+        
     }
 }
