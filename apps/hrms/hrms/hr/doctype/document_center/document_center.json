@@ -2,14 +2,14 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "format:{document_type}-{employee}-{document_name}",
- "creation": "2025-08-29 11:25:21.464759",
+ "creation": "2025-08-29 18:44:44.598725",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "employee",
   "employee_name",
   "publish_date",
-  "column_break_zctm",
+  "column_break_nblj",
   "document_type",
   "document_name",
   "document"
@@ -24,28 +24,36 @@
    "reqd": 1
   },
   {
-   "fieldname": "column_break_zctm",
+   "fieldname": "column_break_nblj",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name"
+  },
+  {
+   "default": "Today",
+   "fieldname": "publish_date",
+   "fieldtype": "Date",
+   "label": "Publish Date"
   },
   {
    "fieldname": "document_type",
    "fieldtype": "Data",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Document Type",
-   "read_only": 1,
    "reqd": 1
   },
   {
    "fieldname": "document_name",
    "fieldtype": "Data",
-   "label": "Document Name",
-   "read_only": 1
+   "label": "Document Name"
   },
   {
    "fieldname": "document",
    "fieldtype": "Attach",
-   "label": "Document "
+   "label": "Document"
   },
   {
    "fetch_from": "employee.employee_name",
@@ -65,7 +73,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-29 18:47:38.522128",
+ "modified": "2025-08-29 18:49:11.736365",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Document Center",

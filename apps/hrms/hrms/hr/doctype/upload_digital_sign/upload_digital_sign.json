@@ -1,43 +1,22 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-08-28 15:21:48.070461",
+ "creation": "2025-08-29 18:39:49.575181",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "is_active",
   "signer_name",
-  "column_break_rwqp",
+  "column_break_wvlx",
   "signer_designation",
   "location",
-  "section_break_ikmq",
+  "files_section",
   "digital_signature_file",
   "private_key_file",
-  "column_break_lpbk",
+  "column_break_yzoq",
   "certificate_file"
  ],
  "fields": [
-  {
-   "fieldname": "digital_signature_file",
-   "fieldtype": "Attach",
-   "in_list_view": 1,
-   "label": "Digital Signature File",
-   "reqd": 1
-  },
-  {
-   "fieldname": "private_key_file",
-   "fieldtype": "Attach",
-   "label": "Private Key File"
-  },
-  {
-   "fieldname": "column_break_lpbk",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "certificate_file",
-   "fieldtype": "Attach",
-   "label": "Certificate File"
-  },
   {
    "default": "0",
    "fieldname": "is_active",
@@ -45,37 +24,59 @@
    "label": "is Active"
   },
   {
-   "fieldname": "section_break_ikmq",
-   "fieldtype": "Section Break",
-   "label": "DIGITAL FILES"
+   "fieldname": "column_break_wvlx",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "signer_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Signer Name",
    "reqd": 1
   },
   {
-   "fieldname": "column_break_rwqp",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "signer_designation",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Signer Designation",
    "reqd": 1
   },
   {
    "fieldname": "location",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Location",
    "reqd": 1
+  },
+  {
+   "fieldname": "files_section",
+   "fieldtype": "Section Break",
+   "label": "FILES"
+  },
+  {
+   "fieldname": "digital_signature_file",
+   "fieldtype": "Attach",
+   "label": "Digital Signature File"
+  },
+  {
+   "fieldname": "column_break_yzoq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "private_key_file",
+   "fieldtype": "Attach",
+   "label": "Private Key File"
+  },
+  {
+   "fieldname": "certificate_file",
+   "fieldtype": "Attach",
+   "label": "Certificate File"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-28 15:47:37.910238",
+ "modified": "2025-08-29 18:43:40.882608",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Upload Digital Sign",
