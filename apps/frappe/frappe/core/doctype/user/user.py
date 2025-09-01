@@ -187,8 +187,8 @@ class User(Document):
 		date_of_birth = getdate(self.birth_date)
 		age = current_date.year - date_of_birth.year - ((current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day))
 
-		# if current_date < date_of_joining:
-		# 	frappe.throw(_("Cannot add the future Date. Please check the Date: {0}").format(self.date_of_joining), title=_("Invalid Date"))
+		if current_date < date_of_joining:
+		 	frappe.throw(_("Cannot add the future Date. Please check the Date: {0}").format(self.date_of_joining), title=_("Invalid Date"))
 		
 		# if age < 18:
 		# 	frappe.throw(_("Employee must be at least 18 years old. Please check the Date of Birth: {0}").format(self.birth_date), title=_("Invalid Age"))
