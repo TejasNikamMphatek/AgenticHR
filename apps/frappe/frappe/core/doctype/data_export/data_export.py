@@ -15,6 +15,6 @@ class DataExport(Document):
 
 		export_without_main_header: DF.Check
 		file_type: DF.Literal["Excel", "CSV"]
-		reference_doctype: DF.Link
+		reference_doctype: DF.Literal["", "Employee", "Attendance", "Salary Slip", "Leave Application", "Attendance Request", "Employee Separation", "Employee Tax Exemption Declaration", "Employee Tax Exemption Proof Submission", "Hold Salary Employee", "Lock Unlock Payroll", "Payroll Entry", "Income Tax Slab", "Salary Structure", "Salary Structure Assignment", "Additional Salary"]
 	# end: auto-generated types
 	pass
