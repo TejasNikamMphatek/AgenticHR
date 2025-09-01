@@ -55,9 +55,9 @@
    "read_only": 1
   },
   {
-   "default": "Now",
+   "default": "Today",
    "fieldname": "publish_date",
-   "fieldtype": "Datetime",
+   "fieldtype": "Date",
    "label": "Publish Date",
    "read_only": 1,
    "reqd": 1
@@ -65,7 +65,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-29 18:24:52.113755",
+ "modified": "2025-08-29 18:47:38.522128",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Document Center",
