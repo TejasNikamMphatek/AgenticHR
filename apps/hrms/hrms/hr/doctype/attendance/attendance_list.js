@@ -1,5 +1,6 @@
 frappe.listview_settings["Attendance"] = {
-	add_fields: ["status", "attendance_date"],
+	add_fields: ["status", "attendance_date","total_swipes"],
+	accurate_count: true,
 
 	get_indicator: function (doc) {
 		if (["Present", "Work From Home"].includes(doc.status)) {
@@ -9,6 +10,8 @@ frappe.listview_settings["Attendance"] = {
 		} else if (doc.status == "Half Day") {
 			return [__(doc.status), "orange", "status,=," + doc.status];
 		}
+		let total_swipes = doc.total_swipes || 0; 
+		return [__(doc.status + " (" + total_swipes + ")"), color, "status,=," + doc.status];
 	},
 
 	onload: function (list_view) {
