@@ -201,7 +201,7 @@ def publish_part_a(docname, part_name):
     doc_list = doc.list_extracted_files(part_name) 
 
     base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}")
-    print(f"base_dir ==== {base_dir}")
+    # print(f"base_dir ==== {base_dir}")
 
     # Build items = [{rel_path, filename, pan}] and collect unique PANs
     items, unique_pans = [], set()
@@ -212,7 +212,7 @@ def publish_part_a(docname, part_name):
             items.append({"rel_path": rel_path, "filename": filename, "pan": pan})
             unique_pans.add(pan)
 
-    print(unique_pans)
+    # print(unique_pans)
     if not items:
         frappe.throw("No PDFs with valid PAN in filename were found.")
 
@@ -223,7 +223,7 @@ def publish_part_a(docname, part_name):
         fields=["name", "employee_name", "pan_number"]
     )
     emp_map = {e["pan_number"].upper(): e for e in employees}
-    print("Matched Employees:", emp_map)
+    # print("Matched Employees:", emp_map)
 
     created_docs, missing = [], []
     for it in items:
@@ -237,7 +237,7 @@ def publish_part_a(docname, part_name):
             frappe.throw(f"PDF not found: {pdf_path}")
             continue
 
-        print(f"Attaching PDF: {pdf_path} -> Employee: {employee['name']}")
+        # print(f"Attaching PDF: {pdf_path} -> Employee: {employee['name']}")
 
         file_doc = frappe.get_doc({
             "doctype": "File",
@@ -277,7 +277,7 @@ def publish_part_b(docname, part_name):
     doc_list = doc.list_extracted_files(part_name) 
 
     base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}")
-    print(f"base_dir ==== {base_dir}")
+    # print(f"base_dir ==== {base_dir}")
 
     # Build items = [{rel_path, filename, pan}] and collect unique PANs
     items, unique_pans = [], set()
@@ -288,7 +288,7 @@ def publish_part_b(docname, part_name):
             items.append({"rel_path": rel_path, "filename": filename, "pan": pan})
             unique_pans.add(pan)
 
-    print(unique_pans)
+    # print(unique_pans)
     if not items:
         frappe.throw("No PDFs with valid PAN in filename were found.")
 
@@ -299,7 +299,7 @@ def publish_part_b(docname, part_name):
         fields=["name", "employee_name", "pan_number"]
     )
     emp_map = {e["pan_number"].upper(): e for e in employees}
-    print("Matched Employees:", emp_map)
+    # print("Matched Employees:", emp_map)
 
     created_docs, missing = [], []
     for it in items:
@@ -313,7 +313,7 @@ def publish_part_b(docname, part_name):
             frappe.throw(f"PDF not found: {pdf_path}")
             continue
 
-        print(f"Attaching PDF: {pdf_path} -> Employee: {employee['name']}")
+        # print(f"Attaching PDF: {pdf_path} -> Employee: {employee['name']}")
 
         file_doc = frappe.get_doc({
             "doctype": "File",
