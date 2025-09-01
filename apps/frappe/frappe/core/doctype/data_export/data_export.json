@@ -16,9 +16,9 @@
  "fields": [
   {
    "fieldname": "reference_doctype",
-   "fieldtype": "Link",
+   "fieldtype": "Select",
    "label": "Select Doctype",
-   "options": "DocType",
+   "options": "\nEmployee\nAttendance\nSalary Slip\nLeave Application\nAttendance Request\nEmployee Separation\nEmployee Tax Exemption Declaration\nEmployee Tax Exemption Proof Submission\nHold Salary Employee\nLock Unlock Payroll\nPayroll Entry\nIncome Tax Slab\nSalary Structure\nSalary Structure Assignment\nAdditional Salary",
    "reqd": 1
   },
   {
@@ -60,7 +60,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-09-28 03:51:02.404681",
+ "modified": "2025-09-01 19:23:50.264773",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "Data Export",
