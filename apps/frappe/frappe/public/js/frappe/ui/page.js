@@ -510,22 +510,21 @@ frappe.ui.Page = class Page {
 		} else {
 		
 			let doctype = frappe.get_route()[1];
-			let docHideData = this.getDoctypeHidewData(doctype);
+			let docHideData = this.getDoctypeHideViewData(doctype);
 			let isLabelPresent = false;
-			// console.log(docHideData)
+			console.log(docHideData)
 			// console.log(doctype+" = "+label)
 
-			if (frappe.user.has_role("System Manager")){
+			if (frappe.user.has_role("System Manager")) {
 				isLabelPresent = (docHideData['System Manager'] || []).includes(label);
-				if (frappe.user.has_role("Administrator")){
+				console.log(docHideData['System Manager'])
+				if (frappe.user.has_role("Administrator")) {
 					isLabelPresent = (docHideData['Administrator'] || []).includes(label);
 				}
-
 			} else {
 				isLabelPresent = (docHideData['Other User'] || []).includes(label);
 			}
-			
-			// console.log(label+" = ",isLabelPresent)
+
 
 			if (isLabelPresent) {
 				$li = $(`
@@ -580,7 +579,7 @@ frappe.ui.Page = class Page {
 		return $link;
 	}
 
-	getDoctypeHidewData(current_doctype) 
+	getDoctypeHideViewData(current_doctype) 
 	{
 		const doctype_hide_list = hide_view_list[current_doctype];
 		

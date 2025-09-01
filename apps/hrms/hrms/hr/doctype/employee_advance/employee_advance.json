@@ -13,7 +13,6 @@
   "column_break_4",
   "posting_date",
   "company",
-  "department",
   "currency_section",
   "currency",
   "column_break_crso",
@@ -41,6 +40,7 @@
   {
    "fieldname": "naming_series",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Series",
    "options": "HR-EAD-.YYYY.-"
   },
@@ -56,7 +56,8 @@
    "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Read Only",
-   "label": "Employee Name"
+   "label": "Employee Name",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_4",
@@ -71,14 +72,6 @@
    "reqd": 1
   },
   {
-   "fetch_from": "employee.department",
-   "fieldname": "department",
-   "fieldtype": "Link",
-   "label": "Department",
-   "options": "Department",
-   "read_only": 1
-  },
-  {
    "fieldname": "section_break_8",
    "fieldtype": "Section Break",
    "label": "Purpose & Amount"
@@ -88,6 +81,7 @@
    "fieldtype": "Small Text",
    "in_list_view": 1,
    "label": "Purpose",
+   "max_height": "50px",
    "reqd": 1
   },
   {
@@ -124,6 +118,7 @@
   {
    "fieldname": "section_break_7",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Accounting"
   },
   {
@@ -137,11 +132,9 @@
   {
    "fetch_from": "employee.company",
    "fieldname": "company",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Company",
-   "options": "Company",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -162,8 +155,7 @@
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
    "label": "Advance Account",
-   "options": "Account",
-   "reqd": 1
+   "options": "Account"
   },
   {
    "fieldname": "mode_of_payment",
@@ -198,6 +190,7 @@
    "read_only": 1
   },
   {
+   "default": "INR",
    "depends_on": "eval:(doc.docstatus==1 || doc.employee)",
    "fieldname": "currency",
    "fieldtype": "Link",
@@ -210,8 +203,9 @@
    "fieldname": "exchange_rate",
    "fieldtype": "Float",
    "label": "Exchange Rate",
-   "precision": "9",
+   "precision": "2",
    "print_hide": 1,
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager']) != 1",
    "reqd": 1
   },
   {
@@ -229,7 +223,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "collapsible": 1,
    "fieldname": "currency_section",
    "fieldtype": "Section Break",
    "label": "Currency "
@@ -241,7 +234,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-04-12 12:53:55.442187",
+ "modified": "2025-09-01 12:57:12.176548",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

@@ -16,7 +16,9 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Role Name",
+   "no_copy": 1,
    "reqd": 1,
+   "set_only_once": 1,
    "unique": 1
   },
   {
@@ -42,7 +44,7 @@
    "link_fieldname": "role_profile_name"
   }
  ],
- "modified": "2021-12-03 15:45:45.270963",
+ "modified": "2025-09-01 15:48:14.337313",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "Role Profile",
@@ -75,6 +77,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "role_profile",
  "track_changes": 1
 }
