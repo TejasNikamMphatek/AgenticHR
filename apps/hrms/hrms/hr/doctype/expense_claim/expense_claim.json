@@ -213,12 +213,11 @@
   {
    "fetch_from": "employee.company",
    "fieldname": "company",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_standard_filter": 1,
    "label": "Company",
    "oldfieldname": "company",
    "oldfieldtype": "Link",
-   "options": "Company",
    "read_only": 1,
    "reqd": 1
   },
@@ -387,7 +386,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-04-17 19:38:30.373122",
+ "modified": "2025-09-01 13:14:02.800315",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",

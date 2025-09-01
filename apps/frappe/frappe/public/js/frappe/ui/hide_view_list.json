@@ -1,6 +1,6 @@
 {
     "Employee" :{
-        "system Manager" : ["Kanban"],
+        "System Manager" : ["Kanban"],
         "Other User" : ["Report", "Dashboard", "Kanban","Tree"]
     },
     "Leave Type" : {
@@ -12,7 +12,7 @@
         "Other User" : []
     },
     "Leave Application" : {
-        "System Manager" : [],
+        "System Manager" : ["Dashboard", "Kanban", "Report", "Gantt"],
         "Other User" : ["Dashboard", "Kanban", "Report", "Gantt"]
     },
     "Attendance Request" : {
@@ -489,6 +489,11 @@
     },
     "Auto Email Report": {
         "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "Employee Tax Exemption Declaration": {
+        "System Manager" :["Dashboard", "Kanban"],
+        "Administrator" : ["Dashboard", "Kanban"],
         "Other User" : ["Report", "Dashboard", "Kanban"]
     }
 }

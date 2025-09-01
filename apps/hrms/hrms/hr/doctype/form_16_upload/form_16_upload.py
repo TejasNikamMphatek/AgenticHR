@@ -8,6 +8,10 @@ import os, re
 
 from frappe.model.document import Document
 from frappe.utils.file_manager import get_file
+# from pyhanko.sign import signers
+# from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
+# from pyhanko.sign.fields import SigFieldSpec
+# print("PyHanko is available in Frappe!")
 
 class Form16Upload(Document):
 
