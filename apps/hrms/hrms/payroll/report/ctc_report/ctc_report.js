@@ -50,6 +50,7 @@ frappe.query_reports["CTC Report"] = {
 			options: ["Draft", "Submitted", "Cancelled"],
 			default: "Submitted",
 			width: "100px",
+			read_only: 1      
 		},
 	],
 };

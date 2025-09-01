@@ -42,11 +42,16 @@ def execute(filters=None):
 			"employee": f"{ss.employee}: {ss.employee_name}",
 			"data_of_joining": doj_map.get(ss.employee),
 			"data_of_birth": dob_map.get(ss.employee),
+			"from_date": ss.start_date,
+			"to_date": ss.end_date,
 			"designation": ss.designation,
 			"company": ss.company,
 			"currency": currency or company_currency,
-			"yearly_ctc" : yearly_ctc,
-			"monthly_ctc" : monthly_ctc,
+			"yearly_ctc": yearly_ctc,
+			"monthly_ctc": monthly_ctc,
+			"gross_pay": ss.gross_pay,
+			"total_deduction": ss.total_deduction,
+			"rounded_total": ss.rounded_total,
 		}
 
 		update_column_width(ss, columns)
@@ -78,7 +83,7 @@ def update_column_width(ss, columns):
 	if ss.designation is not None:
 		columns[5].update({"width": 120})
 	if ss.leave_without_pay is not None:
-		columns[9].update({"width": 120})
+		columns[11].update({"width": 120})
 
 
 def get_columns(earning_types, ded_types):
@@ -98,6 +103,18 @@ def get_columns(earning_types, ded_types):
 		{
 			"label": _("Date of Birth"),
 			"fieldname": "data_of_birth",
+			"fieldtype": "Date",
+			"width": 120,
+		},
+		{
+			"label": _("From Date"),
+			"fieldname": "from_date",
+			"fieldtype": "Date",
+			"width": 120,
+		},
+		{
+			"label": _("To Date"),
+			"fieldname": "to_date",
 			"fieldtype": "Date",
 			"width": 120,
 		},
@@ -125,6 +142,24 @@ def get_columns(earning_types, ded_types):
 		{
 			"label": _("Monthly CTC"),
 			"fieldname": "monthly_ctc",
+			"fieldtype": "Currency",
+			"width": 120,
+		},
+		{
+			"label": _("Gross Pay"),
+			"fieldname": "gross_pay",
+			"fieldtype": "Currency",
+			"width": 120,
+		},		
+		{
+			"label": _("Total Deduction"),
+			"fieldname": "total_deduction",
+			"fieldtype": "Currency",
+			"width": 120,
+		},
+		{
+			"label": _("Net Pay"),
+			"fieldname": "rounded_total",
 			"fieldtype": "Currency",
 			"width": 120,
 		},		
@@ -157,7 +192,7 @@ def get_salary_component_type(salary_component):
 	return frappe.db.get_value("Salary Component", salary_component, "type", cache=True)
 
 def get_salary_slips(filters, company_currency):
-	doc_status = {"Draft": 0, "Submitted": 1, "Cancelled": 2}
+	doc_status = {"Submitted": 1}
 
 	query = frappe.qb.from_(salary_slip).select(salary_slip.star)
 
