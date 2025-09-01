@@ -251,7 +251,7 @@ frappe.ui.form.on("User", {
 				}
 			}
 		}
-		if (frm.doc.user_emails && frappe.model.can_create("Email Account")) {
+		/*if (frm.doc.user_emails && frappe.model.can_create("Email Account")) {
 			var found = 0;
 			for (var i = 0; i < frm.doc.user_emails.length; i++) {
 				if (frm.doc.email == frm.doc.user_emails[i].email_id) {
@@ -264,7 +264,7 @@ frappe.ui.form.on("User", {
 				});
 			}
 		}
-
+*/
 		if (frappe.route_flags.unsaved === 1) {
 			delete frappe.route_flags.unsaved;
 			for (let i = 0; i < frm.doc.user_emails.length; i++) {
