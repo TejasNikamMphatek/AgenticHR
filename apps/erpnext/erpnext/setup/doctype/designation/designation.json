@@ -25,13 +25,14 @@
   {
    "fieldname": "description",
    "fieldtype": "Text",
+   "hidden": 1,
    "label": "Description"
   }
  ],
  "icon": "fa fa-bookmark",
  "idx": 1,
  "links": [],
- "modified": "2023-02-10 01:53:41.319386",
+ "modified": "2025-09-01 12:03:04.525412",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Designation",
