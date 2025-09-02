@@ -1045,6 +1045,7 @@
    "read_only": 1
   },
   {
+   "description": "Create the family details after saving the form.",
    "fieldname": "family_details",
    "fieldtype": "Link",
    "label": "Family Details",
@@ -1056,7 +1057,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-09-02 12:59:50.218349",
+ "modified": "2025-09-02 17:26:32.340047",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
