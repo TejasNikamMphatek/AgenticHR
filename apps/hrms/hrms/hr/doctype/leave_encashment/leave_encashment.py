@@ -66,6 +66,8 @@ class LeaveEncashment(Document):
 		)
 
 		self.create_leave_ledger_entry()
+		self.update_employee_encash_details()
+
 
 	def on_cancel(self):
 		if self.additional_salary:
@@ -81,6 +83,20 @@ class LeaveEncashment(Document):
 				- self.encashment_days,
 			)
 		self.create_leave_ledger_entry(submit=False)
+		self.update_after_cancel_employee_encash_details()
+
+	
+	def update_employee_encash_details(self):
+		employee = frappe.get_doc("Employee", self.employee)
+		employee.leave_encashed = "Yes"
+		employee.encashment_date = self.encashment_date
+		employee.save()
+
+	def update_after_cancel_employee_encash_details(self):
+		employee = frappe.get_doc("Employee", self.employee)
+		employee.leave_encashed = None
+		employee.encashment_date = None
+		employee.save()
 
 	@frappe.whitelist()
 	def get_leave_details_for_encashment(self):
