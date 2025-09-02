@@ -142,7 +142,14 @@ class EmployeeSeparation(EmployeeBoardingController):
 
 			# Prepare email details
 			email_to = manager_data[0]['user_id']
-			cc = ["hr@mphatek.com"]
+			hr_email = frappe.db.get_single_value("HR Settings", "hr_common_email")
+			if not hr_email:
+				frappe.msgprint(
+					_("Please set default HR Common Email in HR Settings.")
+				)
+				return
+			
+			cc = [hr_email]
 
 			message = frappe.render_template(email_template.response_, args)
 
@@ -190,8 +197,17 @@ class EmployeeSeparation(EmployeeBoardingController):
 			# Render template AFTER adding all required args
 			message = frappe.render_template(email_template.response_, args)
 
+
+			hr_email = frappe.db.get_single_value("HR Settings", "hr_common_email")
+			if not hr_email:
+				frappe.msgprint(
+					_("Please set default HR Common Email in HR Settings.")
+				)
+				return
+			
+
 			# CC list
-			cc = ["hr@mphatek.com", manager_cc]
+			cc = [hr_email, manager_cc]
 
 			# Send notification
 			self.notify({
