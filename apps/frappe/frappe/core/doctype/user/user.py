@@ -190,8 +190,8 @@ class User(Document):
 		if current_date < date_of_joining:
 		 	frappe.throw(_("Cannot add the future Date. Please check the Date: {0}").format(self.date_of_joining), title=_("Invalid Date"))
 		
-		# if age < 18:
-		# 	frappe.throw(_("Employee must be at least 18 years old. Please check the Date of Birth: {0}").format(self.birth_date), title=_("Invalid Age"))
+		if age < 18:
+			frappe.throw(_("Employee must be at least 18 years old. Please check the Date of Birth: {0}").format(self.birth_date), title=_("Invalid Age"))
 
 
 
