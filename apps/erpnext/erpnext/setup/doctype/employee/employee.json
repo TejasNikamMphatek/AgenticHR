@@ -374,6 +374,7 @@
    "oldfieldtype": "Date"
   },
   {
+   "default": "90",
    "fieldname": "notice_number_of_days",
    "fieldtype": "Int",
    "label": "Notice (days)",
@@ -678,6 +679,7 @@
    "label": "Resignation Letter Date",
    "oldfieldname": "resignation_letter_date",
    "oldfieldtype": "Date",
+   "read_only": 1,
    "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
   },
   {
@@ -687,6 +689,7 @@
    "no_copy": 1,
    "oldfieldname": "relieving_date",
    "oldfieldtype": "Date",
+   "read_only": 1,
    "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
   },
   {
@@ -695,7 +698,8 @@
    "fieldtype": "Small Text",
    "label": "Reason for Leaving",
    "oldfieldname": "reason_for_leaving",
-   "oldfieldtype": "Data"
+   "oldfieldtype": "Data",
+   "read_only": 1
   },
   {
    "fieldname": "leave_encashed",
@@ -896,6 +900,7 @@
    "label": "IBAN"
   },
   {
+   "default": "On Probation",
    "fieldname": "confirmation_status",
    "fieldtype": "Link",
    "label": "Confirmation Status",
@@ -1053,7 +1058,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-08-29 17:19:49.168877",
+ "modified": "2025-09-02 11:35:55.464342",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
