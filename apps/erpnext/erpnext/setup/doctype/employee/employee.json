@@ -679,8 +679,7 @@
    "label": "Resignation Letter Date",
    "oldfieldname": "resignation_letter_date",
    "oldfieldtype": "Date",
-   "read_only": 1,
-   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
+   "read_only": 1
   },
   {
    "fieldname": "relieving_date",
@@ -689,8 +688,7 @@
    "no_copy": 1,
    "oldfieldname": "relieving_date",
    "oldfieldtype": "Date",
-   "read_only": 1,
-   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
+   "read_only": 1
   },
   {
    "depends_on": "eval:frappe.user.has_role('HR Manager') == 1",
@@ -708,7 +706,7 @@
    "oldfieldname": "leave_encashed",
    "oldfieldtype": "Select",
    "options": "\nYes\nNo",
-   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.leave_encashed ==\"Yes\"",
@@ -717,7 +715,7 @@
    "label": "Encashment Date",
    "oldfieldname": "encashment_date",
    "oldfieldtype": "Date",
-   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
+   "read_only": 1
   },
   {
    "fieldname": "exit_interview_details",
@@ -1058,7 +1056,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-09-02 11:35:55.464342",
+ "modified": "2025-09-02 12:59:50.218349",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
