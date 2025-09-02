@@ -303,6 +303,22 @@ class Employee(NestedSet):
 			frappe.cache().hdel("employees_with_number", cell_number)
 			frappe.cache().hdel("employees_with_number", prev_number)
 
+	def before_insert(self):
+		# Get default company from Global Defaults
+		default_company = frappe.db.get_single_value("Global Defaults", "default_company")
+
+		if default_company:
+			# Fetch the default holiday list from that company
+			default_holiday_list = frappe.db.get_value(
+				"Company", 
+				default_company, 
+				"default_holiday_list"
+			)
+
+			if default_holiday_list:
+				self.holiday_list = default_holiday_list
+
+
 
 def validate_employee_role(doc, method=None, ignore_emp_check=False):
 	# called via User hook
