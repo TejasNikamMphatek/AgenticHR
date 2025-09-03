@@ -512,8 +512,8 @@ frappe.ui.Page = class Page {
 			let doctype = frappe.get_route()[1];
 			let docHideData = this.getDoctypeHideViewData(doctype);
 			let isLabelPresent = false;
-			console.log(docHideData)
-			console.log(doctype+" = "+label)
+			// console.log(docHideData)
+			// console.log(doctype+" = "+label)
 
 			if (frappe.user.has_role("System Manager")) {
 				isLabelPresent = (docHideData['System Manager'] || []).includes(label);
