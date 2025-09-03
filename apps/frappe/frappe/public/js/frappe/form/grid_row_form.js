@@ -47,15 +47,15 @@ export default class GridRowForm {
 						<button class="btn btn-secondary btn-sm pull-right grid-collapse-row">
 							${frappe.utils.icon("down")}
 						</button>
-						<button class="btn btn-secondary btn-sm pull-right grid-move-row hidden-xs">
+						<button class="btn btn-secondary btn-sm pull-right grid-move-row hidden-xs d-none">
 							${__("Move")}</button>
-						<button class="btn btn-secondary btn-sm pull-right grid-duplicate-row hidden-xs">
+						<button class="btn btn-secondary btn-sm pull-right grid-duplicate-row hidden-xs d-none d-none">
 							${frappe.utils.icon("duplicate")}
 							${__("Duplicate")}
 						</button>
-						<button class="btn btn-secondary btn-sm pull-right grid-insert-row hidden-xs">
+						<button class="btn btn-secondary btn-sm pull-right grid-insert-row hidden-xs d-none">
 							${__("Insert Above")}</button>
-						<button class="btn btn-secondary btn-sm pull-right grid-insert-row-below hidden-xs">
+						<button class="btn btn-secondary btn-sm pull-right grid-insert-row-below hidden-xs d-none">
 							${__("Insert Below")}</button>
 						<button class="btn btn-danger btn-sm pull-right grid-delete-row">
 							${frappe.utils.icon("delete")}
@@ -66,7 +66,7 @@ export default class GridRowForm {
 			<div class="grid-form-body">
 				<div class="form-area"></div>
 				<div class="grid-footer-toolbar hidden-xs flex justify-between">
-					<div class="grid-shortcuts">
+					<div class="grid-shortcuts d-none">
 						<span> ${frappe.utils.icon("keyboard", "md")} </span>
 						<span class="text-medium"> ${__("Shortcuts")}: </span>
 						<kbd>${__("Ctrl + Up")}</kbd> . <kbd>${__("Ctrl + Down")}</kbd> . <kbd>${__("ESC")}</kbd>

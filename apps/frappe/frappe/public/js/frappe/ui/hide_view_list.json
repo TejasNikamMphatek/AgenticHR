@@ -500,6 +500,10 @@
         "Administrator" : ["Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"],
         "System Manager" : ["Edit","New", "Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"],
         "Other User" : ["Edit","New", "Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"]
-        
+    },
+    "Pipal People" :{
+        "Administrator" : [],
+        "System Manager" : [],
+        "Other User" : ["Print", "PDF"]
     }
 }
