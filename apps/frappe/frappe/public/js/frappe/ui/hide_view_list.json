@@ -502,8 +502,8 @@
         "Other User" : ["Edit","New", "Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"]
     },
     "Pipal People" :{
-        "Administrator" : [],
-        "System Manager" : [],
+        "Administrator" : ["Add Column", "Edit", "Print", "Save"],
+        "System Manager" : ["Add Column", "Edit", "Print", "Save"],
         "Other User" : ["Print", "PDF"]
     }
 }
