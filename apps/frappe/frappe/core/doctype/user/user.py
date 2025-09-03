@@ -3,7 +3,7 @@
 
 from collections.abc import Iterable
 from datetime import timedelta
-
+import re
 import frappe
 import frappe.defaults
 import frappe.permissions
@@ -174,7 +174,10 @@ class User(Document):
 		self.validate_user_image()
 		self.set_time_zone()
 		self.validate_age()
-
+		self.validate_first_name()
+		self.validate_middle_name()
+		self.validate_last_name()
+		
 		if self.language == "Loading...":
 			self.language = None
 
@@ -194,7 +197,7 @@ class User(Document):
 		# 		_("Cannot add the future Date. Please check the Date: {0}").format(self.date_of_joining),
 		# 		title=_("Invalid Date")
 		# 	)
-			
+
 		# if age < 18:
 		# 	frappe.throw(
 		# 		_("Employee must be at least 18 years old. Please check the Date of Birth: {0}").format(self.birth_date),
@@ -202,6 +205,37 @@ class User(Document):
 		# 	)
 
 
+	def validate_first_name(self):
+		"""Validate that the first_name field contains only alphabetic characters."""
+		if self.first_name:
+			# Regular expression to allow only alphabetic characters (A-Z, a-z) and spaces
+			if not re.match(r'^[A-Za-z\s]+$', self.first_name):
+				frappe.throw(
+					_("First Name <b>{0}</b> can only contain alphabetic characters and spaces.").format(
+						self.first_name),
+					title=_("Invalid First Name")
+				)
+
+
+	def validate_middle_name(self):
+		"""Validate that the middle_name field contains only alphabetic characters and spaces."""
+		if self.middle_name:  # Only validate if middle_name is provided
+			if not re.match(r'^[A-Za-z\s]+$', self.middle_name):
+				frappe.throw(
+					_("Middle Name <b>{0}</b> can only contain alphabetic characters and spaces.").format(
+						self.middle_name),
+					title=_("Invalid Middle Name")
+				)
+
+	def validate_last_name(self):
+		"""Validate that the last_name field contains only alphabetic characters and spaces."""
+		if self.last_name:
+			if not re.match(r'^[A-Za-z\s]+$', self.last_name):
+				frappe.throw(
+					_("Last Name <b>{0}</b> can only contain alphabetic characters and spaces.").format(
+						self.last_name),
+					title=_("Invalid Last Name")
+				)
 
 	def populate_role_profile_roles(self):
 		if self.role_profile_name:
