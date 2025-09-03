@@ -505,5 +505,15 @@
         "Administrator" : ["Add Column", "Edit", "Print", "Save"],
         "System Manager" : ["Add Column", "Edit", "Print", "Save"],
         "Other User" : ["Print", "PDF"]
+    },
+    "User Permission":{
+        "Administrator" : ["Kanban", "Dashboard", "Toggle Chart", "Save"],
+        "System Manager" : ["Kanban", "Dashboard", "Toggle Chart", "Save"],
+        "Other User" : ["Kanban", "Dashboard", "Toggle Chart", "Save"] 
+    },
+    "Project Timesheet Management":{
+        "Administrator" : ["Kanban", "Dashboard"],
+        "System Manager" : ["Kanban", "Dashboard"],
+        "Other User" : ["Kanban", "Dashboard", "Report"] 
     }
 }
