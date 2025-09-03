@@ -684,7 +684,7 @@ class User(Document):
 			self.username = ""
 
 	def validate_employee_number(self):
-		if self.employee_number:
+		if self.employee_number and self.employee_number > 0:
 			# Normalize the value
 			self.employee_number = frappe.scrub(self.employee_number)
 
@@ -702,6 +702,11 @@ class User(Document):
 				frappe.throw(
 					_("Employee Number <b>{0}</b> already exists for another user.").format(self.employee_number),
 					title="Duplicate Entry"
+				)
+		else:
+				frappe.throw(
+					_("Employee ID must contain only numeric values. Please enter a valid numeric Employee ID."),
+					title=_("Invalid Employee ID")
 				)
 
 

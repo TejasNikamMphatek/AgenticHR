@@ -99,6 +99,12 @@ class Employee(NestedSet):
 
 		if joining_date and self.confirmation_status != "Confirmed":
 			self.final_confirmation_date = joining_date + timedelta(days=180)
+		
+		if not self.employee_number.isdigit():
+			frappe.throw(
+				_("Employee ID must contain only numeric values. Please enter a valid numeric Employee ID."),
+				title=_("Invalid Employee ID")
+			)
 
 
 	def after_rename(self, old, new, merge):
