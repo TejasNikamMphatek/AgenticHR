@@ -1345,21 +1345,19 @@ def add_leaves(events, start, end, filters=None, employee=None):
 	is_system_manager = 'System Manager' in roles
 
 	for d in leave_applications:
-		# print("d----",d)
-		if d['leave_type'] == "Privilege Leave" :
-			# d['leave_type'] = f"PL : {d['employee_name']}"
-			d['leave_type'] = f"PL"
+		leave_type = d['leave_type']
 
-		if d['leave_type'] == 'Sick Leave (Confirmed)' or d['leave_type'] == 'Sick Leave (Probation)':
-			d['leave_type'] = 'SL'
+		main_part = leave_type.split("(")[0].strip()
 
-		if d['leave_type'] == 'Loss Of Pay':
-			d['leave_type'] = 'LOP'
-			
-		# d["title"] = f"{d['employee_name']} ({d['leave_type']})"
+		short_code = "".join([word[0].upper() for word in main_part.split()])
+
+		d['leave_type'] = short_code
+
 		d["title"] = f"{d['leave_type']}"
+
 		del d["employee_name"]
 		del d["leave_type"]
+
 		if d not in events:
 			events.append(d)
 
