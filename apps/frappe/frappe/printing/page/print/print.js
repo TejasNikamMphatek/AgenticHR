@@ -298,10 +298,46 @@ frappe.ui.form.PrintView = class {
 		);
 	}
 
+	// refresh_print_format() {
+	// 	this.set_default_print_language();
+	// 	this.toggle_raw_printing();
+	// 	this.preview();
+	// }
+
 	refresh_print_format() {
-		this.set_default_print_language();
-		this.toggle_raw_printing();
-		this.preview();
+		// Clear any existing request
+		if (this._req) {
+			this._req.abort();
+		}
+		// Force clear cache for the document to ensure fresh data
+		frappe.model.clear_doc(this.frm.doctype, this.frm.docname);
+		// Reload document data from server
+		frappe.model.with_doc(this.frm.doctype, this.frm.docname, () => {
+			try {
+				this.frm.doc = frappe.get_doc(this.frm.doctype, this.frm.docname);
+				// console.log("Reloaded doc:", this.frm.doc); // Debug log
+				// Reload doctype metadata
+				frappe.model.with_doctype(this.frm.doctype, () => {
+					this.frm.meta = frappe.get_meta(this.frm.doctype);
+					// Reset print format, language, and letterhead to defaults
+					this.set_default_print_format();
+					this.set_default_print_language();
+					this.set_default_letterhead();
+					// Refresh additional settings
+					this.setup_additional_settings();
+					// Update raw printing toggle
+					this.toggle_raw_printing();
+					// Refresh the preview using existing preview method
+					this.preview();
+				});
+			} catch (e) {
+				frappe.msgprint({
+					title: __("Permission Error"),
+					message: __("You do not have sufficient permissions to access the document {0}. Please contact your manager.", [this.frm.docname]),
+					indicator: "red"
+				});
+			}
+		});
 	}
 
 	// bind_events () {
