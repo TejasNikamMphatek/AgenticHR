@@ -12,5 +12,8 @@ frappe.query_reports["Pipal People"] = {
 			fieldtype: "Data",
 			
 		},
-	]
+	],
+	// onload: function(report) {
+	// 	$('.menu-btn-group').addClass('hide d-none');
+    // },
 };

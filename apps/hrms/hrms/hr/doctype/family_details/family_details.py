@@ -23,3 +23,13 @@ class FamilyDetails(Document):
 
             except ValueError as e:
                 frappe.throw(f"Error: Age is not setting for family person {fp_val.name1}")
+
+    def before_insert(self):
+        # Check if Family Details already exists for this employee
+        check_exist = frappe.db.exists("Family Details", {"employee": self.employee})
+
+        if check_exist:
+            frappe.throw(
+                title="Duplicate Entry",
+                msg=f"Record already exists for Employee {self.employee_name}"
+            )
