@@ -1,6 +1,7 @@
 # Copyright (c) 2025,  Pipal ERP Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 import frappe
+import re
 from frappe import _, scrub, throw
 from datetime import datetime, timedelta ,date
 from frappe.model.naming import set_name_by_naming_series
@@ -38,6 +39,7 @@ class Employee(NestedSet):
 
 		self.employee = self.name
 		self.set_employee_name()
+		self.validate_name_fields()
 		self.validate_date()
 		self.validate_email()
 		self.validate_status()
@@ -106,6 +108,24 @@ class Employee(NestedSet):
 				title=_("Invalid Employee ID")
 			)
 
+	def validate_name_fields(self):
+		"""Validate that first_name, middle_name, and last_name contain only alphabetic characters and spaces."""
+		pattern = r'^[A-Za-z\s]+$'
+		fields_to_check = {
+			"first_name": "First Name",
+			"middle_name": "Middle Name",
+			"last_name": "Last Name",
+		}
+
+		for field, label in fields_to_check.items():
+			value = getattr(self, field, None)
+			if value and not re.match(pattern, value):
+				frappe.throw(
+					_("{0} <b>{1}</b> can only contain alphabetic characters and spaces.").format(
+						label, value
+					),
+					title=_("Invalid {0}".format(label))
+				)
 
 	def after_rename(self, old, new, merge):
 		self.db_set("employee", new)
