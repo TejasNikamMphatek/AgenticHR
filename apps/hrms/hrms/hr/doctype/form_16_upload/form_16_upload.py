@@ -121,7 +121,6 @@ class Form16Upload(Document):
         return f"Digital signatures applied to {part_name}"
 
 
-        
 
     def list_extracted_files(self, part_name):
         base_dir = frappe.get_site_path("private", "files", f"{self.name}_{part_name}")
@@ -173,6 +172,10 @@ def apply_digital_signature_part_a(docname):
     doc = frappe.get_doc("Form-16-Upload", docname)
     return doc.apply_digital_signature_external("PartA")
 
+@frappe.whitelist()
+def apply_digital_signature_part_b(docname):
+    doc = frappe.get_doc("Form-16-Upload", docname)
+    return doc.apply_digital_signature_external("PartB")
 
 PAN_RE = re.compile(r'([A-Za-z]{5}[0-9]{4}[A-Za-z])')
 
@@ -183,23 +186,28 @@ def _extract_pan(name: str) -> str | None:
 @frappe.whitelist()
 def publish_part_a(docname, part_name):
     doc = frappe.get_doc("Form-16-Upload", docname)
-    doc_list = doc.list_extracted_files(part_name) 
-
-    base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}")
+    
+    # Change base_dir to point to signed folder
+    base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}", "signed")
     # print(f"base_dir ==== {base_dir}")
-
+    
+    # Check if signed directory exists
+    if not os.path.exists(base_dir):
+        frappe.throw(f"Signed directory not found: {base_dir}")
+    
+    # Get signed PDFs directly from signed folder
+    signed_files = [f for f in os.listdir(base_dir) if f.lower().endswith('.pdf')]
+    
     # Build items = [{rel_path, filename, pan}] and collect unique PANs
     items, unique_pans = [], set()
-    for rel_path in doc_list:
-        filename = os.path.basename(rel_path)
+    for filename in signed_files:
         pan = _extract_pan(filename)
         if pan:
-            items.append({"rel_path": rel_path, "filename": filename, "pan": pan})
+            items.append({"rel_path": filename, "filename": filename, "pan": pan})
             unique_pans.add(pan)
 
-    # print(unique_pans)
     if not items:
-        frappe.throw("No PDFs with valid PAN in filename were found.")
+        frappe.throw("No PDFs with valid PAN in filename were found in signed folder.")
 
     # Fetch employees mapped by PAN (case-insensitive, but we uppercase)
     employees = frappe.db.get_all(
@@ -208,7 +216,6 @@ def publish_part_a(docname, part_name):
         fields=["name", "employee_name", "pan_number"]
     )
     emp_map = {e["pan_number"].upper(): e for e in employees}
-    # print("Matched Employees:", emp_map)
 
     created_docs, missing = [], []
     for it in items:
@@ -217,12 +224,11 @@ def publish_part_a(docname, part_name):
             missing.append(it["pan"])
             continue
 
-        pdf_path = os.path.abspath(os.path.join(base_dir, it["rel_path"]))
+        # Direct path to signed PDF
+        pdf_path = os.path.join(base_dir, it["filename"])
         if not os.path.exists(pdf_path):
             frappe.throw(f"PDF not found: {pdf_path}")
             continue
-
-        # print(f"Attaching PDF: {pdf_path} -> Employee: {employee['name']}")
 
         file_doc = frappe.get_doc({
             "doctype": "File",
@@ -255,27 +261,31 @@ def publish_part_a(docname, part_name):
         "processed_files": [it["filename"] for it in items]
     }
 
-
 @frappe.whitelist()
 def publish_part_b(docname, part_name):
     doc = frappe.get_doc("Form-16-Upload", docname)
-    doc_list = doc.list_extracted_files(part_name) 
-
-    base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}")
+    
+    # Change base_dir to point to signed folder
+    base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}", "signed")
     # print(f"base_dir ==== {base_dir}")
-
+    
+    # Check if signed directory exists
+    if not os.path.exists(base_dir):
+        frappe.throw(f"Signed directory not found: {base_dir}")
+    
+    # Get signed PDFs directly from signed folder
+    signed_files = [f for f in os.listdir(base_dir) if f.lower().endswith('.pdf')]
+    
     # Build items = [{rel_path, filename, pan}] and collect unique PANs
     items, unique_pans = [], set()
-    for rel_path in doc_list:
-        filename = os.path.basename(rel_path)
+    for filename in signed_files:
         pan = _extract_pan(filename)
         if pan:
-            items.append({"rel_path": rel_path, "filename": filename, "pan": pan})
+            items.append({"rel_path": filename, "filename": filename, "pan": pan})
             unique_pans.add(pan)
 
-    # print(unique_pans)
     if not items:
-        frappe.throw("No PDFs with valid PAN in filename were found.")
+        frappe.throw("No PDFs with valid PAN in filename were found in signed folder.")
 
     # Fetch employees mapped by PAN (case-insensitive, but we uppercase)
     employees = frappe.db.get_all(
@@ -284,7 +294,6 @@ def publish_part_b(docname, part_name):
         fields=["name", "employee_name", "pan_number"]
     )
     emp_map = {e["pan_number"].upper(): e for e in employees}
-    # print("Matched Employees:", emp_map)
 
     created_docs, missing = [], []
     for it in items:
@@ -293,12 +302,11 @@ def publish_part_b(docname, part_name):
             missing.append(it["pan"])
             continue
 
-        pdf_path = os.path.abspath(os.path.join(base_dir, it["rel_path"]))
+        # Direct path to signed PDF
+        pdf_path = os.path.join(base_dir, it["filename"])
         if not os.path.exists(pdf_path):
             frappe.throw(f"PDF not found: {pdf_path}")
             continue
-
-        # print(f"Attaching PDF: {pdf_path} -> Employee: {employee['name']}")
 
         file_doc = frappe.get_doc({
             "doctype": "File",
