@@ -73,6 +73,24 @@ frappe.ui.form.on("Form-16-Upload", {
         });
     },
 
+    apply_digital_signature_part_b: function(frm) {
+        frappe.call({
+            method: "hrms.hr.doctype.form_16_upload.form_16_upload.apply_digital_signature_part_b",
+            args: { docname: frm.doc.name },
+            callback: function(r) {
+                if (r.message) {
+                    frappe.msgprint("✅ Digital signatures applied successfully.");
+                } else {
+                    frappe.msgprint("Failed to apply digital signatures.");
+                }
+            },
+            error: function(r) {
+                console.error(r)
+                frappe.msgprint("applying digital signatures - Failed");
+            }
+        });
+    },
+
     publish_part_a:function(frm){
         frappe.call({
             method: "hrms.hr.doctype.form_16_upload.form_16_upload.publish_part_a",
