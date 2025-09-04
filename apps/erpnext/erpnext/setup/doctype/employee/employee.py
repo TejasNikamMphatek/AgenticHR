@@ -104,23 +104,23 @@ class Employee(NestedSet):
 			self.final_confirmation_date = joining_date + timedelta(days=180)
 
 
-	def validate_employee_number(self):
-		try:
-			emp_no = int(self.employee_number)
-		except (ValueError, TypeError):
-			frappe.throw(
-				_("Employee ID must contain only numeric values. Please enter a valid numeric Employee ID."),
-				title=_("Invalid Employee ID")
-			)
+	# def validate_employee_number(self):
+	# 	try:
+	# 		emp_no = int(self.employee_number)
+	# 	except (ValueError, TypeError):
+	# 		frappe.throw(
+	# 			_("Employee ID must contain only numeric values. Please enter a valid numeric Employee ID."),
+	# 			title=_("Invalid Employee ID")
+	# 		)
 
-		if emp_no <= 0:
-			frappe.throw(
-				_("Employee ID must be greater than zero."),
-				title=_("Invalid Employee ID")
-			)
+	# 	if emp_no <= 0:
+	# 		frappe.throw(
+	# 			_("Employee ID must be greater than zero."),
+	# 			title=_("Invalid Employee ID")
+	# 		)
 
 		
-		self.employee_number = emp_no
+	# 	self.employee_number = emp_no
 
 		
 
