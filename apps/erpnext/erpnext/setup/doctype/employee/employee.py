@@ -38,6 +38,7 @@ class Employee(NestedSet):
 		validate_status(self.status, ["Active", "Inactive", "Suspended", "Left"])
 
 		self.employee = self.name
+		self.validate_employee_number()
 		self.set_employee_name()
 		self.validate_name_fields()
 		self.validate_date()
@@ -101,12 +102,27 @@ class Employee(NestedSet):
 
 		if joining_date and self.confirmation_status != "Confirmed":
 			self.final_confirmation_date = joining_date + timedelta(days=180)
-		
-		if not self.employee_number.isdigit():
+
+
+	def validate_employee_number(self):
+		try:
+			emp_no = int(self.employee_number)
+		except (ValueError, TypeError):
 			frappe.throw(
 				_("Employee ID must contain only numeric values. Please enter a valid numeric Employee ID."),
 				title=_("Invalid Employee ID")
 			)
+
+		if emp_no <= 0:
+			frappe.throw(
+				_("Employee ID must be greater than zero."),
+				title=_("Invalid Employee ID")
+			)
+
+		
+		self.employee_number = emp_no
+
+		
 
 	def validate_name_fields(self):
 		"""Validate that first_name, middle_name, and last_name contain only alphabetic characters and spaces."""
