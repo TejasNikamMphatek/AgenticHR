@@ -737,11 +737,11 @@ class User(Document):
 					_("Employee Number <b>{0}</b> already exists for another user.").format(self.employee_number),
 					title="Duplicate Entry"
 				)
-		else:
-				frappe.throw(
-					_("<b> Employee ID must contain only numeric values. Please enter a valid numeric Employee ID.</b>"),
-					title=_("Invalid Employee ID")
-				)
+		# else:
+		# 		frappe.throw(
+		# 			_("<b> Employee ID must contain only numeric values. Please enter a valid numeric Employee ID.</b>"),
+		# 			title=_("Invalid Employee ID")
+		# 		)
 
 
 	def password_strength_test(self):
