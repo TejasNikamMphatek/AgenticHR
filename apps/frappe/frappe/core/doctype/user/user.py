@@ -739,7 +739,7 @@ class User(Document):
 				)
 		else:
 				frappe.throw(
-					_("Employee ID must contain only numeric values. Please enter a valid numeric Employee ID."),
+					_("<b> Employee ID must contain only numeric values. Please enter a valid numeric Employee ID.</b>"),
 					title=_("Invalid Employee ID")
 				)
 
