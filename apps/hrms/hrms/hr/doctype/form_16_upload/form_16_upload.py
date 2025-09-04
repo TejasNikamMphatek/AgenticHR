@@ -187,18 +187,13 @@ def _extract_pan(name: str) -> str | None:
 def publish_part_a(docname, part_name):
     doc = frappe.get_doc("Form-16-Upload", docname)
     
-    # Change base_dir to point to signed folder
+    # Path to signed folder
     base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}", "signed")
-    # print(f"base_dir ==== {base_dir}")
-    
-    # Check if signed directory exists
     if not os.path.exists(base_dir):
         frappe.throw(f"Signed directory not found: {base_dir}")
     
-    # Get signed PDFs directly from signed folder
+    # Collect signed PDFs
     signed_files = [f for f in os.listdir(base_dir) if f.lower().endswith('.pdf')]
-    
-    # Build items = [{rel_path, filename, pan}] and collect unique PANs
     items, unique_pans = [], set()
     for filename in signed_files:
         pan = _extract_pan(filename)
@@ -209,7 +204,7 @@ def publish_part_a(docname, part_name):
     if not items:
         frappe.throw("No PDFs with valid PAN in filename were found in signed folder.")
 
-    # Fetch employees mapped by PAN (case-insensitive, but we uppercase)
+    # Employees mapped by PAN
     employees = frappe.db.get_all(
         "Employee",
         filters={"pan_number": ["in", list(unique_pans)]},
@@ -224,22 +219,32 @@ def publish_part_a(docname, part_name):
             missing.append(it["pan"])
             continue
 
-        # Direct path to signed PDF
         pdf_path = os.path.join(base_dir, it["filename"])
         if not os.path.exists(pdf_path):
             frappe.throw(f"PDF not found: {pdf_path}")
             continue
 
-        file_doc = frappe.get_doc({
-            "doctype": "File",
-            "file_name": it["filename"],
-            "attached_to_doctype": "Employee",
-            "attached_to_name": employee["name"],
-            "is_private": 1,
-            "content": open(pdf_path, "rb").read(),
-            "decode": False
-        })
-        file_doc.insert(ignore_permissions=True)
+        # --- File creation (skip if already exists)
+        existing_file = frappe.db.exists(
+            "File", {"file_name": it["filename"], "attached_to_doctype": "Employee", "attached_to_name": employee["name"]}
+        )
+        if existing_file:
+            file_doc = frappe.get_doc("File", existing_file)
+        else:
+            file_doc = frappe.get_doc({
+                "doctype": "File",
+                "file_name": it["filename"],
+                "attached_to_doctype": "Employee",
+                "attached_to_name": employee["name"],
+                "is_private": 1,
+                "content": open(pdf_path, "rb").read(),
+                "decode": False
+            })
+            file_doc.insert(ignore_permissions=True)
+
+        # --- Document Center creation (skip if exists)
+        if frappe.db.exists("Document Center", {"employee": employee["name"], "document_name": it["filename"]}):
+            continue
 
         doc_center = frappe.get_doc({
             "doctype": "Document Center",
@@ -265,18 +270,13 @@ def publish_part_a(docname, part_name):
 def publish_part_b(docname, part_name):
     doc = frappe.get_doc("Form-16-Upload", docname)
     
-    # Change base_dir to point to signed folder
+    # Path to signed folder
     base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}", "signed")
-    # print(f"base_dir ==== {base_dir}")
-    
-    # Check if signed directory exists
     if not os.path.exists(base_dir):
         frappe.throw(f"Signed directory not found: {base_dir}")
     
-    # Get signed PDFs directly from signed folder
+    # Collect signed PDFs
     signed_files = [f for f in os.listdir(base_dir) if f.lower().endswith('.pdf')]
-    
-    # Build items = [{rel_path, filename, pan}] and collect unique PANs
     items, unique_pans = [], set()
     for filename in signed_files:
         pan = _extract_pan(filename)
@@ -287,7 +287,7 @@ def publish_part_b(docname, part_name):
     if not items:
         frappe.throw("No PDFs with valid PAN in filename were found in signed folder.")
 
-    # Fetch employees mapped by PAN (case-insensitive, but we uppercase)
+    # Employees mapped by PAN
     employees = frappe.db.get_all(
         "Employee",
         filters={"pan_number": ["in", list(unique_pans)]},
@@ -295,29 +295,40 @@ def publish_part_b(docname, part_name):
     )
     emp_map = {e["pan_number"].upper(): e for e in employees}
 
-    created_docs, missing = [], []
+    created_docs, missing, skipped_files = [], [], []
     for it in items:
         employee = emp_map.get(it["pan"])
         if not employee:
             missing.append(it["pan"])
             continue
 
-        # Direct path to signed PDF
         pdf_path = os.path.join(base_dir, it["filename"])
         if not os.path.exists(pdf_path):
             frappe.throw(f"PDF not found: {pdf_path}")
             continue
 
-        file_doc = frappe.get_doc({
-            "doctype": "File",
-            "file_name": it["filename"],
-            "attached_to_doctype": "Employee",
-            "attached_to_name": employee["name"],
-            "is_private": 1,
-            "content": open(pdf_path, "rb").read(),
-            "decode": False
-        })
-        file_doc.insert(ignore_permissions=True)
+        # --- File creation (skip if already exists)
+        existing_file = frappe.db.exists(
+            "File", {"file_name": it["filename"], "attached_to_doctype": "Employee", "attached_to_name": employee["name"]}
+        )
+        if existing_file:
+            file_doc = frappe.get_doc("File", existing_file)
+        else:
+            file_doc = frappe.get_doc({
+                "doctype": "File",
+                "file_name": it["filename"],
+                "attached_to_doctype": "Employee",
+                "attached_to_name": employee["name"],
+                "is_private": 1,
+                "content": open(pdf_path, "rb").read(),
+                "decode": False
+            })
+            file_doc.insert(ignore_permissions=True)
+
+        # --- Document Center creation (skip if exists)
+        if frappe.db.exists("Document Center", {"employee": employee["name"], "document_name": it["filename"]}):
+            skipped_files.append(it["filename"])
+            continue
 
         doc_center = frappe.get_doc({
             "doctype": "Document Center",
@@ -336,5 +347,6 @@ def publish_part_b(docname, part_name):
         "created_records": created_docs,
         "matched_employees": employees,
         "missing_pans": sorted(set(missing)),
+        "skipped_files": skipped_files,  # useful for logging duplicates
         "processed_files": [it["filename"] for it in items]
     }
