@@ -7,11 +7,7 @@ import subprocess
 import os, re
 
 from frappe.model.document import Document
-from frappe.utils.file_manager import get_file
-# from pyhanko.sign import signers
-# from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
-# from pyhanko.sign.fields import SigFieldSpec
-# print("PyHanko is available in Frappe!")
+
 
 class Form16Upload(Document):
 
@@ -93,54 +89,39 @@ class Form16Upload(Document):
         # 3️⃣ Certificate file
         cert_doc = frappe.get_doc("File", {"file_url": sign_conf.digital_signature_file})
         cert_path = cert_doc.get_full_path()
+        dg_sign_info = frappe.get_single("Upload Digital Sign")
+
+        signer_name = dg_sign_info.get("signer_name")
+        signer_designation = dg_sign_info.get("signer_designation")
+        location = dg_sign_info.get("location")
+
+
         if not os.path.isfile(cert_path):
             frappe.throw(f"Certificate file does not exist: {cert_path}")
 
         # 4️⃣ Password
         cert_pass = getattr(sign_conf, "private_key_password", "mphatek@123")
 
-        # 5️⃣ Sign PDFs
-        signed_files = []
-        skipped_files = []
-
-        # for root, dirs, files in os.walk(base_dir):
-        #     for fn in files:
-        #         if fn.lower().endswith(".pdf"):
-        #             input_pdf = os.path.join(root, fn)
-        #             output_pdf = os.path.join(signed_dir, fn)
+        for root, dirs, files in os.walk(base_dir):
+            for file in files:
+                if file.lower().endswith('.pdf') and 'signed' not in root:
+                    input_pdf = os.path.join(root, file)
+                    output_pdf = os.path.join(signed_dir, file)
                     
-        #             python_path = sys.executable
-        #             pyhanko_path = os.path.join(os.path.dirname(python_path), "pyhanko")
+                    cmd = [
+                        "python3", frappe.get_site_path("sign_pdfs.py"), 
+                        input_pdf, output_pdf, cert_path, cert_pass,
+                        signer_name or "Digital Signer",
+                        signer_designation or "Authorized Signatory", 
+                        location or "PUNE"
+                    ]
+                    
+                    subprocess.run(cmd, check=True)
+        
+        return f"Digital signatures applied to {part_name}"
 
-        #             cmd = [
-		# 				"pyhanko",  # Direct command
-		# 				"sign",
-		# 				"addsig", 
-		# 				"--field", "Signature1",
-		# 				"--signer", f"pemder:{cert_path}",
-		# 				"--reason", "Form-16 Part A Signing",
-		# 				"--out", output_pdf,
-		# 				input_pdf,
-		# 			]
 
-        #             if cert_pass:
-        #                 cmd.extend(["--key-passphrase", cert_pass])
-
-        #             try:
-        #                 subprocess.run(cmd, check=True, capture_output=True, text=True)
-        #                 signed_files.append(output_pdf)
-        #             except subprocess.CalledProcessError as e:
-        #                 skipped_files.append(fn)
-        #                 frappe.throw(f"Failed to sign {fn}, skipping...\nError: {e.stderr or e.stdout or str(e)}")
-        #             except Exception as e:
-        #                 skipped_files.append(fn)
-        #                 frappe.throw(f"Unexpected error for {fn}: {str(e)}")
-
-        if not signed_files:
-            frappe.throw("No PDFs were signed.")
-
-        frappe.msgprint(f"✅ Signed {len(signed_files)} PDF(s).")
-        return signed_files
+        
 
     def list_extracted_files(self, part_name):
         base_dir = frappe.get_site_path("private", "files", f"{self.name}_{part_name}")
