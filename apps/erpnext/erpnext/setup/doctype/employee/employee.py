@@ -55,7 +55,7 @@ class Employee(NestedSet):
 			if existing_user_id:
 				user = frappe.get_doc("User", existing_user_id)
 				validate_employee_role(user, ignore_emp_check=True)
-				user.save(ignore_permissions=True)
+				# user.save(ignore_permissions=True)
 				remove_user_permission("Employee", self.name, existing_user_id)
 	
 	def validate_future_dates(self):
