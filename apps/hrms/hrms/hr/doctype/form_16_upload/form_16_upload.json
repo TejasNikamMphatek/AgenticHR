@@ -69,7 +69,6 @@
   {
    "fieldname": "section_break_xdtt",
    "fieldtype": "Section Break",
-   "hidden": 1,
    "label": "Apply Digital Signature"
   },
   {
@@ -112,7 +111,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-29 19:04:00.675083",
+ "modified": "2025-09-04 12:13:10.789852",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Form-16-Upload",
