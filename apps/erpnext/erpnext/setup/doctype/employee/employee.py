@@ -38,7 +38,7 @@ class Employee(NestedSet):
 		validate_status(self.status, ["Active", "Inactive", "Suspended", "Left"])
 
 		self.employee = self.name
-		self.validate_employee_number()
+		# self.validate_employee_number()
 		self.set_employee_name()
 		self.validate_name_fields()
 		self.validate_date()
