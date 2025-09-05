@@ -62,22 +62,35 @@ def get_emails_sent_today(email_account=None):
 	return frappe.db.sql(q, q_args)[0][0]
 
 
+# def get_unsubscribe_message(unsubscribe_message: str, expose_recipients: str) -> "frappe._dict[str, str]":
+# 	unsubscribe_message = unsubscribe_message or _("Unsubscribe")
+# 	unsubscribe_link = f'<a href="<!--unsubscribe_url-->" target="_blank">{unsubscribe_message}</a>'
+# 	unsubscribe_html = _("{0} to stop receiving emails of this type").format(unsubscribe_link)
+# 	html = f"""<div class="email-unsubscribe">
+# 			<!--cc_message-->
+# 			<div>
+# 				{unsubscribe_html}
+# 			</div>
+# 		</div>"""
+
+# 	text = f"\n\n{unsubscribe_message}: <!--unsubscribe_url-->\n"
+# 	if expose_recipients == "footer":
+# 		text = f"\n<!--cc_message-->{text}"
+
+# 	return frappe._dict(html=html, text=text)
+
 def get_unsubscribe_message(unsubscribe_message: str, expose_recipients: str) -> "frappe._dict[str, str]":
-	unsubscribe_message = unsubscribe_message or _("Unsubscribe")
-	unsubscribe_link = f'<a href="<!--unsubscribe_url-->" target="_blank">{unsubscribe_message}</a>'
-	unsubscribe_html = _("{0} to stop receiving emails of this type").format(unsubscribe_link)
-	html = f"""<div class="email-unsubscribe">
-			<!--cc_message-->
-			<div>
-				{unsubscribe_html}
-			</div>
-		</div>"""
+    # keep only wrapper div without unsubscribe content
+    html = """<div class="email-unsubscribe">
+                <!--cc_message-->
+            </div>"""
 
-	text = f"\n\n{unsubscribe_message}: <!--unsubscribe_url-->\n"
-	if expose_recipients == "footer":
-		text = f"\n<!--cc_message-->{text}"
+    # no unsubscribe text in plain text version
+    text = ""
+    if expose_recipients == "footer":
+        text = "\n<!--cc_message-->\n"
 
-	return frappe._dict(html=html, text=text)
+    return frappe._dict(html=html, text=text)
 
 
 def get_unsubcribed_url(reference_doctype, reference_name, email, unsubscribe_method, unsubscribe_params):

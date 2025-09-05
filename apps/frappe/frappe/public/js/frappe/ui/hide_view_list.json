@@ -1,519 +1,524 @@
 {
     "Employee" :{
         "System Manager" : ["Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban","Tree"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban","Tree"]
     },
     "Leave Type" : {
         "System Manager" : ["Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "HRMS Dashboard" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Application" : {
         "System Manager" : ["Dashboard", "Kanban", "Report", "Gantt"],
-        "Other User" : ["Dashboard", "Kanban", "Report", "Gantt"]
+        "Other User" : ["Toggle Sidebar1" ,"Dashboard", "Kanban", "Report", "Gantt"]
     },
     "Attendance Request" : {
         "System Manager" : ["Dashboard", "Kanban"],
-        "Other User" : ["Dashboard", "Kanban", "Report"]
+        "Other User" : ["Toggle Sidebar1" ,"Dashboard", "Kanban", "Report"]
     },
     "Employee Checkin" : {
         "System Manager" : ["Dashboard", "Kanban"],
-        "Other User" : ["Dashboard", "Kanban", "Report"]
+        "Other User" : ["Toggle Sidebar1" ,"Dashboard", "Kanban", "Report"]
     },
     "Employee Separation" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Full and Final Statement" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Full and Final Outstanding Statement" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Full and Final Asset" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Expense Claim" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Advance" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "HR Settings" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
    
     "Shift Assignment" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Job Opening" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Shift Assignment Tool" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Vehicle Service Item" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Vehicle Service" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Vehicle Log" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Upload Attendance" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Travel Request Costing" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Travel Request" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Travel Itinerary" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Training Result Employee" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Training Result" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Training Program" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Training Feedback" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Training Event Employee" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Training Event" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Staffing Plan Detail" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Staffing Plan" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Skill Assessment" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Skill" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Shift Type" : {
         "System Manager" : [],
-        "Other User" : ["Report","Dashboard","Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report","Dashboard","Kanban"]
     },
     "Shift Request" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "PWA Notification" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Purpose of Travel" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Offer Term" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Policy Detail" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Policy Assignment" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Policy" : {
         "Administrator" : ["Report", "Dashboard", "Kanban"],
         "System Manager" : ["Report", "Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "Leave Period" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Ledger Entry" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Encashment" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Control Panel" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Block List Date" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Block List Allow" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Block List" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Leave Allocation" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "KRA" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Job Requisition" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Job Offer Term Template" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Job Offer Term" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Job Offer" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Job Applicant Source" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Job Applicant" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Interviewer" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Interview Type" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Interview Round" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Interview Feedback" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Interview Detail" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Interview" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Interest" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Identification Document Type" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Grievance Type" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Goal" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Expense Taxes and Charges" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Expense Claim Type" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Expense Claim Detail" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Expense Claim Advance" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Expense Claim Account" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Expected Skill Set" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Exit Interview" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employment Type" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Transfer" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Training" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Skill Map" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Skill" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Separation Template" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Referral" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Property History" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Promotion" : {
         "System Manager" : ["Kanban"],
-        "Other User" : ["Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Kanban"]
     },
     "Employee Performance Feedback" :{
         "System Manager" : [],
-        "Other User" : ["Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Dashboard", "Kanban"]
     },
     "Employee Onboarding Template" : {
         "System Manager" : [],
-        "Other User" : ["Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Dashboard", "Kanban"]
     },
     "Employee Onboarding" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Health Insurance" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Grievance" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Grade" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Feedback Rating" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Feedback Criteria" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Boarding Activity" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Employee Attendance Tool" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Designation Skill" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Department Approver" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Daily Work Summary Group User" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Daily Work Summary Group" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Daily Work Summary" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Compensatory Leave Request" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appraisee" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appraisal Template Goal" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appraisal Template" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appraisal KRA" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appraisal Goal" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appraisal Cycle" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appraisal" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appointment Letter Template" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appointment Letter content" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Appointment Letter" : {
         "System Manager" : [],
-        "Other User" : []
+        "Other User" : ["Toggle Sidebar1"]
     },
     "Salary Slip" : {
         "System Manager" : ["Kanban"],
-        "Other User" : ["Kanban", "Dashboard","Report"]
+        "Other User" : ["Toggle Sidebar1" ,"Kanban", "Dashboard","Report"]
     },
     "HR Overview" :{
         "Administrator" : ["Attendance", "Leave Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"],
         "System Manager" : ["Edit","New", "Attendance", "Leave Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"],
-        "Other User" : ["Edit","New", "Attendance", "Leave Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"]
+        "Other User" : ["Toggle Sidebar1" ,"Edit","New", "Attendance", "Leave Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"]
         
     },
     "Dashboard" :{
         "Administrator" : ["Dashboard", "Kanban", "Report"],
         "System Manager" : ["Dashboard", "Kanban", "Report"],
-        "Other User" : ["Dashboard", "Kanban", "Report"]
+        "Other User" : ["Toggle Sidebar1" ,"Dashboard", "Kanban", "Report"]
         
     },
     "Leave Overview" :{
         "Administrator" : ["Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"],
         "System Manager" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"],
-        "Other User" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"]
+        "Other User" : ["Toggle Sidebar1" ,"Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing"]
     },
     "Attendance" :{
         "Administrator" : ["Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview"],
         "System Manager" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview","Gantt", "Kanban"],
-        "Other User" : ["Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview","Gantt", "Kanban","Dashboard"]
+        "Other User" : ["Toggle Sidebar1" ,"Edit","New", "Attendance", "HR Overview", "Payroll", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "Leave Overview","Gantt", "Kanban","Dashboard"]
     },
     "User" :{
         "System Manager" : [],
-        "Other User" : ["Rename"]
+        "Other User" : ["Toggle Sidebar1" ,"Rename"]
     },
     "Custom Appointment Letter" :{
         "System Manager" :["Report", "Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "Increment Letter" : {
         "System Manager" :["Report", "Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "Confirmation Letter": {
         "System Manager" :["Report", "Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "Confirmation Letter with Increment" : {
         "System Manager" :["Report", "Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "Relieving-Experience Letter": {
         "System Manager" :["Report", "Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "NDA Letter": {
         "System Manager" :["Report", "Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "Auto Email Report": {
         "System Manager" :["Report", "Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "Employee Tax Exemption Declaration": {
         "System Manager" :["Dashboard", "Kanban"],
         "Administrator" : ["Dashboard", "Kanban"],
-        "Other User" : ["Report", "Dashboard", "Kanban"]
+        "Other User" : ["Toggle Sidebar1" ,"Report", "Dashboard", "Kanban"]
     },
     "Payroll" :{
         "Administrator" : ["Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"],
         "System Manager" : ["Edit","New", "Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"],
-        "Other User" : ["Edit","New", "Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"]
+        "Other User" : ["Toggle Sidebar1" ,"Edit","New", "Attendance", "Leave Overview", "Human Resource", "Expense Claims", "Recruitment", "Employee Lifecycle", "Project", "Selling", "Stock", "Accounts", "Buying", "CRM", "Asset", "Manufacturing", "HR Overview"]
     },
     "Pipal People" :{
         "Administrator" : ["Add Column", "Edit", "Print", "Save"],
         "System Manager" : ["Add Column", "Edit", "Print", "Save"],
-        "Other User" : ["Print", "PDF"]
+        "Other User" : ["Toggle Sidebar1" ,"Print", "PDF"]
     },
     "User Permission":{
         "Administrator" : ["Kanban", "Dashboard", "Toggle Chart", "Save"],
         "System Manager" : ["Kanban", "Dashboard", "Toggle Chart", "Save"],
-        "Other User" : ["Kanban", "Dashboard", "Toggle Chart", "Save"] 
+        "Other User" : ["Toggle Sidebar1" ,"Kanban", "Dashboard", "Toggle Chart", "Save"] 
     },
     "Project Timesheet Management":{
         "Administrator" : ["Kanban", "Dashboard"],
         "System Manager" : ["Kanban", "Dashboard"],
-        "Other User" : ["Kanban", "Dashboard", "Report"] 
+        "Other User" : ["Toggle Sidebar1" ,"Kanban", "Dashboard", "Report"] 
+    },
+    "Google Settings":{
+        "Administrator" : ["Email", "Jump to field", "Copy to Clipboard","Remind Me"],
+        "System Manager" : ["Email", "Jump to field", "Copy to Clipboard","Remind Me"],
+        "Other User" : ["Toggle Sidebar1" ,"Email", "Jump to field", "Copy to Clipboard","Remind Me"] 
     }
 }
