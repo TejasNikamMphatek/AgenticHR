@@ -492,38 +492,48 @@ frappe.ui.Page = class Page {
 		if (icon) {
 			$icon = `<span class="menu-item-icon">${frappe.utils.icon(icon)}</span>`;
 		}
-		// debugger
+		
+		/*----------------------------------------------------------------------------*/
+        /* HIDE VIEWS and Tooltip*/
+		let doctype = frappe.get_route()[1];
+		let docHideData = this.getDoctypeHideViewData(doctype);
+		let isLabelPresent = false;
+
+		if (frappe.user.has_role("System Manager")) {
+			isLabelPresent = (docHideData['System Manager'] || []).includes(label);
+			// console.log(docHideData['System Manager'])
+			if (frappe.user.has_role("Administrator")) {
+				isLabelPresent = (docHideData['Administrator'] || []).includes(label);
+			}
+		} else {
+			isLabelPresent = (docHideData['Other User'] || []).includes(label);
+		}
+
+		// console.log(docHideData)
+		// console.log(doctype+" = "+label)
+
 		if (shortcut) {
 			let shortcut_obj = this.prepare_shortcut_obj(shortcut, click, label);
-			$li = $(`
-				<li>
-					<a class="grey-link dropdown-item" href="#" onClick="return false;">
-						${$icon}
-						<span class="menu-item-label">${label}</span>
-						<kbd class="pull-right">
-							<span>${shortcut_obj.shortcut_label}</span>
-						</kbd>
-					</a>
-				</li>
-			`);
+
+			if(isLabelPresent){
+				$li = $(`<li class="hide d-none"></li>`);
+			}else{
+				$li = $(`
+					<li>
+						<a class="grey-link dropdown-item" href="#" onClick="return false;">
+							${$icon}
+							<span class="menu-item-label">${label}</span>
+							<kbd class="pull-right">
+								<span>${shortcut_obj.shortcut_label}</span>
+							</kbd>
+						</a>
+					</li>
+				`);
+			}
 			frappe.ui.keys.add_shortcut(shortcut_obj);
 		} else {
 		
-			let doctype = frappe.get_route()[1];
-			let docHideData = this.getDoctypeHideViewData(doctype);
-			let isLabelPresent = false;
-			// console.log(docHideData)
-			// console.log(doctype+" = "+label)
-
-			if (frappe.user.has_role("System Manager")) {
-				isLabelPresent = (docHideData['System Manager'] || []).includes(label);
-				// console.log(docHideData['System Manager'])
-				if (frappe.user.has_role("Administrator")) {
-					isLabelPresent = (docHideData['Administrator'] || []).includes(label);
-				}
-			} else {
-				isLabelPresent = (docHideData['Other User'] || []).includes(label);
-			}
+			
 
 
 			if (isLabelPresent) {
