@@ -1,10 +1,10 @@
 # Copyright (c) 2013, mPHATEK Systems Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
-
 import frappe
 from frappe import _
 from frappe.query_builder.functions import Extract
+from frappe.utils import get_url_to_form
 
 import erpnext
 
@@ -12,11 +12,57 @@ Filters = frappe._dict
 
 
 def execute(filters: Filters = None) -> tuple:
+	# Apply employee-based access control
+	filters = apply_employee_access_control(filters)
+	
 	is_indian_company = erpnext.get_region(filters.get("company")) == "India"
 	columns = get_columns(is_indian_company)
 	data = get_data(filters, is_indian_company)
 
 	return columns, data
+
+
+def apply_employee_access_control(filters: Filters) -> Filters:
+	"""Apply employee-based access control based on user role"""
+	user = frappe.session.user
+	
+	# Check if user is System Manager
+	if "System Manager" in frappe.get_roles(user):
+		# System Manager can see all records
+		return filters
+	
+	# For other users, check if they have an associated employee record
+	employee_id = frappe.db.get_value("Employee", {"user_id": user}, "name")
+	
+	if employee_id:
+		# Set employee filter to current user's employee record
+		filters.employee = employee_id
+	else:
+		# If user has no associated employee record, return empty results
+		frappe.throw(_("You don't have permission to view this report. Please contact your administrator."))
+	
+	return filters
+
+
+@frappe.whitelist()
+def setup_employee_filter():
+	"""Setup employee filter based on user permissions"""
+	user = frappe.session.user
+	
+	# Check if user is System Manager
+	if "System Manager" in frappe.get_roles(user):
+		return {
+			"is_system_manager": True,
+			"employee_id": None
+		}
+	
+	# For other users, get their employee record
+	employee_id = frappe.db.get_value("Employee", {"user_id": user}, "name")
+	
+	return {
+		"is_system_manager": False,
+		"employee_id": employee_id
+	}
 
 
 def get_columns(is_indian_company: bool) -> list[dict]:
@@ -25,7 +71,7 @@ def get_columns(is_indian_company: bool) -> list[dict]:
 			"label": _("Employee"),
 			"options": "Employee",
 			"fieldname": "employee",
-			"fieldtype": "Data",
+			"fieldtype": "Link",
 			"width": 200,
 		},
 		{
@@ -120,9 +166,9 @@ def get_income_tax_deductions(filters: Filters) -> list[dict]:
 		)
 	)
 
-	for field in ["department", "branch", "company"]:
-		if filters.get(field):
-			query = query.where(getattr(SalarySlip, field) == filters.get(field))
+	# Apply employee filter (automatically set for non-System Managers)
+	if filters.get("employee"):
+		query = query.where(SalarySlip.employee == filters.employee)
 
 	if filters.get("month"):
 		query = query.where(Extract("month", SalarySlip.start_date) == filters.month)
