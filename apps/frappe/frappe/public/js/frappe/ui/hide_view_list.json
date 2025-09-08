@@ -520,5 +520,11 @@
         "Administrator" : ["Email", "Jump to field", "Copy to Clipboard","Remind Me"],
         "System Manager" : ["Email", "Jump to field", "Copy to Clipboard","Remind Me"],
         "Other User" : ["Toggle Sidebar" ,"Email", "Jump to field", "Copy to Clipboard","Remind Me"] 
+    },
+     "Report":{
+        "Administrator" : ["Print", "Email", "Jump to field", "Copy to Clipboard","Remind Me" , "Links", "Show Report", "Customize"],
+        "System Manager" : ["Print", "Email", "Jump to field", "Copy to Clipboard","Remind Me" , "Links", "Show Report", "Customize"],
+        "Other User" : ["Print", "Email", "Jump to field", "Copy to Clipboard","Remind Me" , "Links", "Show Report", "Customize"] 
     }
+
 }
