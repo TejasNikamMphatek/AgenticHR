@@ -525,6 +525,11 @@
         "Administrator" : ["Print", "Email", "Jump to field", "Copy to Clipboard","Remind Me" , "Links", "Show Report", "Customize"],
         "System Manager" : ["Print", "Email", "Jump to field", "Copy to Clipboard","Remind Me" , "Links", "Show Report", "Customize"],
         "Other User" : ["Print", "Email", "Jump to field", "Copy to Clipboard","Remind Me" , "Links", "Show Report", "Customize"] 
+    },
+    "Salary Register" : {
+        "Administrator" : ["Print"],
+        "System Manager" : ["Print"],
+        "Other User" : ["Print"] 
     }
 
 }
