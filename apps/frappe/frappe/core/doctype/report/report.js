@@ -7,6 +7,10 @@ frappe.ui.form.on("Report", {
 			frm.enable_save();
 		}
 
+		// For Hide Print ICON
+		$('button[data-original-title="Print"]').hide();
+
+
 		let doc = frm.doc;
 		if (!doc.__islocal) {
 			frm.add_custom_button(
