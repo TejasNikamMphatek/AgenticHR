@@ -1,15 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:{document_type}-{employee}-{document_name}",
- "creation": "2025-08-29 18:44:44.598725",
+ "creation": "2025-09-08 17:29:48.179669",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "employee",
   "employee_name",
   "publish_date",
-  "column_break_nblj",
+  "column_break_bkum",
   "document_type",
   "document_name",
   "document",
@@ -39,6 +38,10 @@
    "read_only": 1
   },
   {
+   "fieldname": "column_break_bkum",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "document_type",
    "fieldtype": "Data",
    "label": "Document Type",
@@ -59,37 +62,18 @@
    "read_only": 1
   },
   {
-   "fetch_from": "employee.employee_name",
-   "fieldname": "employee_name",
-   "fieldtype": "Data",
-   "label": "Employee Name",
-   "read_only": 1
-  },
-  {
-   "default": "Today",
-   "fieldname": "publish_date",
-   "fieldtype": "Date",
-   "label": "Publish Date",
-   "read_only": 1
-  },
-  {
    "depends_on": "eval:document",
    "fieldname": "download_document",
    "fieldtype": "Button",
    "label": "Download Document"
-  },
-  {
-   "fieldname": "column_break_nblj",
-   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-04 18:40:39.882668",
+ "modified": "2025-09-08 17:35:52.071881",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Document Center",
- "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
