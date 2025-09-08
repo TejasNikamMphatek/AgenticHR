@@ -34,15 +34,15 @@ frappe.query_reports["Salary Register"] = {
 			options: "Employee",
 			width: "100px",
 		},
-		{
-			fieldname: "company",
-			label: __("Company"),
-			fieldtype: "Link",
-			options: "Company",
-			default: frappe.defaults.get_user_default("Company"),
-			width: "100px",
-			reqd: 1,
-		},
+		// {
+		// 	fieldname: "company",
+		// 	label: __("Company"),
+		// 	fieldtype: "Link",
+		// 	options: "Company",
+		// 	default: frappe.defaults.get_user_default("Company"),
+		// 	width: "100px",
+		// 	reqd: 1,
+		// },
 		{
 			fieldname: "docstatus",
 			label: __("Document Status"),
@@ -50,6 +50,7 @@ frappe.query_reports["Salary Register"] = {
 			options: ["Draft", "Submitted", "Cancelled"],
 			default: "Submitted",
 			width: "100px",
+			read_only: 1
 		},
 	],
 };
