@@ -1,26 +1,24 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:form-16-{title}",
- "creation": "2025-08-29 18:33:02.565091",
+ "creation": "2025-09-08 17:12:36.417930",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "title",
-  "section_break_cdre",
+  "section_break_fxmo",
   "upload_part_a",
   "extract_part_a",
-  "column_break_hxen",
+  "column_break_qmuc",
   "upload_part_b",
   "extract_part_b",
-  "section_break_xdtt",
-  "apply_digital_signature_column",
+  "section_break_ooxg",
   "apply_digital_signature_part_a",
-  "column_break_ievw",
+  "column_break_ldil",
   "apply_digital_signature_part_b",
-  "publish_form_16_section",
+  "section_break_ppxe",
   "publish_part_a",
-  "column_break_sqac",
+  "column_break_afwv",
   "publish_part_b"
  ],
  "fields": [
@@ -36,7 +34,7 @@
    "unique": 1
   },
   {
-   "fieldname": "section_break_cdre",
+   "fieldname": "section_break_fxmo",
    "fieldtype": "Section Break",
    "label": "UPLOAD & EXTRACT"
   },
@@ -46,7 +44,7 @@
    "label": "Upload Part A"
   },
   {
-   "fieldname": "column_break_hxen",
+   "fieldname": "column_break_qmuc",
    "fieldtype": "Column Break"
   },
   {
@@ -67,13 +65,9 @@
    "label": "Extract Part B"
   },
   {
-   "fieldname": "section_break_xdtt",
+   "fieldname": "section_break_ooxg",
    "fieldtype": "Section Break",
    "label": "Apply Digital Signature"
-  },
-  {
-   "fieldname": "apply_digital_signature_column",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "apply_digital_signature_part_a",
@@ -81,7 +75,7 @@
    "label": "Apply Digital Signature Part A"
   },
   {
-   "fieldname": "column_break_ievw",
+   "fieldname": "column_break_ldil",
    "fieldtype": "Column Break"
   },
   {
@@ -90,7 +84,7 @@
    "label": "Apply Digital Signature Part B"
   },
   {
-   "fieldname": "publish_form_16_section",
+   "fieldname": "section_break_ppxe",
    "fieldtype": "Section Break",
    "label": "Publish Form 16"
   },
@@ -100,7 +94,7 @@
    "label": "Publish Part A"
   },
   {
-   "fieldname": "column_break_sqac",
+   "fieldname": "column_break_afwv",
    "fieldtype": "Column Break"
   },
   {
@@ -111,11 +105,10 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-04 12:13:10.789852",
+ "modified": "2025-09-08 17:26:27.024818",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Form-16-Upload",
- "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

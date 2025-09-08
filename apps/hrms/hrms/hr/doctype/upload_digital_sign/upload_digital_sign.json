@@ -1,19 +1,19 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-08-29 18:39:49.575181",
+ "creation": "2025-09-08 17:04:49.903934",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "is_active",
   "signer_name",
-  "column_break_wvlx",
+  "column_break_cbav",
   "signer_designation",
   "location",
   "files_section",
   "digital_signature_file",
   "private_key_file",
-  "column_break_yzoq",
+  "column_break_wnyx",
   "certificate_file"
  ],
  "fields": [
@@ -24,15 +24,8 @@
    "label": "is Active"
   },
   {
-   "fieldname": "column_break_wvlx",
+   "fieldname": "column_break_cbav",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "signer_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Signer Name",
-   "reqd": 1
   },
   {
    "fieldname": "signer_designation",
@@ -44,14 +37,20 @@
   {
    "fieldname": "location",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "signer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Signer Name",
    "reqd": 1
   },
   {
    "fieldname": "files_section",
    "fieldtype": "Section Break",
-   "label": "FILES"
+   "label": "Files"
   },
   {
    "fieldname": "digital_signature_file",
@@ -59,13 +58,13 @@
    "label": "Digital Signature File"
   },
   {
-   "fieldname": "column_break_yzoq",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "private_key_file",
    "fieldtype": "Attach",
    "label": "Private Key File"
+  },
+  {
+   "fieldname": "column_break_wnyx",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "certificate_file",
@@ -76,7 +75,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-29 18:43:40.882608",
+ "modified": "2025-09-08 17:11:18.966544",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Upload Digital Sign",
