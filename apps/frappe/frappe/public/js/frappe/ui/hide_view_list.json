@@ -40,8 +40,9 @@
         "Other User" : ["Toggle Sidebar"]
     },
     "Expense Claim" : {
-        "System Manager" : [],
-        "Other User" : ["Toggle Sidebar"]
+        "System Manager" : ["Kanban"],
+        "Other User" : ["Toggle Sidebar", "Kanban"],
+        "Administrator": ["Kanban"]
     },
     "Employee Advance" : {
         "System Manager" : [],
