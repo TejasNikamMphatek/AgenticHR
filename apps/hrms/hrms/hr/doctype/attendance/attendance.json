@@ -74,7 +74,7 @@
    "fieldname": "working_hours",
    "fieldtype": "Float",
    "label": "Working Hours",
-   "precision": "1",
+   "precision": "2",
    "read_only": 1
   },
   {
@@ -209,7 +209,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-26 00:17:38.381485",
+ "modified": "2025-09-09 17:25:38.329492",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
