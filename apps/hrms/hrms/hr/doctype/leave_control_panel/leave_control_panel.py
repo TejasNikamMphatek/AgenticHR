@@ -17,13 +17,21 @@ class LeaveControlPanel(Document):
 			mandatory_fields.append("leave_period")
 		elif self.dates_based_on == "Joining Date":
 			mandatory_fields.append("to_date")
-		else:
+		else:  # Custom Range
 			mandatory_fields.extend(["from_date", "to_date"])
 
 		if self.allocate_based_on_leave_policy:
 			mandatory_fields.append("leave_policy")
 		else:
 			mandatory_fields.extend(["leave_type", "no_of_days"])
+
+		# Additional validation for Custom Range
+		if self.dates_based_on == "Custom Range":
+			if not self.from_date or not self.to_date:
+				frappe.throw("From Date and To Date are mandatory for Custom Range.")
+			if self.from_date > self.to_date:
+				frappe.throw("From Date cannot be later than To Date.")
+
 		validate_bulk_tool_fields(self, mandatory_fields, employees, "from_date", "to_date")
 
 	@frappe.whitelist()
