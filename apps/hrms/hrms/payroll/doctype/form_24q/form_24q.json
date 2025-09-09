@@ -1,0 +1,94 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-09 12:44:45.053756",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "column_break_emdf",
+  "column_break_midh",
+  "column_break_jpwr",
+  "challans",
+  "column_break_zpqa",
+  "payroll_period",
+  "section_break_cxzm",
+  "1st_quarter_april_june",
+  "2nd_quarter_section",
+  "2nd_quarter_july_sep"
+ ],
+ "fields": [
+  {
+   "fieldname": "column_break_emdf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_midh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_jpwr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_zpqa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payroll_period",
+   "fieldtype": "Link",
+   "label": "Payroll Period",
+   "options": "Payroll Period"
+  },
+  {
+   "fieldname": "challans",
+   "fieldtype": "Button",
+   "label": "Challans"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_cxzm",
+   "fieldtype": "Section Break",
+   "label": "1st Quarter"
+  },
+  {
+   "fieldname": "1st_quarter_april_june",
+   "fieldtype": "Table",
+   "label": "1st Quarter April - June",
+   "options": "Quarter Info"
+  },
+  {
+   "fieldname": "2nd_quarter_section",
+   "fieldtype": "Section Break",
+   "label": "2nd Quarter"
+  },
+  {
+   "fieldname": "2nd_quarter_july_sep",
+   "fieldtype": "Table",
+   "options": "Quarter Info"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-09-09 15:07:48.704945",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Form 24Q",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
