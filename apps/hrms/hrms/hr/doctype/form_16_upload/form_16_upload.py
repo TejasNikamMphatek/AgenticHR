@@ -113,11 +113,17 @@ class Form16Upload(Document):
                         input_pdf, output_pdf, cert_path, cert_pass,
                         signer_name or "Digital Signer",
                         signer_designation or "Authorized Signatory", 
-                        location or "PUNE"
+                        location or "PUNE",
+                        part_name  # Pass the part_name to determine signing method
                     ]
-                    
-                    subprocess.run(cmd, check=True)
-        
+
+                    try:
+                        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+                        # frappe.msgprint(f"Successfully signed {file} for {part_name}")
+                    except subprocess.CalledProcessError as e:
+                        # print(f"Error signing {file}: {e.stderr}")
+                        frappe.throw(f"Failed to sign {file}")
+
         return f"Digital signatures applied to {part_name}"
 
 
@@ -187,13 +193,22 @@ def _extract_pan(name: str) -> str | None:
 def publish_part_a(docname, part_name):
     doc = frappe.get_doc("Form-16-Upload", docname)
     
-    # Path to signed folder
-    base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}", "signed")
+    # Path to signed folder - use absolute path
+    base_dir = os.path.abspath(frappe.get_site_path("private", "files", f"{doc.name}_{part_name}", "signed"))
+    
+    # print(f"Looking for signed files in: {base_dir}")
+    
     if not os.path.exists(base_dir):
         frappe.throw(f"Signed directory not found: {base_dir}")
     
     # Collect signed PDFs
     signed_files = [f for f in os.listdir(base_dir) if f.lower().endswith('.pdf')]
+    
+    # print(f"Found {len(signed_files)} PDF files: {signed_files}")
+    
+    if not signed_files:
+        frappe.throw("No PDF files found in signed folder")
+    
     items, unique_pans = [], set()
     for filename in signed_files:
         pan = _extract_pan(filename)
@@ -204,6 +219,8 @@ def publish_part_a(docname, part_name):
     if not items:
         frappe.throw("No PDFs with valid PAN in filename were found in signed folder.")
 
+    # print(f"unique_pans = {unique_pans}")
+    
     # Employees mapped by PAN
     employees = frappe.db.get_all(
         "Employee",
@@ -211,6 +228,8 @@ def publish_part_a(docname, part_name):
         fields=["name", "employee_name", "pan_number"]
     )
     emp_map = {e["pan_number"].upper(): e for e in employees}
+
+    # print(f"employee length :::: {len(emp_map)}")
 
     created_docs, missing = [], []
     for it in items:
@@ -220,41 +239,118 @@ def publish_part_a(docname, part_name):
             continue
 
         pdf_path = os.path.join(base_dir, it["filename"])
+        # print(f"Processing file: {pdf_path}")
+        
         if not os.path.exists(pdf_path):
-            frappe.throw(f"PDF not found: {pdf_path}")
+            # print(f"File not found: {pdf_path}")
             continue
 
-        # --- File creation (skip if already exists)
-        existing_file = frappe.db.exists(
-            "File", {"file_name": it["filename"], "attached_to_doctype": "Employee", "attached_to_name": employee["name"]}
+        # --- Check for existing file and validate it
+        existing_files = frappe.db.get_all(
+            "File", 
+            filters={
+                "file_name": it["filename"], 
+                "attached_to_doctype": "Employee", 
+                "attached_to_name": employee["name"]
+            },
+            fields=["name", "file_url"]
         )
-        if existing_file:
-            file_doc = frappe.get_doc("File", existing_file)
-        else:
-            file_doc = frappe.get_doc({
-                "doctype": "File",
-                "file_name": it["filename"],
-                "attached_to_doctype": "Employee",
-                "attached_to_name": employee["name"],
-                "is_private": 1,
-                "content": open(pdf_path, "rb").read(),
-                "decode": False
-            })
-            file_doc.insert(ignore_permissions=True)
+
+        file_doc = None
+        valid_existing_file = False
+        
+        # Check if any existing file actually exists on disk
+        for existing in existing_files:
+            try:
+                temp_doc = frappe.get_doc("File", existing["name"])
+                existing_path = temp_doc.get_full_path()
+                if os.path.exists(existing_path):
+                    file_doc = temp_doc
+                    valid_existing_file = True
+                    # print(f"Found valid existing file: {file_doc.file_url}")
+                    break
+                else:
+                    frappe.msgprint(f"Existing file record found but file missing on disk: {existing_path}")
+            except Exception as e:
+                frappe.log_error(f"Error checking existing file {existing['name']}: {str(e)}")
+                continue
+        
+        # If no valid existing file found, create new one
+        if not valid_existing_file:
+            try:
+                # Delete any broken file records first
+                for existing in existing_files:
+                    try:
+                        frappe.delete_doc("File", existing["name"], force=1)
+                        # print(f"Deleted broken file record: {existing['name']}")
+                    except:
+                        pass
+                
+                # Read file content
+                with open(pdf_path, "rb") as f:
+                    file_content = f.read()
+                
+                # print(f"Read {len(file_content)} bytes from {pdf_path}")
+                
+                # Create File document using proper method
+                file_doc = frappe.get_doc({
+                    "doctype": "File",
+                    "file_name": it["filename"],
+                    "attached_to_doctype": "Employee",
+                    "attached_to_name": employee["name"],
+                    "is_private": 1,
+                    "content": file_content,
+                    "decode": False
+                })
+                file_doc.insert(ignore_permissions=True)
+                
+                # print(f"Created new file with URL: {file_doc.file_url}")
+                
+                # Verify the file was actually saved
+                actual_path = file_doc.get_full_path()
+                # print(f"File saved to: {actual_path}")
+                
+                if not os.path.exists(actual_path):
+                    frappe.throw(f"Failed to save file {it['filename']} to disk at {actual_path}")
+                
+            except Exception as e:
+                # print(f"Error creating file {it['filename']}: {str(e)}")
+                frappe.log_error(f"File creation error for {it['filename']}: {str(e)}", "Form16Upload")
+                continue
 
         # --- Document Center creation (skip if exists)
-        if frappe.db.exists("Document Center", {"employee": employee["name"], "document_name": it["filename"]}):
+        existing_doc_center = frappe.db.exists("Document Center", {
+            "employee": employee["name"], 
+            "document_name": it["filename"]
+        })
+        
+        if existing_doc_center:
+            # Update existing document center with correct file URL
+            doc_center = frappe.get_doc("Document Center", existing_doc_center)
+            if doc_center.document != file_doc.file_url:
+                doc_center.document = file_doc.file_url
+                doc_center.save(ignore_permissions=True)
+                # print(f"Updated Document Center entry: {doc_center.name} with new URL: {file_doc.file_url}")
+            # else:
+            #     frappe.msgprint(f"Document Center entry already exists with correct URL: {it['filename']}")
             continue
 
-        doc_center = frappe.get_doc({
-            "doctype": "Document Center",
-            "employee": employee["name"],
-            "document_type": "Form-16-Upload",
-            "document_name": it["filename"],
-            "document": file_doc.file_url
-        })
-        doc_center.insert(ignore_permissions=True)
-        created_docs.append(doc_center.name)
+        try:
+            doc_center = frappe.get_doc({
+                "doctype": "Document Center",
+                "employee": employee["name"],
+                "document_type": "Form-16-Upload",
+                "document_name": it["filename"],
+                "document": file_doc.file_url
+            })
+            doc_center.insert(ignore_permissions=True)
+            created_docs.append(doc_center.name)
+            
+            # print(f"Created Document Center entry: {doc_center.name} with document URL: {file_doc.file_url}")
+            
+        except Exception as e:
+            # print(f"Error creating Document Center entry: {str(e)}")
+            frappe.log_error(f"Document Center creation error: {str(e)}", "Form16Upload")
 
     frappe.db.commit()
 
@@ -270,13 +366,22 @@ def publish_part_a(docname, part_name):
 def publish_part_b(docname, part_name):
     doc = frappe.get_doc("Form-16-Upload", docname)
     
-    # Path to signed folder
-    base_dir = frappe.get_site_path("private", "files", f"{doc.name}_{part_name}", "signed")
+    # Path to signed folder - use absolute path
+    base_dir = os.path.abspath(frappe.get_site_path("private", "files", f"{doc.name}_{part_name}", "signed"))
+    
+    # print(f"Looking for signed files in: {base_dir}")
+    
     if not os.path.exists(base_dir):
         frappe.throw(f"Signed directory not found: {base_dir}")
     
     # Collect signed PDFs
     signed_files = [f for f in os.listdir(base_dir) if f.lower().endswith('.pdf')]
+    
+    # print(f"Found {len(signed_files)} PDF files: {signed_files}")
+    
+    if not signed_files:
+        frappe.throw("No PDF files found in signed folder")
+    
     items, unique_pans = [], set()
     for filename in signed_files:
         pan = _extract_pan(filename)
@@ -287,6 +392,8 @@ def publish_part_b(docname, part_name):
     if not items:
         frappe.throw("No PDFs with valid PAN in filename were found in signed folder.")
 
+    # print(f"unique_pans = {unique_pans}")
+    
     # Employees mapped by PAN
     employees = frappe.db.get_all(
         "Employee",
@@ -294,6 +401,8 @@ def publish_part_b(docname, part_name):
         fields=["name", "employee_name", "pan_number"]
     )
     emp_map = {e["pan_number"].upper(): e for e in employees}
+
+    # print(f"employee length :::: {len(emp_map)}")
 
     created_docs, missing, skipped_files = [], [], []
     for it in items:
@@ -303,42 +412,119 @@ def publish_part_b(docname, part_name):
             continue
 
         pdf_path = os.path.join(base_dir, it["filename"])
+        # print(f"Processing file: {pdf_path}")
+        
         if not os.path.exists(pdf_path):
-            frappe.throw(f"PDF not found: {pdf_path}")
+            # print(f"File not found: {pdf_path}")
             continue
 
-        # --- File creation (skip if already exists)
-        existing_file = frappe.db.exists(
-            "File", {"file_name": it["filename"], "attached_to_doctype": "Employee", "attached_to_name": employee["name"]}
+        # --- Check for existing file and validate it
+        existing_files = frappe.db.get_all(
+            "File", 
+            filters={
+                "file_name": it["filename"], 
+                "attached_to_doctype": "Employee", 
+                "attached_to_name": employee["name"]
+            },
+            fields=["name", "file_url"]
         )
-        if existing_file:
-            file_doc = frappe.get_doc("File", existing_file)
-        else:
-            file_doc = frappe.get_doc({
-                "doctype": "File",
-                "file_name": it["filename"],
-                "attached_to_doctype": "Employee",
-                "attached_to_name": employee["name"],
-                "is_private": 1,
-                "content": open(pdf_path, "rb").read(),
-                "decode": False
-            })
-            file_doc.insert(ignore_permissions=True)
+
+        file_doc = None
+        valid_existing_file = False
+        
+        # Check if any existing file actually exists on disk
+        for existing in existing_files:
+            try:
+                temp_doc = frappe.get_doc("File", existing["name"])
+                existing_path = temp_doc.get_full_path()
+                if os.path.exists(existing_path):
+                    file_doc = temp_doc
+                    valid_existing_file = True
+                    # print(f"Found valid existing file: {file_doc.file_url}")
+                    break
+                else:
+                    frappe.msgprint(f"Existing file record found but file missing on disk: {existing_path}")
+            except Exception as e:
+                frappe.log_error(f"Error checking existing file {existing['name']}: {str(e)}")
+                continue
+        
+        # If no valid existing file found, create new one
+        if not valid_existing_file:
+            try:
+                # Delete any broken file records first
+                for existing in existing_files:
+                    try:
+                        frappe.delete_doc("File", existing["name"], force=1)
+                        # print(f"Deleted broken file record: {existing['name']}")
+                    except:
+                        pass
+                
+                # Read file content
+                with open(pdf_path, "rb") as f:
+                    file_content = f.read()
+                
+                # print(f"Read {len(file_content)} bytes from {pdf_path}")
+                
+                # Create File document using proper method
+                file_doc = frappe.get_doc({
+                    "doctype": "File",
+                    "file_name": it["filename"],
+                    "attached_to_doctype": "Employee",
+                    "attached_to_name": employee["name"],
+                    "is_private": 1,
+                    "content": file_content,
+                    "decode": False
+                })
+                file_doc.insert(ignore_permissions=True)
+                
+                # print(f"Created new file with URL: {file_doc.file_url}")
+                
+                # Verify the file was actually saved
+                actual_path = file_doc.get_full_path()
+                # print(f"File saved to: {actual_path}")
+                
+                if not os.path.exists(actual_path):
+                    frappe.throw(f"Failed to save file {it['filename']} to disk at {actual_path}")
+                
+            except Exception as e:
+                # print(f"Error creating file {it['filename']}: {str(e)}")
+                frappe.log_error(f"File creation error for {it['filename']}: {str(e)}", "Form16Upload")
+                continue
 
         # --- Document Center creation (skip if exists)
-        if frappe.db.exists("Document Center", {"employee": employee["name"], "document_name": it["filename"]}):
+        existing_doc_center = frappe.db.exists("Document Center", {
+            "employee": employee["name"], 
+            "document_name": it["filename"]
+        })
+        
+        if existing_doc_center:
+            # Update existing document center with correct file URL
+            doc_center = frappe.get_doc("Document Center", existing_doc_center)
+            if doc_center.document != file_doc.file_url:
+                doc_center.document = file_doc.file_url
+                doc_center.save(ignore_permissions=True)
+                # print(f"Updated Document Center entry: {doc_center.name} with new URL: {file_doc.file_url}")
+            # else:
+                # frappe.msgprint(f"Document Center entry already exists with correct URL: {it['filename']}")
             skipped_files.append(it["filename"])
             continue
 
-        doc_center = frappe.get_doc({
-            "doctype": "Document Center",
-            "employee": employee["name"],
-            "document_type": "Form-16-Upload",
-            "document_name": it["filename"],
-            "document": file_doc.file_url
-        })
-        doc_center.insert(ignore_permissions=True)
-        created_docs.append(doc_center.name)
+        try:
+            doc_center = frappe.get_doc({
+                "doctype": "Document Center",
+                "employee": employee["name"],
+                "document_type": "Form-16-Upload",
+                "document_name": it["filename"],
+                "document": file_doc.file_url
+            })
+            doc_center.insert(ignore_permissions=True)
+            created_docs.append(doc_center.name)
+            
+            # print(f"Created Document Center entry: {doc_center.name} with document URL: {file_doc.file_url}")
+            
+        except Exception as e:
+            # print(f"Error creating Document Center entry: {str(e)}")
+            frappe.log_error(f"Document Center creation error: {str(e)}", "Form16Upload")
 
     frappe.db.commit()
 
@@ -347,6 +533,7 @@ def publish_part_b(docname, part_name):
         "created_records": created_docs,
         "matched_employees": employees,
         "missing_pans": sorted(set(missing)),
-        "skipped_files": skipped_files,  # useful for logging duplicates
+        "skipped_files": skipped_files,
         "processed_files": [it["filename"] for it in items]
     }
+
