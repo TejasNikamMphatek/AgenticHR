@@ -67,7 +67,7 @@ frappe.ui.form.on("Form-16-Upload", {
                 }
             },
             error: function(r) {
-                console.error(r)
+                // console.error(r)
                 frappe.msgprint("applying digital signatures - Failed");
             }
         });
@@ -85,7 +85,7 @@ frappe.ui.form.on("Form-16-Upload", {
                 }
             },
             error: function(r) {
-                console.error(r)
+                // console.error(r)
                 frappe.msgprint("applying digital signatures - Failed");
             }
         });
@@ -97,7 +97,7 @@ frappe.ui.form.on("Form-16-Upload", {
             args: { docname: frm.doc.name, part_name: "PartA" },
             callback: function(r) {
                 if (r.message) {
-                    frappe.msgprint(r.message.status);
+                    frappe.msgprint("Publish Part A Status : "+ r.message.status);
                     // console.log("Part A Files:", r);
                 } else {
                     frappe.msgprint("No Part A files found.");
@@ -112,7 +112,7 @@ frappe.ui.form.on("Form-16-Upload", {
             args: { docname: frm.doc.name, part_name: "PartB" },
             callback: function(r) {
                 if (r.message) {
-                    frappe.msgprint(r.message.status);
+                    frappe.msgprint("Publish Part B Status : " + r.message.status);
                     // console.log("Part B Files:", r);
                 } else {
                     frappe.msgprint("No Part A files found.");

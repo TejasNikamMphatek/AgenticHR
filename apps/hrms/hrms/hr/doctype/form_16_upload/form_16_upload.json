@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:form-16-{title}",
  "creation": "2025-09-08 17:12:36.417930",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -105,10 +106,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-08 17:26:27.024818",
+ "modified": "2025-09-09 22:19:20.464076",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Form-16-Upload",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
