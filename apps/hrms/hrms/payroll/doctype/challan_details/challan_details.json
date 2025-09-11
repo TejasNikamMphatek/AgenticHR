@@ -1,0 +1,185 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{payroll_month}_{payroll_year}",
+ "creation": "2025-09-10 15:31:28.125275",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "payroll_month",
+  "payroll_year",
+  "total_challan_amount",
+  "bsr_code",
+  "tds",
+  "education_cess",
+  "others",
+  "payment_date",
+  "ack_no",
+  "column_break_wlnh",
+  "payroll_period",
+  "challan_serial_no",
+  "voucher_date",
+  "bank_name",
+  "surcharge",
+  "interest",
+  "chequedd_no",
+  "deduction_date",
+  "minor_head_code",
+  "late_pay_fee",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "column_break_wlnh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payroll_year",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Payroll Year",
+   "length": 4,
+   "non_negative": 1,
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "payroll_month",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Payroll Month",
+   "options": "Jan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "total_challan_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Total Challan Amount"
+  },
+  {
+   "fieldname": "bsr_code",
+   "fieldtype": "Data",
+   "label": "BSR Code"
+  },
+  {
+   "fieldname": "tds",
+   "fieldtype": "Currency",
+   "label": "TDS"
+  },
+  {
+   "fieldname": "education_cess",
+   "fieldtype": "Currency",
+   "label": "Education Cess"
+  },
+  {
+   "fieldname": "others",
+   "fieldtype": "Currency",
+   "label": "Others"
+  },
+  {
+   "fieldname": "payment_date",
+   "fieldtype": "Date",
+   "label": "Payment Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ack_no",
+   "fieldtype": "Data",
+   "label": "Ack No"
+  },
+  {
+   "fieldname": "challan_serial_no",
+   "fieldtype": "Data",
+   "label": "Challan Serial No"
+  },
+  {
+   "fieldname": "voucher_date",
+   "fieldtype": "Date",
+   "label": "Voucher Date"
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "label": "Bank Name"
+  },
+  {
+   "fieldname": "surcharge",
+   "fieldtype": "Currency",
+   "label": "Surcharge"
+  },
+  {
+   "fieldname": "interest",
+   "fieldtype": "Currency",
+   "label": "Interest"
+  },
+  {
+   "fieldname": "chequedd_no",
+   "fieldtype": "Data",
+   "label": "Cheque/DD No"
+  },
+  {
+   "fieldname": "deduction_date",
+   "fieldtype": "Date",
+   "label": "Deduction Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "minor_head_code",
+   "fieldtype": "Select",
+   "label": "Minor Head Code",
+   "options": "TDS payable by taxpayer\nTDS regular assessment"
+  },
+  {
+   "fieldname": "late_pay_fee",
+   "fieldtype": "Currency",
+   "label": "Late Pay Fee"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Challan Details",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "payroll_period",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Payroll Period",
+   "options": "Payroll Period",
+   "reqd": 1,
+   "set_only_once": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-09-11 12:05:33.760815",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Challan Details",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
