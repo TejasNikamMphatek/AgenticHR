@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:form24q_{payroll_period}",
  "creation": "2025-09-09 12:44:45.053756",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -13,8 +14,20 @@
   "payroll_period",
   "section_break_cxzm",
   "1st_quarter_april_june",
+  "update_challan_details_quart_1",
+  "generate_fvu__quart_1",
   "2nd_quarter_section",
-  "2nd_quarter_july_sep"
+  "2nd_quarter_july_sep",
+  "update_challan_details_quart_2",
+  "generate_fvu_quart_2",
+  "3rd_quarter_section",
+  "3rd_quarter_oct_dec",
+  "update_challan_details_quart_3",
+  "generate_fvu_quart_3",
+  "4th_quarter_section",
+  "4th_quarter_jan_mar",
+  "update_challan_details_quart_4",
+  "generate_fvu_quart_4"
  ],
  "fields": [
   {
@@ -36,8 +49,11 @@
   {
    "fieldname": "payroll_period",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Payroll Period",
-   "options": "Payroll Period"
+   "options": "Payroll Period",
+   "reqd": 1,
+   "set_only_once": 1
   },
   {
    "fieldname": "challans",
@@ -57,6 +73,7 @@
    "options": "Quarter Info"
   },
   {
+   "collapsible": 1,
    "fieldname": "2nd_quarter_section",
    "fieldtype": "Section Break",
    "label": "2nd Quarter"
@@ -64,15 +81,81 @@
   {
    "fieldname": "2nd_quarter_july_sep",
    "fieldtype": "Table",
+   "label": "2nd Quarter July - Sep",
    "options": "Quarter Info"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "3rd_quarter_section",
+   "fieldtype": "Section Break",
+   "label": "3rd Quarter"
+  },
+  {
+   "fieldname": "3rd_quarter_oct_dec",
+   "fieldtype": "Table",
+   "label": "3rd Quarter Oct - Dec",
+   "options": "Quarter Info"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "4th_quarter_section",
+   "fieldtype": "Section Break",
+   "label": "4th Quarter"
+  },
+  {
+   "fieldname": "4th_quarter_jan_mar",
+   "fieldtype": "Table",
+   "label": "4th Quarter Jan - Mar",
+   "options": "Quarter Info"
+  },
+  {
+   "fieldname": "update_challan_details_quart_1",
+   "fieldtype": "Button",
+   "label": "Update Challan Details"
+  },
+  {
+   "fieldname": "generate_fvu__quart_1",
+   "fieldtype": "Button",
+   "label": "Generate FVU"
+  },
+  {
+   "fieldname": "update_challan_details_quart_2",
+   "fieldtype": "Button",
+   "label": "Update Challan Details"
+  },
+  {
+   "fieldname": "generate_fvu_quart_2",
+   "fieldtype": "Button",
+   "label": "Generate FVU"
+  },
+  {
+   "fieldname": "update_challan_details_quart_3",
+   "fieldtype": "Button",
+   "label": "Update Challan Details"
+  },
+  {
+   "fieldname": "generate_fvu_quart_3",
+   "fieldtype": "Button",
+   "label": "Generate FVU"
+  },
+  {
+   "fieldname": "generate_fvu_quart_4",
+   "fieldtype": "Button",
+   "label": "Generate FVU"
+  },
+  {
+   "fieldname": "update_challan_details_quart_4",
+   "fieldtype": "Button",
+   "label": "Update Challan Details"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-09 15:07:48.704945",
+ "modified": "2025-09-11 14:53:55.384881",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Form 24Q",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
