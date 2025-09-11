@@ -19,7 +19,8 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Month",
-   "options": "Jan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec"
+   "options": "Jan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_pkcl",
@@ -29,31 +30,35 @@
    "fieldname": "year",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Year"
+   "label": "Year",
+   "read_only": 1
   },
   {
    "fieldname": "challan_amount_remitted",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Challan Amount Remitted"
+   "label": "Challan Amount Remitted",
+   "read_only": 1
   },
   {
    "fieldname": "tax_deducted_from_employees",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Tax Deducted From Employees"
+   "label": "Tax Deducted From Employees",
+   "read_only": 1
   },
   {
    "fieldname": "difference",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Difference"
+   "label": "Difference",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-09-10 15:06:45.951309",
+ "modified": "2025-09-11 15:52:32.775617",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Quarter Info",

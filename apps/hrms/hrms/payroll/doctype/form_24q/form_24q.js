@@ -31,6 +31,9 @@ frappe.ui.form.on("Form 24Q", {
             'payroll_period': frm.doc.payroll_period,
             'payroll_month': ["in", ["Jan","Feb","Mar"]]
         });
+    },
+    generate_fvu__quart_1:function(frm){
+        alert("Hello")
     }
 
 });
