@@ -32,8 +32,37 @@ frappe.ui.form.on("Form 24Q", {
             'payroll_month': ["in", ["Jan","Feb","Mar"]]
         });
     },
+
     generate_fvu__quart_1:function(frm){
-        alert("Hello")
+        
+        let dialog = new frappe.ui.Dialog({
+            title: '<b>Checklist before you generate Form 24Q:</b>',
+            fields: [
+               
+                {
+                    fieldname: "upload_csi_file",
+                    fieldtype: "Attach",
+                    label: "Upload CSI File"
+                },
+                
+            ],
+
+
+
+            
+            primary_action_label: 'Ok, Generate FVU',
+            primary_action() {},
+
+            secondary_action_label: 'Cancel',
+            secondary_action(){
+                dialog.hide();
+            }
+
+        });
+        
+        dialog.show();
+        
+        
     }
 
 });
