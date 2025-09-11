@@ -8,9 +8,8 @@
  "field_order": [
   "column_break_emdf",
   "column_break_midh",
-  "column_break_jpwr",
   "challans",
-  "column_break_zpqa",
+  "column_break_jpwr",
   "payroll_period",
   "section_break_cxzm",
   "1st_quarter_april_june",
@@ -40,10 +39,6 @@
   },
   {
    "fieldname": "column_break_jpwr",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_zpqa",
    "fieldtype": "Column Break"
   },
   {
@@ -151,7 +146,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-11 14:53:55.384881",
+ "modified": "2025-09-11 16:31:03.013347",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Form 24Q",
