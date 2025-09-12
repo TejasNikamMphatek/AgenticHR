@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "column_break_emdf",
+  "form_24q_settings",
   "column_break_midh",
   "challans",
   "column_break_jpwr",
@@ -142,11 +143,16 @@
    "fieldname": "update_challan_details_quart_4",
    "fieldtype": "Button",
    "label": "Update Challan Details"
+  },
+  {
+   "fieldname": "form_24q_settings",
+   "fieldtype": "Button",
+   "label": "Form 24Q Settings"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-11 16:31:03.013347",
+ "modified": "2025-09-12 12:03:24.033996",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Form 24Q",

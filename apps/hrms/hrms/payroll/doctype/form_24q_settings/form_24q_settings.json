@@ -1,0 +1,348 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-12 12:16:54.918661",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "particulars_of_return_section",
+  "type_of_deductor",
+  "column_break_zbgt",
+  "payment_section_code",
+  "section_break_flcx",
+  "has_address_changed_since_last_return",
+  "flat_no",
+  "area_location",
+  "road_street_lane",
+  "pin_code",
+  "std_code",
+  "column_break_cety",
+  "branch_division",
+  "name_of_premises_building",
+  "town_city_district",
+  "state",
+  "email",
+  "telephone_no",
+  "section_break_tclp",
+  "name1",
+  "designation",
+  "pr_flat_no",
+  "pr_name_of_premises_building",
+  "pr_road_street_lane",
+  "pr_std_code",
+  "pr_has_address_changed_since_last_return",
+  "column_break_nkbb",
+  "pr_area_location",
+  "pr_town_city_district",
+  "pr_state",
+  "pr_pin_code",
+  "pr_email",
+  "pr_telephone_no",
+  "mobile_no",
+  "pan_no",
+  "section_break_gfkn",
+  "preferences_column",
+  "suppress_zero_gross_income",
+  "suppress_zero_it_in_annexure_i",
+  "suppress_address_in_annexure_ii",
+  "suppress_zero_it_in_annexure_ii",
+  "exclude_employees_without_pan_and_zero_it_in_etds",
+  "annexure_i_split_by_challan",
+  "column_break_lwsx",
+  "form_24q",
+  "form_24q_annexure_1",
+  "form_24q_annexure_2",
+  "form_27a",
+  "include_zero_it_in_etds"
+ ],
+ "fields": [
+  {
+   "fieldname": "particulars_of_return_section",
+   "fieldtype": "Section Break",
+   "label": "Particulars of Return"
+  },
+  {
+   "fieldname": "type_of_deductor",
+   "fieldtype": "Select",
+   "label": "Type Of Deductor",
+   "options": "Company"
+  },
+  {
+   "fieldname": "column_break_zbgt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payment_section_code",
+   "fieldtype": "Select",
+   "label": "Payment Section Code",
+   "options": "\nPayments Made to Govt. employees\nPayments Made to employees other than govt. employees",
+   "sort_options": 1
+  },
+  {
+   "fieldname": "section_break_flcx",
+   "fieldtype": "Section Break",
+   "label": "Particulars of Deductor (Employer)"
+  },
+  {
+   "fieldname": "has_address_changed_since_last_return",
+   "fieldtype": "Select",
+   "label": "Has Address Changed Since Last Return",
+   "options": "No\nYes"
+  },
+  {
+   "fieldname": "column_break_cety",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "branch_division",
+   "fieldtype": "Select",
+   "label": "Branch / Division",
+   "options": "No\nYes"
+  },
+  {
+   "fieldname": "flat_no",
+   "fieldtype": "Data",
+   "label": "Flat No"
+  },
+  {
+   "fieldname": "area_location",
+   "fieldtype": "Data",
+   "label": "Area / Location"
+  },
+  {
+   "fieldname": "road_street_lane",
+   "fieldtype": "Data",
+   "label": "Road/ Street/ Lane"
+  },
+  {
+   "fieldname": "name_of_premises_building",
+   "fieldtype": "Data",
+   "label": "Name of Premises/ Building"
+  },
+  {
+   "fieldname": "town_city_district",
+   "fieldtype": "Data",
+   "label": "Town / City / District"
+  },
+  {
+   "default": "MAHARASHTRA",
+   "fieldname": "state",
+   "fieldtype": "Select",
+   "label": "State",
+   "options": "ANDHRA PRADESH\nARUNACHAL PRADESH\nASSAM\nBIHAR\nCHHATTISGARH\nGOA\nGUJARAT\nHARYANA\nHIMACHAL PRADESH\nJHARKHAND\nKARNATAKA\nKERALA\nMADHYA PRADESH\nMAHARASHTRA\nMANIPUR\nMEGHALAYA\nMIZORAM\nNAGALAND\nODISHA\nPUNJAB\nRAJASTHAN\nSIKKIM\nTAMIL NADU\nTELANGANA\nTRIPURA\nUTTAR PRADESH\nUTTARAKHAND\nWEST BENGAL"
+  },
+  {
+   "fieldname": "pin_code",
+   "fieldtype": "Int",
+   "label": "PIN Code",
+   "length": 6,
+   "non_negative": 1
+  },
+  {
+   "fieldname": "std_code",
+   "fieldtype": "Data",
+   "label": "STD Code"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "telephone_no",
+   "fieldtype": "Phone",
+   "label": "Telephone No"
+  },
+  {
+   "fieldname": "section_break_tclp",
+   "fieldtype": "Section Break",
+   "label": "Particulars Of the Person Responsible for Deduction of Tax"
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fieldname": "pr_flat_no",
+   "fieldtype": "Data",
+   "label": "PR Flat No"
+  },
+  {
+   "fieldname": "pr_name_of_premises_building",
+   "fieldtype": "Data",
+   "label": "PR Name of Premises/ Building"
+  },
+  {
+   "fieldname": "column_break_nkbb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pr_area_location",
+   "fieldtype": "Data",
+   "label": "PR Area/ Location"
+  },
+  {
+   "fieldname": "pr_town_city_district",
+   "fieldtype": "Data",
+   "label": "PR Town /City /District"
+  },
+  {
+   "default": "MAHARASHTRA",
+   "fieldname": "pr_state",
+   "fieldtype": "Select",
+   "label": "PR State",
+   "options": "ANDHRA PRADESH\nARUNACHAL PRADESH\nASSAM\nBIHAR\nCHHATTISGARH\nGOA\nGUJARAT\nHARYANA\nHIMACHAL PRADESH\nJHARKHAND\nKARNATAKA\nKERALA\nMADHYA PRADESH\nMAHARASHTRA\nMANIPUR\nMEGHALAYA\nMIZORAM\nNAGALAND\nODISHA\nPUNJAB\nRAJASTHAN\nSIKKIM\nTAMIL NADU\nTELANGANA\nTRIPURA\nUTTAR PRADESH\nUTTARAKHAND\nWEST BENGAL"
+  },
+  {
+   "fieldname": "pr_pin_code",
+   "fieldtype": "Int",
+   "label": "PR PIN Code",
+   "length": 6
+  },
+  {
+   "fieldname": "pr_email",
+   "fieldtype": "Data",
+   "label": "PR Email"
+  },
+  {
+   "fieldname": "pr_telephone_no",
+   "fieldtype": "Phone",
+   "label": "PR Telephone No"
+  },
+  {
+   "fieldname": "pr_road_street_lane",
+   "fieldtype": "Data",
+   "label": "PR Road/ Street/ Lane"
+  },
+  {
+   "fieldname": "pr_std_code",
+   "fieldtype": "Data",
+   "label": "PR STD Code"
+  },
+  {
+   "fieldname": "pr_has_address_changed_since_last_return",
+   "fieldtype": "Select",
+   "label": "PR Has Address Changed Since Last Return",
+   "options": "No\nYes"
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Phone",
+   "label": "Mobile No"
+  },
+  {
+   "fieldname": "pan_no",
+   "fieldtype": "Data",
+   "label": "PAN No"
+  },
+  {
+   "fieldname": "section_break_gfkn",
+   "fieldtype": "Section Break",
+   "label": "Preferences"
+  },
+  {
+   "fieldname": "preferences_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "suppress_zero_gross_income",
+   "fieldtype": "Check",
+   "label": "Suppress Zero Gross Income"
+  },
+  {
+   "default": "0",
+   "fieldname": "suppress_zero_it_in_annexure_i",
+   "fieldtype": "Check",
+   "label": "Suppress Zero IT in Annexure I"
+  },
+  {
+   "fieldname": "column_break_lwsx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "suppress_address_in_annexure_ii",
+   "fieldtype": "Check",
+   "label": "Suppress Address in Annexure II"
+  },
+  {
+   "default": "0",
+   "fieldname": "suppress_zero_it_in_annexure_ii",
+   "fieldtype": "Check",
+   "label": "Suppress Zero IT in Annexure II"
+  },
+  {
+   "default": "0",
+   "fieldname": "exclude_employees_without_pan_and_zero_it_in_etds",
+   "fieldtype": "Check",
+   "label": "Exclude Employees Without PAN and Zero IT in eTds"
+  },
+  {
+   "default": "0",
+   "fieldname": "annexure_i_split_by_challan",
+   "fieldtype": "Check",
+   "label": "Split annexure I into multiple sheets based on challan allocation"
+  },
+  {
+   "default": "0",
+   "fieldname": "form_24q",
+   "fieldtype": "Check",
+   "label": "Form 24Q"
+  },
+  {
+   "default": "0",
+   "fieldname": "form_24q_annexure_1",
+   "fieldtype": "Check",
+   "label": "Form 24Q Annexure 1"
+  },
+  {
+   "default": "0",
+   "fieldname": "form_24q_annexure_2",
+   "fieldtype": "Check",
+   "label": "Form 24Q Annexure 2"
+  },
+  {
+   "default": "0",
+   "fieldname": "form_27a",
+   "fieldtype": "Check",
+   "label": "Form 27A"
+  },
+  {
+   "default": "0",
+   "fieldname": "include_zero_it_in_etds",
+   "fieldtype": "Check",
+   "label": "Include Zero IT in eTds"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-09-12 15:13:55.898644",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Form 24Q Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
