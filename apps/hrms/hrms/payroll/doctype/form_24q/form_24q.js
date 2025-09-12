@@ -5,6 +5,10 @@ frappe.ui.form.on("Form 24Q", {
 	// refresh(frm) {
 	// },
 
+    form_24q_settings: function(frm){
+        frappe.set_route('/app/form-24q-settings')
+    },
+
     update_challan_details_quart_1: function(frm) {
         frappe.set_route('List', 'Challan Details', {
             'payroll_period': frm.doc.payroll_period,
