@@ -24,7 +24,7 @@
   "email",
   "telephone_no",
   "section_break_tclp",
-  "name1",
+  "pr_name",
   "designation",
   "pr_flat_no",
   "pr_name_of_premises_building",
@@ -157,11 +157,6 @@
    "fieldname": "section_break_tclp",
    "fieldtype": "Section Break",
    "label": "Particulars Of the Person Responsible for Deduction of Tax"
-  },
-  {
-   "fieldname": "name1",
-   "fieldtype": "Data",
-   "label": "Name"
   },
   {
    "fieldname": "designation",
@@ -320,12 +315,17 @@
    "fieldname": "include_zero_it_in_etds",
    "fieldtype": "Check",
    "label": "Include Zero IT in eTds"
+  },
+  {
+   "fieldname": "pr_name",
+   "fieldtype": "Data",
+   "label": "Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-09-12 15:13:55.898644",
+ "modified": "2025-09-16 18:06:30.545099",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Form 24Q Settings",
