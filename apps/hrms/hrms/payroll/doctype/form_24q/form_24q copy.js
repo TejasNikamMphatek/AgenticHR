@@ -2,9 +2,9 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Form 24Q", {
-    // refresh(frm) {
-        
-    // },
+    refresh(frm) {
+        $('.grid-buttons').hide();
+    },
 
     form_24q_settings: function(frm) {
         frappe.set_route('/app/form-24q-settings');
@@ -39,85 +39,85 @@ frappe.ui.form.on("Form 24Q", {
     },
 
     generate_fvu_quart_1: function(frm) {
-        const upload_area_option = `<div class="fvu-upload-section" style="margin: 20px 0; padding: 25px; border: 2px dashed #d1d8dd; border-radius: 10px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div style="text-align: center; margin-bottom: 20px;">
-                                                    <i class="fa fa-cloud-upload" style="font-size: 48px; color: #6c757d; margin-bottom: 15px;"></i>
-                                                    <h4 style="color: #495057; margin-bottom: 10px;">Upload CSI File for FVU Generation</h4>
-                                                    <p style="color: #6c7680; font-size: 14px; margin: 0;">
-                                                        Select the .CSI file exported from the government tax website to generate all required FVU files
-                                                    </p>
-                                                </div>
-                                                
-                                                <div class="upload-area" style="text-align: center; padding: 20px;">
-                                                    <input type="file" id="csi-file-input" accept=".csi" class="form-control" 
-                                                        style="margin-bottom: 15px; border: 2px solid #d1d8dd; border-radius: 8px; padding: 12px; font-size: 14px;">
-                                                    
-                                                    <div class="file-requirements" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 15px; margin: 15px 0; text-align: left;">
-                                                        <h6 style="margin: 0 0 10px 0; color: #856404;">
-                                                            <i class="fa fa-info-circle"></i> File Requirements:
-                                                        </h6>
-                                                        <ul style="margin: 0; padding-left: 20px; color: #856404; font-size: 13px;">
-                                                            <li>File must have .CSI extension</li>
-                                                            <li>File should be exported from government tax website</li>
-                                                            <li>Maximum file size: 10MB</li>
-                                                            <li>File should contain valid TAN and challan information</li>
-                                                        </ul>
-                                                    </div>
-                                                    
-                                                    <div id="file-info" style="margin-top: 15px; display: none;">
-                                                        <div class="alert alert-info" style="margin: 0; text-align: left;">
-                                                            <div style="display: flex; align-items: center;">
-                                                                <i class="fa fa-file-o" style="font-size: 24px; margin-right: 15px; color: #17a2b8;"></i>
-                                                                <div>
-                                                                    <strong>Selected File:</strong> <span id="selected-file-name"></span><br>
-                                                                    <strong>File Size:</strong> <span id="selected-file-size"></span><br>
-                                                                    <strong>Status:</strong> <span class="text-success">Ready for processing</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="expected-files" style="background: #d1ecf1; border: 1px solid #bee5eb; border-radius: 6px; padding: 15px; margin: 15px 0; text-align: left;">
-                                                        <h6 style="margin: 0 0 10px 0; color: #0c5460;">
-                                                            <i class="fa fa-list"></i> Files that will be generated:
-                                                        </h6>
-                                                        <div class="row" style="font-size: 12px;">
-                                                            <div class="col-md-6">
-                                                                <ul style="margin: 0; padding-left: 20px; color: #0c5460;">
-                                                                    <li>Form 27A (PDF format)</li>
-                                                                    <li>Form 24Q FVU file</li>
-                                                                    <li>Form 24Q Text file</li>
-                                                                    <li>Challan CSI file</li>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <ul style="margin: 0; padding-left: 20px; color: #0c5460;">
-                                                                    <li>FVU Log file</li>
-                                                                    <li>Warning file (HTML)</li>
-                                                                    <li>Statistics report (HTML)</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div id="upload-status" style="margin-top: 15px;"></div>
-                                            </div>
-                                        </div>
-                                    </div>` 
+        
         // Create modal dialog with improved styling
         const modal = new frappe.ui.Dialog({
-            title: __('Generate FVU Files - Quarter 1'),
+            title: __('Generate FVU Files - Quarter 1 (Apr-Jun)'),
             fields: [
                 {
                     fieldtype: 'HTML',
                     fieldname: 'upload_area',
-                    options: upload_area_option
-                            
+                    options: `
+                        <div class="fvu-upload-section" style="margin: 20px 0; padding: 25px; border: 2px dashed #d1d8dd; border-radius: 10px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div style="text-align: center; margin-bottom: 20px;">
+                                        <i class="fa fa-cloud-upload" style="font-size: 48px; color: #6c757d; margin-bottom: 15px;"></i>
+                                        <h4 style="color: #495057; margin-bottom: 10px;">Upload CSI File for FVU Generation</h4>
+                                        <p style="color: #6c7680; font-size: 14px; margin: 0;">
+                                            Select the .CSI file exported from the government tax website to generate all required FVU files
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="upload-area" style="text-align: center; padding: 20px;">
+                                        <input type="file" id="csi-file-input" accept=".csi" class="form-control" 
+                                            style="margin-bottom: 15px; border: 2px solid #d1d8dd; border-radius: 8px; padding: 12px; font-size: 14px;">
+                                        
+                                        <div class="file-requirements" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 15px; margin: 15px 0; text-align: left;">
+                                            <h6 style="margin: 0 0 10px 0; color: #856404;">
+                                                <i class="fa fa-info-circle"></i> File Requirements:
+                                            </h6>
+                                            <ul style="margin: 0; padding-left: 20px; color: #856404; font-size: 13px;">
+                                                <li>File must have .CSI extension</li>
+                                                <li>File should be exported from government tax website</li>
+                                                <li>Maximum file size: 10MB</li>
+                                                <li>File should contain valid TAN and challan information</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div id="file-info" style="margin-top: 15px; display: none;">
+                                            <div class="alert alert-info" style="margin: 0; text-align: left;">
+                                                <div style="display: flex; align-items: center;">
+                                                    <i class="fa fa-file-o" style="font-size: 24px; margin-right: 15px; color: #17a2b8;"></i>
+                                                    <div>
+                                                        <strong>Selected File:</strong> <span id="selected-file-name"></span><br>
+                                                        <strong>File Size:</strong> <span id="selected-file-size"></span><br>
+                                                        <strong>Status:</strong> <span class="text-success">Ready for processing</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="expected-files" style="background: #d1ecf1; border: 1px solid #bee5eb; border-radius: 6px; padding: 15px; margin: 15px 0; text-align: left;">
+                                            <h6 style="margin: 0 0 10px 0; color: #0c5460;">
+                                                <i class="fa fa-list"></i> Files that will be generated:
+                                            </h6>
+                                            <div class="row" style="font-size: 12px;">
+                                                <div class="col-md-6">
+                                                    <ul style="margin: 0; padding-left: 20px; color: #0c5460;">
+                                                        <li>Form 27A (PDF format)</li>
+                                                        <li>Form 24Q FVU file</li>
+                                                        <li>Form 24Q Text file</li>
+                                                        <li>Challan CSI file</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <ul style="margin: 0; padding-left: 20px; color: #0c5460;">
+                                                        <li>FVU Log file</li>
+                                                        <li>Warning file (HTML)</li>
+                                                        <li>Statistics report (HTML)</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="upload-status" style="margin-top: 15px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    ` 
                 }
             ],
-
             primary_action_label: __('<i class="fa fa-cogs"></i> Generate FVU Files'),
             primary_action: function() {
                 const selectedFile = modal.selectedFile;
@@ -135,7 +135,7 @@ frappe.ui.form.on("Form 24Q", {
             secondary_action: function() {
                 modal.hide();
             },
-            size: 'medium'  // Make modal larger to accommodate content
+            size: 'large'  // Make modal larger to accommodate content
         });
 
         modal.show();
