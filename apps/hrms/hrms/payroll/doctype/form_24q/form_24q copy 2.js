@@ -246,15 +246,20 @@ frappe.ui.form.on("Form 24Q", {
 });
 
 
-function format_file_size(size_bytes) {
-    if (size_bytes === 0) return "0 B";
-    const size_names = ["B", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(size_bytes) / Math.log(1024));
-    const p = Math.pow(1024, i);
-    const s = Math.round((size_bytes / p) * 100) / 100;
-    return `${s} ${size_names[i]}`;
-}
+function format_file_size(bytes) {
 
+    if (bytes === 0) return '0 Bytes';
+    if (typeof bytes !== 'number' || isNaN(bytes)) return 'Unknown size';
+    
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    
+    const size = bytes / Math.pow(k, i);
+    const formattedSize = i === 0 ? size.toString() : size.toFixed(2);
+    
+    return `${formattedSize} ${sizes[i]}`;
+}
 
 function process_csi_file_and_generate_fvu(modal, selectedFile, docname, quarter) {
 
@@ -417,10 +422,12 @@ function process_csi_file_and_generate_fvu(modal, selectedFile, docname, quarter
 }
 
 function show_download_links(files) {
+    // Clear previous download links to prevent duplication
     const downloadContainer = document.getElementById('download-links-container');
     if (downloadContainer) {
-        downloadContainer.innerHTML = '';
+        downloadContainer.innerHTML = ''; // Clear existing content
     } else {
+        // Create container if it doesn't exist
         const newContainer = document.createElement('div');
         newContainer.id = 'download-links-container';
         document.getElementById('upload-status').insertAdjacentElement('afterend', newContainer);
@@ -501,7 +508,7 @@ function show_download_links(files) {
                     </div>
                     <div>
                         <button class="btn btn-primary btn-sm" id="download-all-files-btn">
-                            <i class="fa fa-file-archive-o"></i> Download All Files as ZIP
+                            <i class="fa fa-download"></i> Download All Files
                         </button>
                     </div>
                 </div>
@@ -514,6 +521,7 @@ function show_download_links(files) {
         downloadContainerFinal.innerHTML = downloadHtml;
     }
 
+    // Attach event listener to Download All Files button
     const downloadAllButton = document.getElementById('download-all-files-btn');
     if (downloadAllButton) {
         downloadAllButton.addEventListener('click', () => {
@@ -521,7 +529,6 @@ function show_download_links(files) {
         });
     }
 }
-
 
 function download_all_files() {
     try {
@@ -536,7 +543,7 @@ function download_all_files() {
         }
 
         const progressDialog = new frappe.ui.Dialog({
-            title: __('Creating ZIP File'),
+            title: __(`Downloading ${downloadLinks.length} FVU Files`),
             fields: [
                 {
                     fieldtype: 'HTML',
@@ -544,8 +551,8 @@ function download_all_files() {
                     options: `
                         <div class="download-progress" style="text-align: center; padding: 30px;">
                             <div style="font-size: 18px; margin-bottom: 20px; color: #007bff;">
-                                <i class="fa fa-file-archive-o" style="font-size: 32px; margin-bottom: 10px;"></i>
-                                <div>Preparing ZIP file for download...</div>
+                                <i class="fa fa-cloud-download" style="font-size: 32px; margin-bottom: 10px;"></i>
+                                <div>Preparing FVU file downloads...</div>
                             </div>
                             <div class="progress" style="height: 25px; margin-bottom: 15px; background-color: #e9ecef;">
                                 <div class="progress-bar progress-bar-striped active" 
@@ -555,17 +562,27 @@ function download_all_files() {
                                 </div>
                             </div>
                             <div id="download-status" style="margin-bottom: 15px; font-size: 14px; color: #495057; min-height: 40px;">
-                                Requesting ZIP file from server...
+                                Initializing secure download sequence...
+                            </div>
+                            <div id="file-list" style="max-height: 200px; overflow-y: auto; text-align: left; font-size: 12px; background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                                <strong>Files to download:</strong>
+                                <ul id="file-items" style="margin: 10px 0; padding-left: 20px;"></ul>
+                            </div>
+                            <div id="download-warnings" style="margin-top: 15px; font-size: 11px; color: #6c757d; text-align: left;">
+                                <i class="fa fa-info-circle"></i> 
+                                <strong>Note:</strong> Files will be downloaded with proper extensions. 
+                                Large files may take a moment. Please don't close this window until complete.
                             </div>
                         </div>
                     `
                 }
             ],
-            primary_action_label: __('Cancel'),
+            primary_action_label: __('Cancel Downloads'),
             primary_action: function() {
+                downloadCancelled = true;
                 progressDialog.hide();
                 frappe.show_alert({
-                    message: __('ZIP creation cancelled by user'),
+                    message: __('Download cancelled by user'),
                     indicator: 'orange'
                 }, 3);
             },
@@ -574,132 +591,241 @@ function download_all_files() {
 
         progressDialog.show();
 
-        frappe.call({
-            method: 'hrms.payroll.doctype.form_24q.form_24q.generate_fvu_zip_file',
-            args: {
-                docname: frappe.get_route()[2], // Adjust to get docname dynamically
-                quarter: downloadLinks[0].getAttribute('download').split('_')[1] || 'Q1'
-            },
-            callback: function(response) {
-                const statusDiv = document.getElementById('download-status');
+        setTimeout(() => {
+            const fileListElement = document.getElementById('file-items');
+            if (fileListElement) {
+                downloadLinks.forEach((link, index) => {
+                    const fileName = link.getAttribute('download');
+                    const fileSize = link.getAttribute('data-size') || '0';
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <span id="file-status-${index}" class="text-muted">
+                            <i class="fa fa-clock-o"></i> Pending
+                        </span>
+                        ${fileName} (${format_file_size(parseInt(fileSize))})
+                    `;
+                    fileListElement.appendChild(listItem);
+                });
+            }
+        }, 300);
+
+        let downloadCancelled = false;
+        let downloadCount = 0;
+        let successCount = 0;
+        let errorCount = 0;
+        const totalFiles = downloadLinks.length;
+
+        const downloadFile = async (link, index) => {
+            if (downloadCancelled) return { success: false, cancelled: true };
+
+            try {
+                updateDownloadProgress(index, totalFiles, link.getAttribute('download'), 'downloading');
+
+                const fileName = link.getAttribute('download');
+                const fileUrl = link.href;
+                const contentType = link.getAttribute('data-content-type') || 'application/octet-stream';
+                const fileSize = parseInt(link.getAttribute('data-size') || '0');
+
+                const extension = fileName.split('.').pop().toLowerCase();
+                const expectedMimeTypes = {
+                    'html': 'text/html',
+                    'fvu': 'application/xml',
+                    'txt': 'text/plain',
+                    'csi': 'text/plain',
+                    'log': 'text/plain',
+                    'xml': 'application/xml'
+                };
+
+                const expectedMimeType = expectedMimeTypes[extension] || 'application/octet-stream';
+
+                const response = await fetch(fileUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': expectedMimeType,
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const blob = await response.blob();
+                const correctedBlob = new Blob([blob], { type: expectedMimeType });
+
+                if (fileSize > 0 && Math.abs(correctedBlob.size - fileSize) > (fileSize * 0.1)) {
+                    console.warn(`File size mismatch for ${fileName}: expected ${fileSize}, got ${correctedBlob.size}`);
+                }
+
+                const downloadUrl = window.URL.createObjectURL(correctedBlob);
+                const tempLink = document.createElement('a');
+                tempLink.href = downloadUrl;
+                tempLink.download = fileName;
+                tempLink.style.display = 'none';
+
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(downloadUrl);
+                }, 1000);
+
+                updateDownloadProgress(index, totalFiles, fileName, 'success');
+                successCount++;
+                return { success: true };
+
+            } catch (error) {
+                console.error(`Error downloading file ${index + 1}:`, error);
+                updateDownloadProgress(index, totalFiles, link.getAttribute('download'), 'error', error.message);
+                errorCount++;
+                return { success: false, error: error.message };
+            }
+        };
+
+        const updateDownloadProgress = (index, total, fileName, status, errorMsg = '') => {
+            const progressBar = document.getElementById('download-progress-bar');
+            const progressPercentage = document.getElementById('progress-percentage');
+            const statusDiv = document.getElementById('download-status');
+            const fileStatusElement = document.getElementById(`file-status-${index}`);
+
+            const progress = ((index + (status === 'downloading' ? 0.5 : 1)) / total) * 100;
+
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+                if (progressPercentage) {
+                    progressPercentage.textContent = `${Math.round(progress)}%`;
+                }
+            }
+
+            if (statusDiv) {
+                let statusText = '';
+                switch (status) {
+                    case 'downloading':
+                        statusText = `Downloading file ${index + 1} of ${total}: ${fileName}`;
+                        break;
+                    case 'success':
+                        statusText = `Successfully downloaded ${index + 1} of ${total} files`;
+                        break;
+                    case 'error':
+                        statusText = `Error downloading file ${index + 1}: ${errorMsg}`;
+                        break;
+                    case 'complete':
+                        statusText = `Download complete! ${successCount} successful, ${errorCount} failed`;
+                        break;
+                }
+                statusDiv.textContent = statusText;
+            }
+
+            if (fileStatusElement) {
+                let statusIcon = '';
+                let statusClass = '';
+                switch (status) {
+                    case 'downloading':
+                        statusIcon = '<i class="fa fa-spinner fa-spin"></i> Downloading';
+                        statusClass = 'text-info';
+                        break;
+                    case 'success':
+                        statusIcon = '<i class="fa fa-check-circle"></i> Downloaded';
+                        statusClass = 'text-success';
+                        break;
+                    case 'error':
+                        statusIcon = `<i class="fa fa-exclamation-circle"></i> Failed: ${errorMsg}`;
+                        statusClass = 'text-danger';
+                        break;
+                }
+                fileStatusElement.innerHTML = statusIcon;
+                fileStatusElement.className = statusClass;
+            }
+        };
+
+        const downloadSequentially = async () => {
+            for (let i = 0; i < downloadLinks.length && !downloadCancelled; i++) {
+                await downloadFile(downloadLinks[i], i);
+                downloadCount++;
+                if (i < downloadLinks.length - 1 && !downloadCancelled) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+
+            if (!downloadCancelled) {
                 const progressBar = document.getElementById('download-progress-bar');
+                const statusDiv = document.getElementById('download-status');
                 const primaryBtn = progressDialog.get_primary_btn()[0];
 
-                if (response.message && response.message.success) {
-                    if (progressBar) {
-                        progressBar.style.width = '100%';
-                        progressBar.classList.remove('active');
-                        progressBar.classList.add('bg-success');
-                    }
-                    if (statusDiv) {
-                        statusDiv.innerHTML = `
-                            <div style="color: #155724;">
-                                <i class="fa fa-check-circle"></i> 
-                                ZIP file created successfully!
-                            </div>
-                        `;
-                    }
-
-                    const link = document.createElement('a');
-                    link.href = response.message.file_url;
-                    link.download = response.message.filename;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-
-                    if (primaryBtn) {
-                        primaryBtn.innerHTML = '<i class="fa fa-check"></i> Close';
-                        primaryBtn.onclick = () => progressDialog.hide();
-                    }
-
-                    setTimeout(() => {
-                        progressDialog.hide();
-                        frappe.show_alert({
-                            message: __('Successfully downloaded ZIP file containing FVU files!'),
-                            indicator: 'green'
-                        }, 5);
-                    }, 2000);
-                } else {
-                    const error = response.message ? response.message.error : 'Unknown error occurred';
-                    if (statusDiv) {
-                        statusDiv.innerHTML = `
-                            <div style="color: #721c24;">
-                                <i class="fa fa-exclamation-circle"></i> 
-                                Error creating ZIP file: ${error}
-                            </div>
-                        `;
-                    }
-                    if (progressBar) {
-                        progressBar.classList.remove('active');
-                        progressBar.classList.add('bg-danger');
-                    }
+                if (progressBar) {
+                    progressBar.style.width = '100%';
+                    progressBar.classList.remove('active');
+                    progressBar.classList.add(errorCount > 0 ? 'bg-warning' : 'bg-success');
                 }
-            },
-            error: function(error) {
-                console.error('Error creating ZIP file:', error);
-                const statusDiv = document.getElementById('download-status');
+
                 if (statusDiv) {
+                    const finalMessage = errorCount > 0 
+                        ? `Download completed with ${errorCount} errors. ${successCount} of ${totalFiles} files downloaded successfully.`
+                        : `All ${successCount} files downloaded successfully! Check your downloads folder.`;
                     statusDiv.innerHTML = `
-                        <div style="color: #721c24;">
-                            <i class="fa fa-exclamation-circle"></i> 
-                            Server error: ${error.message || 'Failed to communicate with server'}
+                        <div style="color: ${errorCount > 0 ? '#856404' : '#155724'};">
+                            <i class="fa fa-${errorCount > 0 ? 'exclamation-triangle' : 'check-circle'}"></i> 
+                            ${finalMessage}
                         </div>
                     `;
                 }
-                const progressBar = document.getElementById('download-progress-bar');
-                if (progressBar) {
-                    progressBar.classList.remove('active');
-                    progressBar.classList.add('bg-danger');
+
+                if (primaryBtn) {
+                    primaryBtn.innerHTML = '<i class="fa fa-check"></i> Close';
+                    primaryBtn.onclick = () => progressDialog.hide();
+                }
+
+                if (errorCount === 0) {
+                    setTimeout(() => {
+                        progressDialog.hide();
+                        frappe.show_alert({
+                            message: __(`Successfully downloaded all ${successCount} FVU files!`),
+                            indicator: 'green'
+                        }, 5);
+                    }, 5000);
                 }
             }
-        });
+        };
+
+        setTimeout(downloadSequentially, 500);
+
     } catch (error) {
         console.error('Error in download_all_files:', error);
         frappe.show_alert({
-            message: __(`Error initiating ZIP download: ${error.message}. Please try downloading files individually.`),
+            message: __(`Error initiating downloads: ${error.message}. Please try downloading files individually.`),
             indicator: 'red'
         }, 8);
     }
-}  
-
+}
 
 function validate_download_readiness() {
     const downloadLinks = document.querySelectorAll('a.download-link[download]');
     const issues = [];
-
+    
     downloadLinks.forEach((link, index) => {
         const fileName = link.getAttribute('download');
-        const fileSize = parseInt(link.getAttribute('data-size') || '0');
+        const fileUrl = link.href;
         const contentType = link.getAttribute('data-content-type');
-
-        const extension = fileName.split('.').pop().toLowerCase();
-        const expectedMimeTypes = {
-            'html': 'text/html',
-            'fvu': 'application/xml',
-            'txt': 'text/plain',
-            'csi': 'text/plain',
-            'log': 'text/plain',
-            'xml': 'application/xml'
-        };
-
-        if (!fileName) {
-            issues.push(`File ${index + 1}: Missing filename`);
-        }
-        if (fileSize <= 0) {
-            issues.push(`File ${fileName}: Invalid file size`);
-        }
-        if (contentType !== expectedMimeTypes[extension]) {
-            issues.push(`File ${fileName}: Incorrect content type (expected ${expectedMimeTypes[extension]}, got ${contentType})`);
+        
+        if (!fileName) issues.push(`File ${index + 1}: Missing filename`);
+        if (!fileUrl || fileUrl === '#') issues.push(`File ${index + 1}: Invalid URL`);
+        if (!contentType) issues.push(`File ${index + 1}: Missing content type`);
+        
+        // Check file extension
+        const extension = fileName ? fileName.split('.').pop().toLowerCase() : '';
+        const validExtensions = ['html', 'fvu', 'txt', 'csi', 'log', 'xml'];
+        if (!validExtensions.includes(extension)) {
+            issues.push(`File ${index + 1}: Invalid extension .${extension}`);
         }
     });
-
+    
     return {
         isValid: issues.length === 0,
         issues: issues,
         fileCount: downloadLinks.length
     };
 }
-
 
 function check_and_download_all_files() {
     const validation = validate_download_readiness();

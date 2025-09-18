@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form 27A</title>
+    <meta charset="UTF-8">
+    <style>
+        @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #000;
+        }
+        .header {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+        .section {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+        .field {
+            margin: 5px 0;
+            padding: 2px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+            font-size: 11px;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .signature {
+            margin-top: 50px;
+            page-break-inside: avoid;
+        }
+        .right {
+            text-align: right;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .underline {
+            text-decoration: underline;
+        }
+        h2, h3 {
+            margin: 15px 0 10px 0;
+            color: #000;
+        }
+        .address-block {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .print-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button no-print" onclick="window.print()">Print as PDF</button>
+
+    <div class="header">
+        <h2>FORM NO. 27A</h2>
+        <p>[See rule 31AA(6)]</p>
+        <p>Form for furnishing information with the statement of deduction of tax at source filed on computer media for the period {{ quarter }}<br>({{ quarter_ranges[quarter] }})</p>
+    </div>
+
+    <div class="section">
+        <h3>1. Particulars of the deductor</h3>
+        <div class="field">(a) Tax Deduction Account No.: <span class="bold">{{ deductor.tan }}</span></div>
+        <div class="field">(b) Permanent Account No.: <span class="bold">{{ deductor.pan }}</span></div>
+        <div class="field">(c) Form No.: <span class="bold">24Q</span></div>
+        <div class="field">(d) Financial Year: <span class="bold">{{ financial_year }}</span></div>
+        <div class="field">(e) Assessment year: <span class="bold">{{ assessment_year }}</span></div>
+        <div class="field">(f) Previous receipt number: <span class="bold">{{ data.form_details.previous_receipt or 'NA' }}</span></div>
+        <div style="font-size: 10px; margin-top: 5px;">(In case return/statement has been filed earlier)</div>
+    </div>
+
+    <div class="section">
+        <h3>2. Particulars of the deductor</h3>
+        <div class="field">(a) Name: <span class="bold">{{ deductor.name }}</span></div>
+        <div class="field">(b) Type of deductor: <span class="bold">{{ deductor.type }}</span></div>
+        <div class="field">(c) Branch/division (if any): <span class="bold">{{ deductor.branch }}</span></div>
+        <div class="field">(d) Address:</div>
+        <div class="address-block">
+            <div>Flat No.: {{ deductor.flat_no }}</div>
+            <div>Name of the premises/building: {{ deductor.address_line1 }}</div>  <!-- Use address_line1 for building -->
+            <div>Road/street/lane: {{ deductor.address_line2 }}</div>
+            <div>Area/location: {{ deductor.area_location }}</div>
+            <div>Town/City/District: {{ deductor.city }}</div>
+            <div>State: {{ deductor.state }}</div>
+            <div>Pin code: {{ deductor.pincode }}</div>
+            <div>Telephone No.: {{ deductor.std_code }}-{{ deductor.phone }}</div>
+            <div>E-mail: {{ deductor.email }}</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>3. Name of the person responsible for deduction of tax</h3>
+        <div class="field">(a) Name: <span class="bold">{{ deductor.responsible_person_name }}</span></div>
+        <div class="field">(b) PAN: <span class="bold">{{ deductor.responsible_person_pan }}</span></div>
+        <div class="field">(c) Address:</div>
+        <div class="address-block">
+            <div>Flat No.: {{ deductor.pr_flat_no }}</div>
+            <div>Name of the premises/building: {{ deductor.pr_building }}</div>
+            <div>Road/street/lane: {{ deductor.pr_road }}</div>
+            <div>Area/location: {{ deductor.pr_area }}</div>
+            <div>Town/City/District: {{ deductor.pr_city }}</div>
+            <div>State: {{ deductor.pr_state }}</div>
+            <div>Pin code: {{ deductor.pr_pincode }}</div>
+            <div>Telephone No.: {{ deductor.pr_std_code }}-{{ deductor.pr_phone }}</div>
+            <div>E-mail: {{ deductor.pr_email }}</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>4. Control totals</h3>
+        <table>
+            <tr>
+                <th>Sr.No.</th>
+                <th>Return Type<br>(Regular/Correction)</th>
+                <th>No. of<br>deductee<br>records</th>
+                <th>Amount<br>paid (₹)</th>
+                <th>Tax deducted<br>/collected<br>(₹)</th>
+                <th>Tax deposited<br>(Total challan<br>amount) (₹)</th>
+            </tr>
+            <tr>
+                <td class="bold">1</td>
+                <td>{{ data.form_details.return_type }}</td>
+                <td class="right bold">{{ num_deductees }}</td>
+                <td class="right bold">{{ amount_paid }}</td>
+                <td class="right bold">{{ tax_deducted }}</td>
+                <td class="right bold">{{ tax_deposited }}</td>
+            </tr>
+            <tr style="font-weight: bold; background-color: #f8f9fa;">
+                <td colspan="2" class="bold">Total</td>
+                <td class="right bold">{{ num_deductees }}</td>
+                <td class="right bold">{{ amount_paid }}</td>
+                <td class="right bold">{{ tax_deducted }}</td>
+                <td class="right bold">{{ tax_deposited }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="field"><strong>5. Total Number of Annexures enclosed:</strong> <span class="bold">{{ num_challans + 1 }}</span></div>
+        <div class="field"><strong>6. Other Information:</strong> <span class="bold">NIL</span></div>
+    </div>
+
+    <div class="signature">
+        <h3 class="underline">VERIFICATION</h3>
+        <p>I, <span class="bold">{{ deductor.responsible_person_name }}</span>, hereby certify that all the particulars furnished above are correct and complete.</p>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 60px; page-break-inside: avoid;">
+            <div>
+                <div><strong>Place:</strong> {{ deductor.city }}</div>
+                <div><strong>Date:</strong> {{ current_date }}</div>
+            </div>
+            <div style="text-align: right;">
+                <div style="border-top: 1px solid #000; width: 200px; margin: 0 0 5px auto;"></div>
+                <div><strong>Signature of person responsible for</strong></div>
+                <div><strong>deducting tax at source</strong></div>
+                <br>
+                <div><strong>Name and designation of person responsible</strong></div>
+                <div><strong>for deducting tax at source:</strong></div>
+                <div><span class="bold">{{ deductor.responsible_person_name }}</span>,</div>
+                <div><span class="bold">{{ deductor.designation }}</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; font-size: 10px; border-top: 1px solid #ccc; padding-top: 15px;">
+        <p><strong>Note:</strong> Mention type of deductor - Government or Others</p>
+        <p><strong>Generated by FVU Version 9.2</strong></p>
+        <p><strong>Input File Name:</strong> form24q.txt</p>
+    </div>
+
+    <script>
+        // Auto-print functionality for PDF generation
+        function printDocument() {
+            window.print();
+        }
+        // Add keyboard shortcut for printing
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'p') {
+                event.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>

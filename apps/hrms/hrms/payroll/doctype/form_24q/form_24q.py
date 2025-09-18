@@ -8,6 +8,8 @@ import os
 import json
 from datetime import datetime, timedelta
 import base64
+import zipfile
+from io import BytesIO
 
 class Form24Q(Document):
     def validate(self):
@@ -84,222 +86,7 @@ def generate_form_27a_pdf_dynamic(data):
     tax_deposited = f"{flt(data['control_totals'].get('tax_deposited', 0)):,.2f}"
     
     # Generate HTML content that looks like Form 27A with print-friendly CSS
-    html_content = f"""<!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Form 27A</title>
-                    <meta charset="UTF-8">
-                    <style>
-                        @media print {{
-                            body {{ margin: 0; }}
-                            .no-print {{ display: none; }}
-                        }}
-                        body {{ 
-                            font-family: Arial, sans-serif; 
-                            margin: 30px; 
-                            font-size: 12px; 
-                            line-height: 1.4;
-                            color: #000;
-                        }}
-                        .header {{ 
-                            text-align: center; 
-                            font-weight: bold; 
-                            margin-bottom: 30px; 
-                            border-bottom: 2px solid #000;
-                            padding-bottom: 15px;
-                        }}
-                        .section {{ 
-                            margin-bottom: 20px; 
-                            page-break-inside: avoid;
-                        }}
-                        .field {{ 
-                            margin: 5px 0; 
-                            padding: 2px 0;
-                        }}
-                        table {{ 
-                            width: 100%; 
-                            border-collapse: collapse; 
-                            margin: 10px 0; 
-                        }}
-                        th, td {{ 
-                            border: 1px solid #000; 
-                            padding: 8px; 
-                            text-align: left; 
-                            font-size: 11px;
-                        }}
-                        th {{ 
-                            background-color: #f0f0f0; 
-                            font-weight: bold;
-                        }}
-                        .signature {{ 
-                            margin-top: 50px; 
-                            page-break-inside: avoid;
-                        }}
-                        .right {{ text-align: right; }}
-                        .bold {{ font-weight: bold; }}
-                        .underline {{ text-decoration: underline; }}
-                        h2, h3 {{ 
-                            margin: 15px 0 10px 0; 
-                            color: #000;
-                        }}
-                        .address-block {{
-                            margin-left: 20px;
-                            margin-top: 5px;
-                        }}
-                        .print-button {{
-                            position: fixed;
-                            top: 20px;
-                            right: 20px;
-                            background: #007bff;
-                            color: white;
-                            padding: 10px 20px;
-                            border: none;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            font-size: 14px;
-                        }}
-                        .print-button:hover {{
-                            background: #0056b3;
-                        }}
-                    </style>
-                </head>
-                <body>
-                    <button class="print-button no-print" onclick="window.print()">Print as PDF</button>
-                    
-                    <div class="header">
-                        <h2>FORM NO. 27A</h2>
-                        <p>[See rule 31AA(6)]</p>
-                        <p>Form for furnishing information with the statement of deduction of tax at source filed on computer media for the period {quarter}<br>
-                        ({quarter_ranges.get(quarter, '')})</p>
-                    </div>
-
-                    <div class="section">
-                        <h3>1. Particulars of the deductor</h3>
-                        <div class="field">(a) Tax Deduction Account No.: <span class="bold">{deductor.get('tan', '')}</span></div>
-                        <div class="field">(b) Permanent Account No.: <span class="bold">{deductor.get('pan', '')}</span></div>
-                        <div class="field">(c) Form No.: <span class="bold">24Q</span></div>
-                        <div class="field">(d) Financial Year: <span class="bold">{financial_year}</span></div>
-                        <div class="field">(e) Assessment year: <span class="bold">{assessment_year}</span></div>
-                        <div class="field">(f) Previous receipt number: <span class="bold">{data['form_details'].get('previous_receipt', 'NA')}</span></div>
-                        <div style="font-size: 10px; margin-top: 5px;">(In case return/statement has been filed earlier)</div>
-                    </div>
-
-                    <div class="section">
-                        <h3>2. Particulars of the deductor</h3>
-                        <div class="field">(a) Name: <span class="bold">{deductor.get('name', '')}</span></div>
-                        <div class="field">(b) Type of deductor: <span class="bold">{deductor.get('type', 'COMPANY')}</span></div>
-                        <div class="field">(c) Branch/division (if any): <span class="bold">{deductor.get('branch', 'NO')}</span></div>
-                        <div class="field">(d) Address:</div>
-                        <div class="address-block">
-                            <div>Flat No.: {deductor.get('flat_no', '')}</div>
-                            <div>Name of the premises/building: {deductor.get('pr_building', '')}</div>
-                            <div>Road/street/lane: {deductor.get('address_line2', '')}</div>
-                            <div>Area/location: {deductor.get('area_location', '')}</div>
-                            <div>Town/City/District: {deductor.get('city', '')}</div>
-                            <div>State: {deductor.get('state', '')}</div>
-                            <div>Pin code: {deductor.get('pincode', '')}</div>
-                            <div>Telephone No.: {deductor.get('std_code', '')}-{deductor.get('phone', '')}</div>
-                            <div>E-mail: {deductor.get('email', '')}</div>
-                        </div>
-                    </div>
-
-                    <div class="section">
-                        <h3>3. Name of the person responsible for deduction of tax</h3>
-                        <div class="field">(a) Name: <span class="bold">{deductor.get('responsible_person_name', '')}</span></div>
-                        <div class="field">(b) PAN: <span class="bold">{deductor.get('responsible_person_pan', '')}</span></div>
-                        <div class="field">(c) Address:</div>
-                        <div class="address-block">
-                            <div>Flat No.: {deductor.get('pr_flat_no', '')}</div>
-                            <div>Name of the premises/building: {deductor.get('pr_building', '')}</div>
-                            <div>Road/street/lane: {deductor.get('pr_road', '')}</div>
-                            <div>Area/location: {deductor.get('pr_area', '')}</div>
-                            <div>Town/City/District: {deductor.get('pr_city', '')}</div>
-                            <div>State: {deductor.get('pr_state', '')}</div>
-                            <div>Pin code: {deductor.get('pr_pincode', '')}</div>
-                            <div>Telephone No.: {deductor.get('pr_std_code', '')}-{deductor.get('pr_phone', '')}</div>
-                            <div>E-mail: {deductor.get('pr_email', '')}</div>
-                        </div>
-                    </div>
-
-                    <div class="section">
-                        <h3>4. Control totals</h3>
-                        <table>
-                            <tr>
-                                <th>Sr.No.</th>
-                                <th>Return Type<br>(Regular/Correction)</th>
-                                <th>No. of<br>deductee<br>records</th>
-                                <th>Amount<br>paid (₹)</th>
-                                <th>Tax deducted<br>/collected<br>(₹)</th>
-                                <th>Tax deposited<br>(Total challan<br>amount) (₹)</th>
-                            </tr>
-                            <tr>
-                                <td class="bold">1</td>
-                                <td>{data['form_details'].get('return_type', 'REGULAR')}</td>
-                                <td class="right bold">{num_deductees}</td>
-                                <td class="right bold">{amount_paid}</td>
-                                <td class="right bold">{tax_deducted}</td>
-                                <td class="right bold">{tax_deposited}</td>
-                            </tr>
-                            <tr style="font-weight: bold; background-color: #f8f9fa;">
-                                <td colspan="2" class="bold">Total</td>
-                                <td class="right bold">{num_deductees}</td>
-                                <td class="right bold">{amount_paid}</td>
-                                <td class="right bold">{tax_deducted}</td>
-                                <td class="right bold">{tax_deposited}</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div class="section">
-                        <div class="field"><strong>5. Total Number of Annexures enclosed:</strong> <span class="bold">{num_challans + 1}</span></div>
-                        <div class="field"><strong>6. Other Information:</strong> <span class="bold">NIL</span></div>
-                    </div>
-
-                    <div class="signature">
-                        <h3 class="underline">VERIFICATION</h3>
-                        <p>I, <span class="bold">{deductor.get('responsible_person_name', '')}</span>, hereby certify that all the particulars furnished above are correct and complete.</p>
-                        
-                        <div style="display: flex; justify-content: space-between; margin-top: 60px; page-break-inside: avoid;">
-                            <div>
-                                <div><strong>Place:</strong> {deductor.get('city', '')}</div>
-                                <div><strong>Date:</strong> {current_date}</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="border-top: 1px solid #000; width: 200px; margin: 0 0 5px auto;"></div>
-                                <div><strong>Signature of person responsible for</strong></div>
-                                <div><strong>deducting tax at source</strong></div>
-                                <br>
-                                <div><strong>Name and designation of person responsible</strong></div>
-                                <div><strong>for deducting tax at source:</strong></div>
-                                <div><span class="bold">{deductor.get('responsible_person_name', '')}</span>,</div>
-                                <div><span class="bold">{deductor.get('designation', 'DIRECTOR')}</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 30px; font-size: 10px; border-top: 1px solid #ccc; padding-top: 15px;">
-                        <p><strong>Note:</strong> Mention type of deductor - Government or Others</p>
-                        <p><strong>Generated by FVU Version 9.2</strong></p>
-                        <p><strong>Input File Name:</strong> form24q.txt</p>
-                    </div>
-
-                    <script>
-                        // Auto-print functionality for PDF generation
-                        function printDocument() {{
-                            window.print();
-                        }}
-                        
-                        // Add keyboard shortcut for printing
-                        document.addEventListener('keydown', function(event) {{
-                            if (event.ctrlKey && event.key === 'p') {{
-                                event.preventDefault();
-                                window.print();
-                            }}
-                        }});
-                    </script>
-                </body>
-                </html>"""
-    
+    html_content = frappe.render_template('hrms/payroll/doctype/form_24q/form_27a_pdf.html')
     return html_content
 
 @frappe.whitelist()
@@ -367,28 +154,19 @@ def generate_fvu_log_dynamic(data):
 
 @frappe.whitelist()
 def save_generated_files_with_custom_names(files_data, parsed_data):
-    """Save files with your specific naming convention and proper extensions"""
     file_paths = {}
-    
     try:
-        # Create directory structure
         base_path = get_site_path('public', 'files', 'fvu_generated')
         if not os.path.exists(base_path):
             os.makedirs(base_path)
-        
-        # Get dynamic naming components from CSI file data
-        # Priority: CSI file TAN -> Form 24Q Settings TAN -> Default
+
         csi_tan = parsed_data.get('csi_data', {}).get('tan_number', '')
         settings_tan = parsed_data['deductor'].get('tan', '')
-        
-        # Use CSI file TAN if available, otherwise fallback to settings
         tan = csi_tan if csi_tan else settings_tan if settings_tan else 'TAN'
-        
         quarter = parsed_data['form_details'].get('quarter', 'Q1')
         financial_year = parsed_data['form_details'].get('financial_year', '202526')
         fy_clean = financial_year.replace('-', '')
-        
-        # Your specific file naming requirements with proper extensions
+
         file_configs = {
             'form_27a_pdf': {
                 'filename': f'27A_{tan}_24Q_{quarter}_{fy_clean}.html',
@@ -396,67 +174,57 @@ def save_generated_files_with_custom_names(files_data, parsed_data):
                 'content_type': 'text/html'
             },
             'form24q_fvu': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_24Q.fvu',  # Proper FVU extension
+                'filename': f'{tan}_{quarter}_{fy_clean}_24Q.fvu',
                 'content': files_data['form24q_fvu'],
                 'content_type': 'application/xml'
             },
             'form24q_txt': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_24Q.txt',  # Proper TXT extension
+                'filename': f'{tan}_{quarter}_{fy_clean}_24Q.txt',
                 'content': files_data['form24q_txt'],
                 'content_type': 'text/plain'
             },
             'challan_csi': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_challan.csi',  # Proper CSI extension
+                'filename': f'{tan}_{quarter}_{fy_clean}_challan.csi',
                 'content': files_data['challan_csi'],
                 'content_type': 'text/plain'
             },
             'fvu_log': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_24Q.log',  # Proper LOG extension
+                'filename': f'{tan}_{quarter}_{fy_clean}_24Q.log',
                 'content': files_data['fvu_log'],
                 'content_type': 'text/plain'
             },
             'warning_html': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_Warning.html',  # Proper HTML extension
+                'filename': f'{tan}_{quarter}_{fy_clean}_Warning.html',
                 'content': files_data['warning_html'],
                 'content_type': 'text/html'
             },
             'statistics_html': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_Statistics.html',  # Proper HTML extension
+                'filename': f'{tan}_{quarter}_{fy_clean}_Statistics.html',
                 'content': files_data['statistics_html'],
                 'content_type': 'text/html'
             }
         }
-        
-        # Save each file with proper headers and encoding
+
         for file_key, config in file_configs.items():
             try:
                 file_path = os.path.join(base_path, config['filename'])
-                
-                # Write file content with proper encoding based on content type
                 encoding = 'utf-8'
                 mode = 'w'
-                
-                # For HTML files, add proper DOCTYPE and encoding
                 content = config['content']
+
                 if config['content_type'] == 'text/html' and not content.startswith('<!DOCTYPE'):
                     if not content.startswith('<html'):
                         content = f'<!DOCTYPE html>\n{content}'
-                    # Ensure proper charset is declared
                     if 'charset' not in content.lower():
                         content = content.replace('<head>', '<head>\n    <meta charset="UTF-8">')
-                
-                # For XML/FVU files, ensure proper XML declaration
                 elif config['content_type'] == 'application/xml' and not content.startswith('<?xml'):
-                    if not content.startswith('<?xml'):
-                        content = f'<?xml version="1.0" encoding="UTF-8"?>\n{content}'
-                
+                    content = f'<?xml version="1.0" encoding="UTF-8"?>\n{content}'
+
                 with open(file_path, mode, encoding=encoding) as f:
                     f.write(content)
-                
-                # Get actual file size after writing
+
                 actual_file_size = os.path.getsize(file_path)
-                
-                # Create File document in Frappe with proper attributes
+
                 file_doc = frappe.get_doc({
                     'doctype': 'File',
                     'file_name': config['filename'],
@@ -467,8 +235,7 @@ def save_generated_files_with_custom_names(files_data, parsed_data):
                     'content_type': config['content_type']
                 })
                 file_doc.insert(ignore_permissions=True)
-                
-                # Store file path info with enhanced metadata
+
                 file_paths[file_key] = {
                     'filename': config['filename'],
                     'file_url': file_doc.file_url,
@@ -481,9 +248,9 @@ def save_generated_files_with_custom_names(files_data, parsed_data):
                     'is_downloadable': True,
                     'created_at': datetime.now().isoformat()
                 }
-                
+
                 frappe.logger().info(f"Generated file: {config['filename']} ({actual_file_size} bytes)")
-                
+
             except Exception as file_error:
                 frappe.logger().error(f"Error saving file {config['filename']}: {str(file_error)}")
                 file_paths[file_key] = {
@@ -491,13 +258,11 @@ def save_generated_files_with_custom_names(files_data, parsed_data):
                     'filename': config['filename'],
                     'is_downloadable': False
                 }
-        
-        # Create a comprehensive file manifest
+
         create_file_manifest(file_paths, parsed_data, base_path)
-        
         frappe.db.commit()
         return file_paths
-        
+
     except Exception as e:
         frappe.logger().error(f"Error in save_generated_files_with_custom_names: {str(e)}")
         frappe.throw(f"Failed to save generated files: {str(e)}")
@@ -638,15 +403,15 @@ def create_file_manifest(file_paths, parsed_data, base_path):
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         
         manifest_content = f"""FVU FILE GENERATION MANIFEST
-========================================
-Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-TAN: {tan}
-Quarter: {quarter}
-Company: {deductor.get('name', 'N/A')}
+            ========================================
+            Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+            TAN: {tan}
+            Quarter: {quarter}
+            Company: {deductor.get('name', 'N/A')}
 
-FILES GENERATED:
-========================================
-"""
+            FILES GENERATED:
+            ========================================
+            """
         
         successful_files = []
         failed_files = []
@@ -885,12 +650,12 @@ def generate_deductee_records(quarter_data):
     return deductee_records
 
 @frappe.whitelist()
-def generate_form_27a_dynamic(data):
-    """Generate Form 27A PDF content with proper formatting and dynamic data"""
+def generate_form_27a_pdf_dynamic(data):
+    """Generate Form 27A as HTML content that can be converted to PDF or viewed in browser"""
     current_date = datetime.now().strftime('%d/%m/%Y')
     quarter = data['form_details'].get('quarter', 'Q1')
-    financial_year = data['form_details'].get('financial_year', '')
-    assessment_year = data['form_details'].get('assessment_year', '')
+    financial_year = data['form_details'].get('financial_year', '2025-26')
+    assessment_year = data['form_details'].get('assessment_year', '2026-27')
     
     # Get date ranges for quarter
     quarter_ranges = get_quarter_date_ranges(data)
@@ -904,9 +669,25 @@ def generate_form_27a_dynamic(data):
     tax_deducted = f"{flt(data['control_totals'].get('tax_deducted', 0)):,.2f}"
     tax_deposited = f"{flt(data['control_totals'].get('tax_deposited', 0)):,.2f}"
     
-    form_27a_content = frappe.render_template('hrms/payroll/doctype/form_24q/form_27a_content.html', {})
-    
-    return form_27a_content
+    # Render with context (pass all required variables)
+    html_content = frappe.render_template(
+        'hrms/payroll/doctype/form_24q/form_27a_pdf.html',
+        {
+            "quarter": quarter,
+            "quarter_ranges": quarter_ranges,
+            "financial_year": financial_year,
+            "assessment_year": assessment_year,
+            "deductor": deductor,
+            "num_deductees": num_deductees,
+            "num_challans": num_challans,
+            "amount_paid": amount_paid,
+            "tax_deducted": tax_deducted,
+            "tax_deposited": tax_deposited,
+            "data": data,
+            "current_date": current_date
+        }
+    )
+    return html_content
 
 def get_quarter_date_ranges(data):
     """Get proper date ranges for quarters based on payroll period"""
@@ -957,16 +738,19 @@ def get_quarter_date_ranges(data):
 @frappe.whitelist()
 def generate_statistics_report_dynamic(data):
     """Generate Statistics Report HTML with accurate dynamic data"""
+    if not data or not data.get('deductor'):
+        return "<p>Error: Missing data for rendering Statistics Report.</p>"
+    
     # Calculate PAN statistics
     valid_pan_count = sum(1 for record in data['deductee_records']
-                            if record.get('pan', '') and len(record.get('pan', '')) == 10 
-                            and record.get('pan') not in ['PANAPPLIED', 'PANNOTAVBL', 'PANINVALID'])
+                          if record.get('pan', '') and len(record.get('pan', '')) == 10 
+                          and record.get('pan') not in ['PANAPPLIED', 'PANNOTAVBL', 'PANINVALID'])
     
     pan_applied_count = sum(1 for record in data['deductee_records']
                             if record.get('pan', '') == 'PANAPPLIED')
     
     pan_not_available_count = sum(1 for record in data['deductee_records']
-                                    if record.get('pan', '') == 'PANNOTAVBL')
+                                  if record.get('pan', '') == 'PANNOTAVBL')
     
     pan_invalid_count = sum(1 for record in data['deductee_records']
                             if record.get('pan', '') == 'PANINVALID')
@@ -979,124 +763,29 @@ def generate_statistics_report_dynamic(data):
     amount_paid = f"{flt(data['control_totals'].get('amount_paid', 0)):,.2f}"
     tax_deducted = f"{flt(data['control_totals'].get('tax_deducted', 0)):,.2f}"
     tax_deposited = f"{flt(data['control_totals'].get('tax_deposited', 0)):,.2f}"
-    
-    html_content = f"""<HTML>
-<HEAD>
-    <TITLE>FVU - TDS STATEMENT STATISTICS REPORT</TITLE>
-    <style>
-        body {{ font-family: Arial, sans-serif; margin: 20px; }}
-        table {{ border-collapse: collapse; width: 100%; margin-bottom: 20px; }}
-        th, td {{ border: 1px solid #000; padding: 8px; text-align: left; }}
-        th {{ background-color: #f0f0f0; font-weight: bold; }}
-        .center {{ text-align: center; }}
-        .right {{ text-align: right; }}
-        h3 {{ text-align: center; }}
-    </style>
-</HEAD>
-<BODY>
 
-<h3><u>FVU - TDS STATEMENT STATISTICS REPORT - Batch Number 1</u></h3>
-
-<p>You are advised to verify the details of your TAN at Income Tax Department's web-site (www.incometaxindia.gov.in) before submission of the statement. If the data displayed is not updated then request for necessary changes by submitting 'Form for Changes or Corrections in TAN data for TAN allotted' along with the statement.</p>
-
-<p>The details in the report are as per the statement prepared by you. In case of any discrepancy in the details, rectify the statement accordingly. Thereafter, validate the rectified statement again through FVU.</p>
-
-<p>The details provided in the physical Form 27A should match with the statistics report.</p>
-
-<p>You can track the status of the challans as well as the statements furnished at www.tin-nsdl.com using TAN and Provisional Receipt Number.</p>
-
-<table>
-    <tr>
-        <th width="60%">Name of Deductor</th>
-        <th width="40%">TAN of Deductor</th>
-    </tr>
-    <tr>
-        <td>{deductor.get('name', '')}</td>
-        <td>{deductor.get('tan', '')}</td>
-    </tr>
-</table>
-
-<table>
-    <tr>
-        <th>PAN of Deductor</th>
-        <th>Form Number</th>
-        <th>Form Type</th>
-    </tr>
-    <tr>
-        <td>{deductor.get('pan', '')}</td>
-        <td>24Q</td>
-        <td>Salary (Electronic)</td>
-    </tr>
-</table>
-
-<table>
-    <tr>
-        <th>Assessment Year</th>
-        <th>Financial Year</th>
-        <th>Quarter</th>
-        <th>Upload Type</th>
-        <th>Type of Correction</th>
-    </tr>
-    <tr>
-        <td>{data['form_details'].get('assessment_year', '2026-27')}</td>
-        <td>{data['form_details'].get('financial_year', '2025-26')}</td>
-        <td>{data['form_details'].get('quarter', 'Q1')}</td>
-        <td>{data['form_details'].get('return_type', 'Regular')}</td>
-        <td>NA</td>
-    </tr>
-</table>
-
-<table>
-    <tr>
-        <th>No. of Challans</th>
-        <th>Total Challan Amount (₹)</th>
-        <th>No. of Deductee Records</th>
-        <th>No. of Deductee Records where tax is deducted at Higher Rate</th>
-    </tr>
-    <tr>
-        <td class="right">{num_challans}</td>
-        <td class="right">{tax_deposited}</td>
-        <td class="right">{num_deductees}</td>
-        <td class="right">0</td>
-    </tr>
-</table>
-
-<table>
-    <tr>
-        <th>Amount of Payment / Credit (₹)</th>
-        <th>Total Income Tax Deducted at Source (₹)</th>
-        <th>Total Tax Deposited as per Deductee Annexure (₹)</th>
-    </tr>
-    <tr>
-        <td class="right">{amount_paid}</td>
-        <td class="right">{tax_deducted}</td>
-        <td class="right">{tax_deposited}</td>
-    </tr>
-</table>
-
-<h4>Deductee PAN Details (Annexure I)</h4>
-<table>
-    <tr>
-        <th>No. of Valid PAN</th>
-        <th>No. of PAN Applied (PANAPPLIED)</th>
-        <th>No. of PAN Not Available (PANNOTAVBL)</th>
-        <th>No. of Structurally Invalid PAN (PANINVALID)</th>
-    </tr>
-    <tr>
-        <td class="right">{valid_pan_count}</td>
-        <td class="right">{pan_applied_count}</td>
-        <td class="right">{pan_not_available_count}</td>
-        <td class="right">{pan_invalid_count}</td>
-    </tr>
-</table>
-
-<br><br>
-<p>FVU Version: 9.2 &nbsp;&nbsp; Input File Name: form24q.txt</p>
-
-</BODY>
-</HTML>"""
-                
-    return html_content
+    # Render with context
+    try:
+        html_content = frappe.render_template(
+            'hrms/payroll/doctype/form_24q/statistics_report.html',
+            {
+                "deductor": deductor,
+                "data": data,
+                "num_deductees": num_deductees,
+                "num_challans": num_challans,
+                "amount_paid": amount_paid,
+                "tax_deducted": tax_deducted,
+                "tax_deposited": tax_deposited,
+                "valid_pan_count": valid_pan_count,
+                "pan_applied_count": pan_applied_count,
+                "pan_not_available_count": pan_not_available_count,
+                "pan_invalid_count": pan_invalid_count
+            }
+        )
+        return html_content
+    except Exception as e:
+        frappe.log_error(f"Error rendering Statistics Report: {str(e)}")
+        return f"<p>Error rendering report: {str(e)}</p>"
 
 @frappe.whitelist()
 def generate_fvu_xml_dynamic(data):
@@ -1218,27 +907,21 @@ def generate_text_file_dynamic(data):
     # File header
     text_content = f"""FH|FILE HEADER|{deductor.get('tan', '')}|{data['form_details'].get('financial_year', '2025-26')}|{data['form_details'].get('quarter', 'Q1')}|24Q|9.2|{current_date}|ORIGINAL|{len(data['deductee_records'])}|{flt(data['control_totals'].get('amount_paid', 0)):,.2f}|{flt(data['control_totals'].get('tax_deducted', 0)):,.2f}
 
-BH|BATCH HEADER|1|{deductor.get('tan', '')}|{deductor.get('pan', '')}|{deductor.get('name', '')}|{data['form_details'].get('assessment_year', '2026-27')}|{data['form_details'].get('quarter', 'Q1')}|{data['form_details'].get('return_type', 'REGULAR')}|{data['form_details'].get('previous_receipt', 'NA')}"""
+                    BH|BATCH HEADER|1|{deductor.get('tan', '')}|{deductor.get('pan', '')}|{deductor.get('name', '')}|{data['form_details'].get('assessment_year', '2026-27')}|{data['form_details'].get('quarter', 'Q1')}|{data['form_details'].get('return_type', 'REGULAR')}|{data['form_details'].get('previous_receipt', 'NA')}"""
     
     # Add challan details
     for i, challan in enumerate(data['challan_details'], 1):
-        text_content += f"""
-CH|{challan.get('tender_date', '')}|{challan.get('serial_number', '')}|{challan.get('bsr_code', '')}|{flt(challan.get('amount', 0)):,.2f}|0.00|{flt(challan.get('amount', 0)):,.2f}|{i}"""
+        text_content += f"""CH|{challan.get('tender_date', '')}|{challan.get('serial_number', '')}|{challan.get('bsr_code', '')}|{flt(challan.get('amount', 0)):,.2f}|0.00|{flt(challan.get('amount', 0)):,.2f}|{i}"""
     
     # Add deductee details
     for i, deductee in enumerate(data['deductee_records'], 1):
-        text_content += f"""
-DH|{i}|{deductee.get('pan', '')}|{deductee.get('name', '')}|{flt(deductee.get('amount_paid', 0)):,.2f}|{flt(deductee.get('tax_deducted', 0)):,.2f}|{deductee.get('date_of_deduction', '')}|{deductee.get('section', '192A')}|{flt(deductee.get('rate', 10.0)):,.2f}|N|NA"""
+        text_content += f"""DH|{i}|{deductee.get('pan', '')}|{deductee.get('name', '')}|{flt(deductee.get('amount_paid', 0)):,.2f}|{flt(deductee.get('tax_deducted', 0)):,.2f}|{deductee.get('date_of_deduction', '')}|{deductee.get('section', '192A')}|{flt(deductee.get('rate', 10.0)):,.2f}|N|NA"""
     
     # Batch trailer
-    text_content += f"""
-
-BT|{len(data['challan_details'])}|{len(data['deductee_records'])}|{flt(data['control_totals'].get('amount_paid', 0)):,.2f}|{flt(data['control_totals'].get('tax_deducted', 0)):,.2f}"""
+    text_content += f"""BT|{len(data['challan_details'])}|{len(data['deductee_records'])}|{flt(data['control_totals'].get('amount_paid', 0)):,.2f}|{flt(data['control_totals'].get('tax_deducted', 0)):,.2f}"""
     
     # File trailer
-    text_content += f"""
-
-FT|1|{len(data['challan_details'])}|{len(data['deductee_records'])}|{flt(data['control_totals'].get('amount_paid', 0)):,.2f}|{flt(data['control_totals'].get('tax_deducted', 0)):,.2f}"""
+    text_content += f"""FT|1|{len(data['challan_details'])}|{len(data['deductee_records'])}|{flt(data['control_totals'].get('amount_paid', 0)):,.2f}|{flt(data['control_totals'].get('tax_deducted', 0)):,.2f}"""
     
     return text_content
 
@@ -1658,4 +1341,47 @@ def generate_warning_file_dynamic(data):
     
     return html_content
 
+@frappe.whitelist()
+def generate_fvu_zip_file(docname, quarter):
+    try:
+        # Fetch the Form 24Q document
+        form_24q = frappe.get_doc("Form 24Q", docname)
+        file_paths = form_24q.get("file_paths")  # Assuming file_paths is stored in the document or fetched from previous generation
+        
+        if not file_paths:
+            frappe.throw("No files available to create ZIP.")
 
+        import zipfile
+        from io import BytesIO
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            for file_key, file_info in file_paths.items():
+                if file_info.get('file_url') and not file_info.get('error'):
+                    file_doc = frappe.get_doc("File", file_info.get('file_doc_name'))
+                    file_content = file_doc.get_content()
+                    zip_file.writestr(file_info['filename'], file_content)
+
+        zip_buffer.seek(0)
+        zip_filename = f"FVU_Files_{form_24q.tan}_{quarter}_{frappe.utils.now_datetime().strftime('%Y%m%d%H%M%S')}.zip"
+        
+        # Save ZIP file to Frappe File
+        file_doc = frappe.get_doc({
+            'doctype': 'File',
+            'file_name': zip_filename,
+            'is_private': 0,
+            'content': zip_buffer.getvalue(),
+            'folder': 'Home/Attachments'
+        })
+        file_doc.insert(ignore_permissions=True)
+        
+        frappe.db.commit()
+        return {
+            'success': True,
+            'file_url': file_doc.file_url,
+            'filename': zip_filename,
+            'size': len(zip_buffer.getvalue())
+        }
+    except Exception as e:
+        frappe.log_error(f"Error creating ZIP file: {str(e)}")
+        return {'success': False, 'error': str(e)}
+  

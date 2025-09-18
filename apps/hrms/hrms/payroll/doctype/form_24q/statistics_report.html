@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FVU - TDS STATEMENT STATISTICS REPORT</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+        th { background-color: #f0f0f0; font-weight: bold; }
+        .center { text-align: center; }
+        .right { text-align: right; }
+        h3 { text-align: center; }
+    </style>
+</head>
+<body>
+    <h3><u>FVU - TDS STATEMENT STATISTICS REPORT - Batch Number 1</u></h3>
+
+    <p>You are advised to verify the details of your TAN at Income Tax Department's website (www.incometaxindia.gov.in) before submission of the statement. If the data displayed is not updated, then request for necessary changes by submitting 'Form for Changes or Corrections in TAN data for TAN allotted' along with the statement.</p>
+
+    <p>The details in the report are as per the statement prepared by you. In case of any discrepancy in the details, rectify the statement accordingly. Thereafter, validate the rectified statement again through FVU.</p>
+
+    <p>The details provided in the physical Form 27A should match with the statistics report.</p>
+
+    <p>You can track the status of the challans as well as the statements furnished at www.tin-nsdl.com using TAN and Provisional Receipt Number.</p>
+
+    <table>
+        <tr>
+            <th width="60%">Name of Deductor</th>
+            <th width="40%">TAN of Deductor</th>
+        </tr>
+        <tr>
+            <td>{{ deductor.name }}</td>
+            <td>{{ deductor.tan }}</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th>PAN of Deductor</th>
+            <th>Form Number</th>
+            <th>Form Type</th>
+        </tr>
+        <tr>
+            <td>{{ deductor.pan }}</td>
+            <td>24Q</td>
+            <td>Salary (Electronic)</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th>Assessment Year</th>
+            <th>Financial Year</th>
+            <th>Quarter</th>
+            <th>Upload Type</th>
+            <th>Type of Correction</th>
+        </tr>
+        <tr>
+            <td>{{ data.form_details.assessment_year or '2026-27' }}</td>
+            <td>{{ data.form_details.financial_year or '2025-26' }}</td>
+            <td>{{ data.form_details.quarter or 'Q1' }}</td>
+            <td>{{ data.form_details.return_type or 'Regular' }}</td>
+            <td>NA</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th>No. of Challans</th>
+            <th>Total Challan Amount (₹)</th>
+            <th>No. of Deductee Records</th>
+            <th>No. of Deductee Records where tax is deducted at Higher Rate</th>
+        </tr>
+        <tr>
+            <td class="right">{{ num_challans }}</td>
+            <td class="right">{{ tax_deposited }}</td>
+            <td class="right">{{ num_deductees }}</td>
+            <td class="right">0</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th>Amount of Payment / Credit (₹)</th>
+            <th>Total Income Tax Deducted at Source (₹)</th>
+            <th>Total Tax Deposited as per Deductee Annexure (₹)</th>
+        </tr>
+        <tr>
+            <td class="right">{{ amount_paid }}</td>
+            <td class="right">{{ tax_deducted }}</td>
+            <td class="right">{{ tax_deposited }}</td>
+        </tr>
+    </table>
+
+    <h4>Deductee PAN Details (Annexure I)</h4>
+    <table>
+        <tr>
+            <th>No. of Valid PAN</th>
+            <th>No. of PAN Applied (PANAPPLIED)</th>
+            <th>No. of PAN Not Available (PANNOTAVBL)</th>
+            <th>No. of Structurally Invalid PAN (PANINVALID)</th>
+        </tr>
+        <tr>
+            <td class="right">{{ valid_pan_count }}</td>
+            <td class="right">{{ pan_applied_count }}</td>
+            <td class="right">{{ pan_not_available_count }}</td>
+            <td class="right">{{ pan_invalid_count }}</td>
+        </tr>
+    </table>
+
+    <br><br>
+    <p>FVU Version: 9.2 &nbsp;&nbsp; Input File Name: form24q.txt</p>
+</body>
+</html>
