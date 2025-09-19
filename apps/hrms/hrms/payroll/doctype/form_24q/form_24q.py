@@ -2,14 +2,18 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.model.document import Document
-from frappe.utils import nowdate, get_site_path, format_date, getdate, cint, flt
 import os
 import json
-from datetime import datetime, timedelta
+import shutil
+import glob
+import traceback
 import base64
 import zipfile
 from io import BytesIO
+from datetime import datetime, timedelta
+from frappe.utils.file_manager import get_file_path
+from frappe.model.document import Document
+from frappe.utils import nowdate, get_site_path, format_date, getdate, cint, flt
 
 class Form24Q(Document):
     def validate(self):
@@ -50,12 +54,14 @@ def generate_fvu_files_from_csi(csi_content, quarter, docname=None):
         }
         
         # Save files with your specific naming convention
-        file_paths = save_generated_files_with_custom_names(files_data, merged_data)
+        file_paths = save_generated_files_with_custom_names(files_data, merged_data, quarter)
         
         return {
             'success': True,
             'files': file_paths,
-            'data': merged_data
+            'data': merged_data,
+            'quarter':quarter,
+            'docname':docname
         }
         
     except Exception as e:
@@ -152,90 +158,130 @@ def generate_fvu_log_dynamic(data):
     
     return log_content
 
+
 @frappe.whitelist()
-def save_generated_files_with_custom_names(files_data, parsed_data):
+def save_generated_files_with_custom_names(files_data, parsed_data, quarter):
     file_paths = {}
     try:
-        base_path = get_site_path('public', 'files', 'fvu_generated')
-        if not os.path.exists(base_path):
-            os.makedirs(base_path)
+        # Ensure base folder exists
+        base_path = get_site_path('private', 'files', f'fvu_{quarter}')
+        os.makedirs(base_path, exist_ok=True)
 
+        # Quarter mapping
+        quarter_mapping = {
+            '1st_quarter_april_june': 'Q1',
+            '2nd_quarter_july_sep': 'Q2',
+            '3rd_quarter_oct_dec': 'Q3',
+            '4th_quarter_jan_mar': 'Q4'
+        }
+        quarter_code = quarter_mapping.get(quarter, quarter)
+        if quarter_code not in ['Q1', 'Q2', 'Q3', 'Q4']:
+            frappe.throw("Quarter is Not Valid !")
+
+        # TAN resolution
         csi_tan = parsed_data.get('csi_data', {}).get('tan_number', '')
         settings_tan = parsed_data['deductor'].get('tan', '')
         tan = csi_tan if csi_tan else settings_tan if settings_tan else 'TAN'
-        quarter = parsed_data['form_details'].get('quarter', 'Q1')
-        financial_year = parsed_data['form_details'].get('financial_year', '202526')
+
+        # Financial year cleanup
+        financial_year = parsed_data['form_details'].get('financial_year', '')
         fy_clean = financial_year.replace('-', '')
 
+        # File configs
         file_configs = {
             'form_27a_pdf': {
-                'filename': f'27A_{tan}_24Q_{quarter}_{fy_clean}.html',
+                'filename': f'27A_{tan}_24Q_{quarter_code}_{fy_clean}_form_27a.html',
                 'content': files_data['form_27a_pdf'],
                 'content_type': 'text/html'
             },
             'form24q_fvu': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_24Q.fvu',
+                'filename': f'form24q.fvu',
                 'content': files_data['form24q_fvu'],
                 'content_type': 'application/xml'
             },
             'form24q_txt': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_24Q.txt',
+                'filename': f'form24q.txt',
                 'content': files_data['form24q_txt'],
                 'content_type': 'text/plain'
             },
             'challan_csi': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_challan.csi',
+                'filename': f'challan.csi',
                 'content': files_data['challan_csi'],
                 'content_type': 'text/plain'
             },
             'fvu_log': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_24Q.log',
+                'filename': f'form24q.fvu.log',
                 'content': files_data['fvu_log'],
                 'content_type': 'text/plain'
             },
             'warning_html': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_Warning.html',
+                'filename': f'form24q_Electronic_Statement_Warning_File.html',
                 'content': files_data['warning_html'],
                 'content_type': 'text/html'
             },
             'statistics_html': {
-                'filename': f'{tan}_{quarter}_{fy_clean}_Statistics.html',
+                'filename': f'form24q_statistics.html',
                 'content': files_data['statistics_html'],
                 'content_type': 'text/html'
             }
         }
 
+        # Loop through all files
         for file_key, config in file_configs.items():
             try:
                 file_path = os.path.join(base_path, config['filename'])
-                encoding = 'utf-8'
-                mode = 'w'
-                content = config['content']
 
-                if config['content_type'] == 'text/html' and not content.startswith('<!DOCTYPE'):
-                    if not content.startswith('<html'):
-                        content = f'<!DOCTYPE html>\n{content}'
-                    if 'charset' not in content.lower():
-                        content = content.replace('<head>', '<head>\n    <meta charset="UTF-8">')
-                elif config['content_type'] == 'application/xml' and not content.startswith('<?xml'):
-                    content = f'<?xml version="1.0" encoding="UTF-8"?>\n{content}'
+                # Safety check → enforce saving only under fvu_generated
+                if not file_path.startswith(base_path):
+                    raise Exception(f"Invalid file path detected: {file_path}")
+
+                content = config['content']
+                if not content:
+                    frappe.logger().warning(f"Empty content for file: {config['filename']}")
+                    file_paths[file_key] = {
+                        'error': 'Empty file content',
+                        'filename': config['filename'],
+                        'is_downloadable': False
+                    }
+                    continue
+
+                # Handle text content formatting
+                if isinstance(content, str):
+                    if config['content_type'] == 'text/html' and not content.lower().startswith('<!doctype'):
+                        if not content.lower().startswith('<html'):
+                            content = f'<!DOCTYPE html>\n{content}'
+                        if '<head>' in content and 'charset' not in content.lower():
+                            content = content.replace('<head>', '<head>\n    <meta charset="UTF-8">')
+                    elif config['content_type'] == 'application/xml' and not content.strip().startswith('<?xml'):
+                        content = f'<?xml version="1.0" encoding="UTF-8"?>\n{content}'
+
+                # Write file (binary-safe)
+                mode = 'wb' if isinstance(content, (bytes, bytearray)) else 'w'
+                encoding = None if mode == 'wb' else 'utf-8'
 
                 with open(file_path, mode, encoding=encoding) as f:
                     f.write(content)
 
-                actual_file_size = os.path.getsize(file_path)
+                if not os.path.exists(file_path):
+                    raise Exception(f"File was not created: {file_path}")
 
+                actual_file_size = os.path.getsize(file_path)
+                if actual_file_size == 0:
+                    raise Exception(f"File is empty: {file_path}")
+
+                # Create File doc
                 file_doc = frappe.get_doc({
                     'doctype': 'File',
                     'file_name': config['filename'],
-                    'file_url': f'/files/fvu_generated/{config["filename"]}',
+                    'file_url': f'/private/files/fvu_{quarter}/{config["filename"]}',
                     'folder': 'Home/Attachments',
-                    'is_private': 0,
+                    'is_private': 1,
                     'file_size': actual_file_size,
                     'content_type': config['content_type']
                 })
                 file_doc.insert(ignore_permissions=True)
 
+                # Build return structure
                 file_paths[file_key] = {
                     'filename': config['filename'],
                     'file_url': file_doc.file_url,
@@ -249,22 +295,24 @@ def save_generated_files_with_custom_names(files_data, parsed_data):
                     'created_at': datetime.now().isoformat()
                 }
 
-                frappe.logger().info(f"Generated file: {config['filename']} ({actual_file_size} bytes)")
+                # print(f"Generated file: {config['filename']} ({actual_file_size} bytes)")
 
             except Exception as file_error:
-                frappe.logger().error(f"Error saving file {config['filename']}: {str(file_error)}")
+                # frappe.logger().error(f"Error saving file {config['filename']}: {str(file_error)}")
                 file_paths[file_key] = {
                     'error': str(file_error),
                     'filename': config['filename'],
                     'is_downloadable': False
                 }
 
-        create_file_manifest(file_paths, parsed_data, base_path)
+        # Manifest for all generated files
+        create_file_manifest(file_paths, parsed_data, base_path, quarter)
+
         frappe.db.commit()
         return file_paths
 
     except Exception as e:
-        frappe.logger().error(f"Error in save_generated_files_with_custom_names: {str(e)}")
+        # frappe.logger().error(f"Error in save_generated_files_with_custom_names: {str(e)}")
         frappe.throw(f"Failed to save generated files: {str(e)}")
 
 
@@ -394,24 +442,23 @@ def format_file_size(size_bytes):
 
 
 @frappe.whitelist()
-def create_file_manifest(file_paths, parsed_data, base_path):
+def create_file_manifest(file_paths, parsed_data, base_path, quarter):
     """Create a manifest file with all download information"""
     try:
         deductor = parsed_data.get('deductor', {})
         tan = deductor.get('tan', 'UNKNOWN')
         quarter = parsed_data.get('form_details', {}).get('quarter', 'Q1')
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         
         manifest_content = f"""FVU FILE GENERATION MANIFEST
-            ========================================
-            Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-            TAN: {tan}
-            Quarter: {quarter}
-            Company: {deductor.get('name', 'N/A')}
+                    ========================================
+                    Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+                    TAN: {tan}
+                    Quarter: {quarter}
+                    Company: {deductor.get('name', 'N/A')}
 
-            FILES GENERATED:
-            ========================================
-            """
+                    FILES GENERATED:
+                    ========================================
+                """
         
         successful_files = []
         failed_files = []
@@ -420,59 +467,59 @@ def create_file_manifest(file_paths, parsed_data, base_path):
             if file_info.get('is_downloadable', False):
                 successful_files.append(file_info)
                 manifest_content += f"""
-✓ {file_info['filename']}
-  - Size: {file_info['size']} bytes
-  - Type: {file_info['content_type']}
-  - Extension: {file_info['extension']}
-  - URL: {file_info['file_url']}
-"""
+                ✓ {file_info['filename']}
+                - Size: {file_info['size']} bytes
+                - Type: {file_info['content_type']}
+                - Extension: {file_info['extension']}
+                - URL: {file_info['file_url']}
+                """
             else:
                 failed_files.append(file_info)
                 manifest_content += f"""
-✗ {file_info['filename']}
-  - Error: {file_info.get('error', 'Unknown error')}
-"""
+                ✗ {file_info['filename']}
+                - Error: {file_info.get('error', 'Unknown error')}
+                """
         
         manifest_content += f"""
-SUMMARY:
-========================================
-Total Files: {len(file_paths)}
-Successful: {len(successful_files)}
-Failed: {len(failed_files)}
+            SUMMARY:
+            ========================================
+            Total Files: {len(file_paths)}
+            Successful: {len(successful_files)}
+            Failed: {len(failed_files)}
 
-DOWNLOAD INSTRUCTIONS:
-========================================
-1. All files are available for immediate download
-2. Files have proper extensions and MIME types
-3. Use the 'Download All Files' button for bulk download
-4. Check your browser's download folder
-5. Files are generated according to Income Tax Department specifications
+            DOWNLOAD INSTRUCTIONS:
+            ========================================
+            1. All files are available for immediate download
+            2. Files have proper extensions and MIME types
+            3. Use the 'Download All Files' button for bulk download
+            4. Check your browser's download folder
+            5. Files are generated according to Income Tax Department specifications
 
-TECHNICAL DETAILS:
-========================================
-FVU Version: 9.2
-Generated by: ERPNext HRMS
-Encoding: UTF-8
-File Format: Standard FVU format
+            TECHNICAL DETAILS:
+            ========================================
+            FVU Version: 9.2
+            Generated by: ERPNext HRMS
+            Encoding: UTF-8
+            File Format: Standard FVU format
 
-END OF MANIFEST
-========================================
-"""
+            END OF MANIFEST
+            ========================================
+            """
         
-        # Save manifest file
-        manifest_filename = f'FVU_Manifest_{tan}_{quarter}_{timestamp}.txt'
-        manifest_path = os.path.join(base_path, manifest_filename)
+        # Save manifest file ONLY in the fvu_generated directory
+        manifest_filename = f'FVU_Manifest_{quarter}.txt'
+        manifest_path = os.path.join(base_path, manifest_filename)  # base_path is already fvu_generated
         
         with open(manifest_path, 'w', encoding='utf-8') as f:
             f.write(manifest_content)
         
-        # Create File document for manifest
+        # Create File document for manifest with PRIVATE path
         manifest_doc = frappe.get_doc({
             'doctype': 'File',
             'file_name': manifest_filename,
-            'file_url': f'/files/fvu_generated/{manifest_filename}',
+            'file_url': f'/private/files/fvu_{quarter}/{manifest_filename}',
             'folder': 'Home/Attachments',
-            'is_private': 0,
+            'is_private': 1,  # Keep private
             'file_size': len(manifest_content.encode('utf-8')),
             'content_type': 'text/plain'
         })
@@ -481,9 +528,9 @@ END OF MANIFEST
         return manifest_filename
         
     except Exception as e:
-        frappe.logger().error(f"Error creating manifest: {str(e)}")
+        # frappe.logger().error(f"Error creating manifest: {str(e)}")
         return None
-
+    
 
 @frappe.whitelist()
 def get_custom_file_display_name(file_key):
@@ -541,7 +588,17 @@ def get_quarter_details(form_24q_doc_name, quarter_name):
 @frappe.whitelist()
 def merge_with_settings(parsed_data, settings, quarter, form_24q_doc_name=None):
     """Merge parsed CSI data with Form 24Q Settings and company data"""
-
+    
+    # Quarter mapping
+    quarter_mapping = {
+        '1st_quarter_april_june': 'Q1',
+        '2nd_quarter_july_sep': 'Q2', 
+        '3rd_quarter_oct_dec': 'Q3',
+        '4th_quarter_jan_mar': 'Q4'
+    }
+    
+    quarter_code = quarter_mapping.get(quarter, quarter)
+    
     quarter_details = get_quarter_details(form_24q_doc_name, quarter) if form_24q_doc_name else {}
     ttl_tax_deducted = 0
     ttl_amount_paid = 0
@@ -549,7 +606,6 @@ def merge_with_settings(parsed_data, settings, quarter, form_24q_doc_name=None):
     
     # Calculate totals from quarter data
     quarter_data = quarter_details.get(quarter, [])
-    # The calculation should be:
     for quart in quarter_data:
         ttl_amount_paid += flt(quart.get('challan_amount_remitted', 0))  
         ttl_tax_deducted += flt(quart.get('tax_deducted_from_employees', 0))  
@@ -601,7 +657,7 @@ def merge_with_settings(parsed_data, settings, quarter, form_24q_doc_name=None):
             'mobile_no': settings.get('mobile_no', '')
         },
         'form_details': {
-            'quarter': quarter,
+            'quarter': quarter_code,  # Use the mapped quarter code
             'financial_year': f'{fy_start}-{str(fy_end)[-2:]}',
             'assessment_year': f'{fy_end}-{str(fy_end + 1)[-2:]}',
             'return_type': 'REGULAR',
@@ -616,7 +672,8 @@ def merge_with_settings(parsed_data, settings, quarter, form_24q_doc_name=None):
             'tax_deducted': ttl_tax_deducted,
             'tax_deposited': ttl_challan_amount
         },
-        'quarter_data': quarter_data
+        'quarter_data': quarter_data,
+        'csi_data': parsed_data  # Add the parsed CSI data
     }
     
     return merged_data
@@ -985,134 +1042,6 @@ def parse_csi_content(content):
     
     return data
 
-@frappe.whitelist()
-def save_generated_files(files_data, parsed_data):
-    """Save generated files to site files directory with dynamic naming"""
-    file_paths = {}
-    
-    try:
-        # Create directory structure
-        base_path = get_site_path('public', 'files', 'fvu_generated')
-        if not os.path.exists(base_path):
-            os.makedirs(base_path)
-        
-        # Generate file names with dynamic data
-        tan = parsed_data['deductor'].get('tan', 'TAN')
-        quarter = parsed_data['form_details'].get('quarter', 'Q1')
-        financial_year = parsed_data['form_details'].get('financial_year', '202526')
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        
-        # Clean financial year (remove hyphen)
-        fy_clean = financial_year.replace('-', '')
-        
-        # File name mappings with dynamic names
-        file_configs = {
-            'form_27a': {
-                'filename': f'Form_27A_{tan}_{quarter}_{fy_clean}_{timestamp}.txt',
-                'content': files_data['form_27a'],
-                'content_type': 'text/plain'
-            },
-            'statistics_report': {
-                'filename': f'Statistics_Report_{tan}_{quarter}_{fy_clean}_{timestamp}.html',
-                'content': files_data['statistics_report'],
-                'content_type': 'text/html'
-            },
-            'warning_file': {
-                'filename': f'Warning_File_{tan}_{quarter}_{fy_clean}_{timestamp}.html',
-                'content': files_data['warning_file'],
-                'content_type': 'text/html'
-            },
-            'fvu_file': {
-                'filename': f'Form24Q_{tan}_{quarter}_{fy_clean}_{timestamp}.fvu',
-                'content': files_data['fvu_file'],
-                'content_type': 'application/xml'
-            },
-            'text_file': {
-                'filename': f'Form24Q_{tan}_{quarter}_{fy_clean}_{timestamp}.txt',
-                'content': files_data['text_file'],
-                'content_type': 'text/plain'
-            }
-        }
-        
-        # Save each file
-        for file_key, config in file_configs.items():
-            try:
-                file_path = os.path.join(base_path, config['filename'])
-                
-                # Write file content
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    f.write(config['content'])
-                
-                # Create File document in Frappe
-                file_doc = frappe.get_doc({
-                    'doctype': 'File',
-                    'file_name': config['filename'],
-                    'file_url': f'/files/fvu_generated/{config["filename"]}',
-                    'folder': 'Home/Attachments',
-                    'is_private': 0,
-                    'file_size': len(config['content'].encode('utf-8')),
-                    'content_type': config['content_type']
-                })
-                file_doc.insert(ignore_permissions=True)
-                
-                # Store file path info
-                file_paths[file_key] = {
-                    'filename': config['filename'],
-                    'file_url': file_doc.file_url,
-                    'file_path': file_path,
-                    'file_doc_name': file_doc.name,
-                    'size': file_doc.file_size,
-                    'content_type': config['content_type'],
-                    'display_name': get_file_display_name(file_key)
-                }
-                
-                frappe.logger().info(f"Generated FVU file: {config['filename']}")
-                
-            except Exception as file_error:
-                frappe.logger().error(f"Error saving file {config['filename']}: {str(file_error)}")
-                file_paths[file_key] = {
-                    'error': str(file_error),
-                    'filename': config['filename']
-                }
-        
-        # Create a comprehensive summary log file
-        summary_content = generate_summary_content(parsed_data, file_paths, timestamp)
-        
-        # Save summary file
-        summary_filename = f'FVU_Generation_Summary_{tan}_{quarter}_{timestamp}.log'
-        summary_path = os.path.join(base_path, summary_filename)
-        
-        with open(summary_path, 'w', encoding='utf-8') as f:
-            f.write(summary_content)
-        
-        # Create summary File document
-        summary_doc = frappe.get_doc({
-            'doctype': 'File',
-            'file_name': summary_filename,
-            'file_url': f'/files/fvu_generated/{summary_filename}',
-            'folder': 'Home/Attachments',
-            'is_private': 0,
-            'file_size': len(summary_content.encode('utf-8')),
-            'content_type': 'text/plain'
-        })
-        summary_doc.insert(ignore_permissions=True)
-        
-        file_paths['summary'] = {
-            'filename': summary_filename,
-            'file_url': summary_doc.file_url,
-            'file_path': summary_path,
-            'file_doc_name': summary_doc.name,
-            'size': summary_doc.file_size,
-            'content_type': 'text/plain',
-            'display_name': 'Generation Summary'
-        }
-        
-        frappe.db.commit()
-        return file_paths
-        
-    except Exception as e:
-        frappe.logger().error(f"Error in save_generated_files: {str(e)}")
-        frappe.throw(f"Failed to save generated files: {str(e)}")
 
 def generate_summary_content(parsed_data, file_paths, timestamp):
     """Generate comprehensive summary content"""
@@ -1199,45 +1128,6 @@ def get_file_display_name(file_key):
     }
     return labels.get(file_key, file_key.replace('_', ' ').title())
 
-@frappe.whitelist()
-def cleanup_old_fvu_files(days_old=30):
-    """Clean up old FVU generated files"""
-    try:
-        base_path = get_site_path('public', 'files', 'fvu_generated')
-        if not os.path.exists(base_path):
-            return
-        
-        cutoff_date = datetime.now() - timedelta(days=days_old)
-        cleaned_files = 0
-        
-        for filename in os.listdir(base_path):
-            file_path = os.path.join(base_path, filename)
-            if os.path.isfile(file_path):
-                file_modified_time = datetime.fromtimestamp(os.path.getmtime(file_path))
-                
-                if file_modified_time < cutoff_date:
-                    try:
-                        os.remove(file_path)
-                        
-                        # Remove File document from Frappe
-                        file_url = f'/files/fvu_generated/{filename}'
-                        file_docs = frappe.get_all('File', filters={'file_url': file_url})
-                        
-                        for file_doc in file_docs:
-                            frappe.delete_doc('File', file_doc.name, ignore_permissions=True)
-                        
-                        cleaned_files += 1
-                        frappe.logger().info(f"Cleaned up old FVU file: {filename}")
-                        
-                    except Exception as cleanup_error:
-                        frappe.logger().error(f"Error cleaning up file {filename}: {str(cleanup_error)}")
-        
-        frappe.db.commit()
-        return {'cleaned_files': cleaned_files}
-        
-    except Exception as e:
-        frappe.logger().error(f"Error in cleanup_old_fvu_files: {str(e)}")
-        return {'error': str(e)}
 
 @frappe.whitelist()
 def get_fvu_download_links(file_paths):
@@ -1344,33 +1234,106 @@ def generate_warning_file_dynamic(data):
 @frappe.whitelist()
 def generate_fvu_zip_file(docname, quarter):
     try:
-        # Fetch the Form 24Q document
-        form_24q = frappe.get_doc("Form 24Q", docname)
-        file_paths = form_24q.get("file_paths")  # Assuming file_paths is stored in the document or fetched from previous generation
+        base_path = get_site_path('private', 'files', f'fvu_{quarter}')
         
-        if not file_paths:
-            frappe.throw("No files available to create ZIP.")
+        if not os.path.exists(base_path):
+            return {'success': False, 'error': 'No FVU files directory found'}
+        
+        # Get Form 24Q document to extract TAN
+        form_24q = frappe.get_doc("Form 24Q", docname)
+        
+        # Try different field names for TAN
+        tan = None
+        possible_tan_fields = ['tan', 'tan_number', 'company_tan', 'deductor_tan']
+        
+        for field in possible_tan_fields:
+            tan = form_24q.get(field)
+            if tan and tan != 'TAN':
+                break
+        
+        # If TAN not found in document, extract from existing files
+        if not tan or tan == 'TAN':
+            # Look for Form 27A files to extract TAN
+            form27a_files = glob.glob(os.path.join(base_path, "27A_*_24Q_*.html"))
+            if form27a_files:
+                filename = os.path.basename(form27a_files[0])
+                parts = filename.split('_')
+                if len(parts) >= 2:
+                    tan = parts[1]
+            
+            # If still no TAN found, try regex pattern matching
+            if not tan:
+                all_files = os.listdir(base_path)
+                for file in all_files:
+                    import re
+                    tan_match = re.search(r'[A-Z]{4}\d{5}[A-Z]', file)
+                    if tan_match:
+                        tan = tan_match.group()
+                        break
+        
+        # Collect files to zip
+        matching_files = []
+        
+        if tan and tan != 'TAN':
+            # Quarter mapping
+            quarter_mapping = {
+                '1st_quarter_april_june': 'Q1',
+                '2nd_quarter_july_sep': 'Q2', 
+                '3rd_quarter_oct_dec': 'Q3',
+                '4th_quarter_jan_mar': 'Q4'
+            }
+            quarter_code = quarter_mapping.get(quarter, quarter)
+            
+            # Find files containing TAN
+            for file in os.listdir(base_path):
+                file_path = os.path.join(base_path, file)
+                if os.path.isfile(file_path) and tan.upper() in file.upper():
+                    matching_files.append(file_path)
+        
+        # Include standard FVU files
+        standard_files = ['form24q.fvu', 'form24q.txt', 'challan.csi', 'form24q.fvu.log']
+        for file in standard_files:
+            file_path = os.path.join(base_path, file)
+            if os.path.isfile(file_path):
+                matching_files.append(file_path)
+        
+        # Include HTML files
+        html_files = glob.glob(os.path.join(base_path, "*.html"))
+        matching_files.extend(html_files)
+        
+        # Remove duplicates
+        matching_files = list(set(matching_files))
+        
+        if not matching_files:
+            return {'success': False, 'error': f'No FVU files found in directory'}
 
-        import zipfile
-        from io import BytesIO
+        # Create ZIP file
         zip_buffer = BytesIO()
+        
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-            for file_key, file_info in file_paths.items():
-                if file_info.get('file_url') and not file_info.get('error'):
-                    file_doc = frappe.get_doc("File", file_info.get('file_doc_name'))
-                    file_content = file_doc.get_content()
-                    zip_file.writestr(file_info['filename'], file_content)
+            for file_path in matching_files:
+                if os.path.isfile(file_path):
+                    filename = os.path.basename(file_path)
+                    if not filename.startswith('FVU_Manifest_') and not filename.startswith('.'):
+                        zip_file.write(file_path, filename)
 
         zip_buffer.seek(0)
-        zip_filename = f"FVU_Files_{form_24q.tan}_{quarter}_{frappe.utils.now_datetime().strftime('%Y%m%d%H%M%S')}.zip"
+        zip_filename = f"FVU_Files_{quarter}_{docname}.zip"
         
-        # Save ZIP file to Frappe File
+        # Save ZIP file to private files
+        zip_path = os.path.join(base_path, zip_filename)
+        with open(zip_path, 'wb') as f:
+            f.write(zip_buffer.getvalue())
+        
+        # Create File document for ZIP
         file_doc = frappe.get_doc({
             'doctype': 'File',
             'file_name': zip_filename,
-            'is_private': 0,
-            'content': zip_buffer.getvalue(),
-            'folder': 'Home/Attachments'
+            'file_url': f'/private/files/fvu_{quarter}/{zip_filename}',
+            'folder': 'Home/Attachments',
+            'is_private': 1,
+            'file_size': len(zip_buffer.getvalue()),
+            'content_type': 'application/zip'
         })
         file_doc.insert(ignore_permissions=True)
         
@@ -1381,7 +1344,7 @@ def generate_fvu_zip_file(docname, quarter):
             'filename': zip_filename,
             'size': len(zip_buffer.getvalue())
         }
+        
     except Exception as e:
-        frappe.log_error(f"Error creating ZIP file: {str(e)}")
+        # frappe.log_error(f"Error creating ZIP file: {str(e)}")
         return {'success': False, 'error': str(e)}
-  

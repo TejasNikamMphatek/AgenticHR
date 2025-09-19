@@ -296,7 +296,7 @@ function process_csi_file_and_generate_fvu(modal, selectedFile, docname, quarter
                 docname: docname
             },
             callback: function(response) {
-                console.log('Backend response:', response.message);
+                // console.log('Backend response:', response.message);
                 const uploadStatusElement = document.getElementById('upload-status');
                 if (response.message && response.message.success && response.message.files) {
                     if (uploadStatusElement) {
@@ -313,8 +313,12 @@ function process_csi_file_and_generate_fvu(modal, selectedFile, docname, quarter
                         `;
                     }
 
+                    files = response.message.files
+                    quarter = response.message.quarter  
+                    docname =response.message.docname
+
                     // Show download links only if files are available
-                    show_download_links(response.message.files);
+                    show_download_links(files,quarter,docname);
 
                     frappe.show_alert({
                         message: __('FVU files generated successfully! Check the download links below.'),
@@ -416,7 +420,7 @@ function process_csi_file_and_generate_fvu(modal, selectedFile, docname, quarter
     reader.readAsText(selectedFile);
 }
 
-function show_download_links(files) {
+function show_download_links(files,quarter,docname) {
     const downloadContainer = document.getElementById('download-links-container');
     if (downloadContainer) {
         downloadContainer.innerHTML = '';
@@ -477,7 +481,7 @@ function show_download_links(files) {
                             <i class="fa fa-exclamation-circle text-danger" style="font-size: 18px; margin-right: 10px;"></i>
                             <div>
                                 <strong style="font-size: 13px; color: #e53e3e;">${fileInfo.label}</strong>
-                                <div style="font-size: 11px; color: #c53030;">Error: ${file.error}</div>
+                                <div style="font-size: 11px; color: #c53030; overflow-wrap: anywhere;">Error: ${file.error}</div>
                             </div>
                         </div>
                     </div>
@@ -517,13 +521,13 @@ function show_download_links(files) {
     const downloadAllButton = document.getElementById('download-all-files-btn');
     if (downloadAllButton) {
         downloadAllButton.addEventListener('click', () => {
-            check_and_download_all_files();
+            check_and_download_all_files(quarter, docname);
         });
     }
 }
 
 
-function download_all_files() {
+function download_all_files(quarter, docname) {
     try {
         const downloadLinks = document.querySelectorAll('a.download-link[download]');
         if (downloadLinks.length === 0) {
@@ -577,10 +581,11 @@ function download_all_files() {
         frappe.call({
             method: 'hrms.payroll.doctype.form_24q.form_24q.generate_fvu_zip_file',
             args: {
-                docname: frappe.get_route()[2], // Adjust to get docname dynamically
-                quarter: downloadLinks[0].getAttribute('download').split('_')[1] || 'Q1'
+                docname: docname,
+                quarter: quarter
             },
             callback: function(response) {
+                // console.log(response)
                 const statusDiv = document.getElementById('download-status');
                 const progressBar = document.getElementById('download-progress-bar');
                 const primaryBtn = progressDialog.get_primary_btn()[0];
@@ -701,7 +706,7 @@ function validate_download_readiness() {
 }
 
 
-function check_and_download_all_files() {
+function check_and_download_all_files(quarter, docname) {
     const validation = validate_download_readiness();
 
     if (!validation.isValid) {
@@ -722,5 +727,5 @@ function check_and_download_all_files() {
         return;
     }
 
-    download_all_files();
+    download_all_files(quarter, docname);
 }
