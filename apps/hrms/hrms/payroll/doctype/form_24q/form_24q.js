@@ -474,6 +474,7 @@ function show_download_links(files,quarter,docname) {
                 </div>
             `;
         } else if (file && file.error) {
+            console.error(file.error)
             downloadHtml += `
                 <div class="col-md-6 col-lg-4" style="margin-bottom: 15px;">
                     <div class="file-error-card" style="border: 1px solid #f56565; border-radius: 6px; padding: 15px; background: #fed7d7;">
@@ -684,7 +685,8 @@ function validate_download_readiness() {
             'txt': 'text/plain',
             'csi': 'text/plain',
             'log': 'text/plain',
-            'xml': 'application/xml'
+            'xml': 'application/xml',
+            'pdf': 'application/pdf'
         };
 
         if (!fileName) {
