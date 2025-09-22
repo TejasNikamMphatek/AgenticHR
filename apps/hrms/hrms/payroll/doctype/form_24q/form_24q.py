@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from frappe.utils.file_manager import get_file_path
 from frappe.model.document import Document
 from frappe.utils import nowdate, get_site_path, format_date, getdate, cint, flt
+from frappe.utils.pdf import get_pdf
 
 class Form24Q(Document):
     def validate(self):
@@ -47,7 +48,7 @@ def generate_fvu_files_from_csi(csi_content, quarter, docname=None):
             'form_27a_pdf': generate_form_27a_pdf_dynamic(merged_data),  # PDF format
             'form24q_fvu': generate_fvu_xml_dynamic(merged_data),        # .fvu file
             'form24q_txt': generate_text_file_dynamic(merged_data),      # .txt file
-            'challan_csi': generate_challan_csi_dynamic(merged_data),    # .csi file
+            'challan_csi': csi_content,    # .csi file
             'fvu_log': generate_fvu_log_dynamic(merged_data),            # .log file
             'warning_html': generate_warning_file_dynamic(merged_data),   # warning .html
             'statistics_html': generate_statistics_report_dynamic(merged_data) # statistics .html
@@ -71,48 +72,7 @@ def generate_fvu_files_from_csi(csi_content, quarter, docname=None):
             'error': str(e)
         }
 
-@frappe.whitelist()
-def generate_form_27a_pdf_dynamic(data):
-    """Generate Form 27A as HTML content that can be converted to PDF or viewed in browser"""
-    current_date = datetime.now().strftime('%d/%m/%Y')
-    quarter = data['form_details'].get('quarter', 'Q1')
-    financial_year = data['form_details'].get('financial_year', '2025-26')
-    assessment_year = data['form_details'].get('assessment_year', '2026-27')
-    
-    # Get date ranges for quarter
-    quarter_ranges = get_quarter_date_ranges(data)
-    
-    deductor = data['deductor']
-    num_deductees = len(data['deductee_records'])
-    num_challans = len(data['challan_details'])
-    
-    # Format amounts properly
-    amount_paid = f"{flt(data['control_totals'].get('amount_paid', 0)):,.2f}"
-    tax_deducted = f"{flt(data['control_totals'].get('tax_deducted', 0)):,.2f}"
-    tax_deposited = f"{flt(data['control_totals'].get('tax_deposited', 0)):,.2f}"
-    
-    # Generate HTML content that looks like Form 27A with print-friendly CSS
-    html_content = frappe.render_template('hrms/payroll/doctype/form_24q/form_27a_pdf.html')
-    return html_content
 
-@frappe.whitelist()
-def generate_challan_csi_dynamic(data):
-    """Generate challan CSI file with proper format"""
-    deductor = data['deductor']
-    current_date = datetime.now().strftime('%d%m%Y')
-    
-    # CSI file format based on your original parsed structure
-    csi_content = f"CSI^{deductor.get('tan', '')}^{deductor.get('name', '')}^{current_date}^1^REF{current_date}"
-    
-    # Add challan hashes (simulated)
-    for i, challan in enumerate(data['challan_details']):
-        # Generate a mock hash for each challan
-        import hashlib
-        challan_string = f"{challan.get('tender_date', '')}{challan.get('serial_number', '')}{challan.get('bsr_code', '')}"
-        challan_hash = hashlib.md5(challan_string.encode()).hexdigest()
-        csi_content += f"\n{challan_hash}"
-    
-    return csi_content
 
 @frappe.whitelist()
 def generate_fvu_log_dynamic(data):
@@ -190,9 +150,9 @@ def save_generated_files_with_custom_names(files_data, parsed_data, quarter):
         # File configs
         file_configs = {
             'form_27a_pdf': {
-                'filename': f'27A_{tan}_24Q_{quarter_code}_{fy_clean}_form_27a.html',
+                'filename': f'27A_{tan}_24Q_{quarter_code}_{fy_clean}_form_27a.pdf',
                 'content': files_data['form_27a_pdf'],
-                'content_type': 'text/html'
+                'content_type': 'application/pdf'
             },
             'form24q_fvu': {
                 'filename': f'form24q.fvu',
@@ -245,8 +205,13 @@ def save_generated_files_with_custom_names(files_data, parsed_data, quarter):
                     }
                     continue
 
-                # Handle text content formatting
-                if isinstance(content, str):
+                # Handle PDF and other binary content
+                if config['content_type'] == 'application/pdf':
+                    # PDF content is already binary from get_pdf()
+                    mode = 'wb'
+                    encoding = None
+                elif isinstance(content, str):
+                    # Handle text content formatting
                     if config['content_type'] == 'text/html' and not content.lower().startswith('<!doctype'):
                         if not content.lower().startswith('<html'):
                             content = f'<!DOCTYPE html>\n{content}'
@@ -254,14 +219,19 @@ def save_generated_files_with_custom_names(files_data, parsed_data, quarter):
                             content = content.replace('<head>', '<head>\n    <meta charset="UTF-8">')
                     elif config['content_type'] == 'application/xml' and not content.strip().startswith('<?xml'):
                         content = f'<?xml version="1.0" encoding="UTF-8"?>\n{content}'
+                    
+                    mode = 'w'
+                    encoding = 'utf-8'
+                else:
+                    # Binary content (bytes, bytearray)
+                    mode = 'wb'
+                    encoding = None
 
-                # Write file (binary-safe)
-                mode = 'wb' if isinstance(content, (bytes, bytearray)) else 'w'
-                encoding = None if mode == 'wb' else 'utf-8'
-
+                # Write file
                 with open(file_path, mode, encoding=encoding) as f:
                     f.write(content)
 
+                # Rest of the file handling code remains the same...
                 if not os.path.exists(file_path):
                     raise Exception(f"File was not created: {file_path}")
 
@@ -295,16 +265,13 @@ def save_generated_files_with_custom_names(files_data, parsed_data, quarter):
                     'created_at': datetime.now().isoformat()
                 }
 
-                # print(f"Generated file: {config['filename']} ({actual_file_size} bytes)")
-
             except Exception as file_error:
-                # frappe.logger().error(f"Error saving file {config['filename']}: {str(file_error)}")
                 file_paths[file_key] = {
                     'error': str(file_error),
                     'filename': config['filename'],
                     'is_downloadable': False
                 }
-
+                
         # Manifest for all generated files
         create_file_manifest(file_paths, parsed_data, base_path, quarter)
 
@@ -320,7 +287,7 @@ def save_generated_files_with_custom_names(files_data, parsed_data, quarter):
 def validate_file_extensions():
     """Validate that all generated files have proper extensions"""
     extension_mappings = {
-        'form_27a_pdf': '.html',
+        'form_27a_pdf': '.pdf',
         'form24q_fvu': '.fvu', 
         'form24q_txt': '.txt',
         'challan_csi': '.csi',
@@ -335,7 +302,8 @@ def validate_file_extensions():
         '.txt': 'text/plain',
         '.csi': 'text/plain',
         '.log': 'text/plain',
-        '.xml': 'application/xml'
+        '.xml': 'application/xml',
+        '.pdf': 'application/pdf'
     }
     
     return {
@@ -708,11 +676,13 @@ def generate_deductee_records(quarter_data):
 
 @frappe.whitelist()
 def generate_form_27a_pdf_dynamic(data):
-    """Generate Form 27A as HTML content that can be converted to PDF or viewed in browser"""
+    """Generate Form 27A as actual PDF using Frappe's PDF utilities"""
+
+    
     current_date = datetime.now().strftime('%d/%m/%Y')
-    quarter = data['form_details'].get('quarter', 'Q1')
-    financial_year = data['form_details'].get('financial_year', '2025-26')
-    assessment_year = data['form_details'].get('assessment_year', '2026-27')
+    quarter = data['form_details'].get('quarter', '')
+    financial_year = data['form_details'].get('financial_year', '')
+    assessment_year = data['form_details'].get('assessment_year', '')
     
     # Get date ranges for quarter
     quarter_ranges = get_quarter_date_ranges(data)
@@ -726,7 +696,7 @@ def generate_form_27a_pdf_dynamic(data):
     tax_deducted = f"{flt(data['control_totals'].get('tax_deducted', 0)):,.2f}"
     tax_deposited = f"{flt(data['control_totals'].get('tax_deposited', 0)):,.2f}"
     
-    # Render with context (pass all required variables)
+    # Render HTML template first
     html_content = frappe.render_template(
         'hrms/payroll/doctype/form_24q/form_27a_pdf.html',
         {
@@ -744,7 +714,23 @@ def generate_form_27a_pdf_dynamic(data):
             "current_date": current_date
         }
     )
-    return html_content
+    
+    try:
+        # Convert HTML to PDF using Frappe's PDF utility
+        pdf_content = get_pdf(html_content)
+        
+        # Ensure PDF content is returned as bytes
+        if isinstance(pdf_content, str):
+            # If somehow string is returned, encode it
+            pdf_content = pdf_content.encode('latin1')
+        
+        return pdf_content
+        
+    except Exception as e:
+        frappe.log_error(f"PDF Generation Error: {str(e)}")
+        # Fallback: return HTML content if PDF generation fails
+        frappe.logger().warning(f"PDF generation failed, returning HTML: {str(e)}")
+        return html_content
 
 def get_quarter_date_ranges(data):
     """Get proper date ranges for quarters based on payroll period"""
@@ -1254,7 +1240,9 @@ def generate_fvu_zip_file(docname, quarter):
         # If TAN not found in document, extract from existing files
         if not tan or tan == 'TAN':
             # Look for Form 27A files to extract TAN
-            form27a_files = glob.glob(os.path.join(base_path, "27A_*_24Q_*.html"))
+            form27a_files = glob.glob(os.path.join(base_path, "27A_*_24Q_*.pdf"))  # Look for PDF first
+            if not form27a_files:
+                form27a_files = glob.glob(os.path.join(base_path, "27A_*_24Q_*.html"))  # Fallback to HTML
             if form27a_files:
                 filename = os.path.basename(form27a_files[0])
                 parts = filename.split('_')
@@ -1297,12 +1285,37 @@ def generate_fvu_zip_file(docname, quarter):
             if os.path.isfile(file_path):
                 matching_files.append(file_path)
         
-        # Include HTML files
+        # Include HTML files (but exclude Form 27A HTML if PDF exists)
         html_files = glob.glob(os.path.join(base_path, "*.html"))
-        matching_files.extend(html_files)
+        for html_file in html_files:
+            # Check if this is a Form 27A HTML file
+            if '27A_' in os.path.basename(html_file) and html_file.endswith('_form_27a.html'):
+                # Check if corresponding PDF exists
+                pdf_equivalent = html_file.replace('.html', '.pdf')
+                if not os.path.exists(pdf_equivalent):
+                    # Only include HTML if PDF doesn't exist
+                    matching_files.append(html_file)
+                # If PDF exists, skip the HTML version
+            else:
+                # Include other HTML files (warning, statistics, etc.)
+                matching_files.append(html_file)
         
         # Remove duplicates
         matching_files = list(set(matching_files))
+        
+        # Additional filter: Remove any HTML Form 27A files if corresponding PDF exists
+        filtered_files = []
+        for file_path in matching_files:
+            filename = os.path.basename(file_path)
+            if filename.endswith('_form_27a.html'):
+                # Check if PDF version exists
+                pdf_version = file_path.replace('.html', '.pdf')
+                if os.path.exists(pdf_version):
+                    # Skip HTML version since PDF exists
+                    continue
+            filtered_files.append(file_path)
+        
+        matching_files = filtered_files
         
         if not matching_files:
             return {'success': False, 'error': f'No FVU files found in directory'}
@@ -1314,6 +1327,10 @@ def generate_fvu_zip_file(docname, quarter):
             for file_path in matching_files:
                 if os.path.isfile(file_path):
                     filename = os.path.basename(file_path)
+                    # Additional check: Skip Form 27A HTML files
+                    if filename.endswith('_form_27a.html'):
+                        continue
+                    # Skip manifest and hidden files
                     if not filename.startswith('FVU_Manifest_') and not filename.startswith('.'):
                         zip_file.write(file_path, filename)
 
