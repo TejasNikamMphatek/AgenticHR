@@ -437,13 +437,13 @@ function show_download_links(files,quarter,docname) {
     downloadHtml += '<div class="col-md-12"><h6><i class="fa fa-check-circle text-success"></i> Files Generated Successfully:</h6></div>';
 
     const fileOrder = [
-        { key: 'form_27a_pdf', label: 'Form 27A (PDF)', icon: 'fa-file-pdf-o', color: 'btn-danger' },
-        { key: 'form24q_fvu', label: 'Form 24Q FVU File', icon: 'fa-file-code-o', color: 'btn-primary' },
-        { key: 'form24q_txt', label: 'Form 24Q Text File', icon: 'fa-file-text-o', color: 'btn-info' },
-        { key: 'challan_csi', label: 'Challan CSI File', icon: 'fa-file-o', color: 'btn-warning' },
-        { key: 'fvu_log', label: 'FVU Log File', icon: 'fa-file-text-o', color: 'btn-secondary' },
-        { key: 'warning_html', label: 'Warning File (HTML)', icon: 'fa-exclamation-triangle', color: 'btn-warning' },
-        { key: 'statistics_html', label: 'Statistics Report (HTML)', icon: 'fa-bar-chart', color: 'btn-success' }
+        { key: 'form_27a_pdf', label: 'Form 27A (PDF)', icon: 'fa-file-pdf-o', color: 'danger' },
+        { key: 'form24q_fvu', label: 'Form 24Q FVU File', icon: 'fa-file-code-o', color: 'primary' },
+        { key: 'form24q_txt', label: 'Form 24Q Text File', icon: 'fa-file-text-o', color: 'info' },
+        { key: 'challan_csi', label: 'Challan CSI File', icon: 'fa-file-o', color: 'warning' },
+        { key: 'fvu_log', label: 'FVU Log File', icon: 'fa-file-text-o', color: 'secondary' },
+        { key: 'warning_html', label: 'Warning File (HTML)', icon: 'fa-exclamation-triangle', color: 'warning' },
+        { key: 'statistics_html', label: 'Statistics Report (HTML)', icon: 'fa-bar-chart', color: 'success' }
     ];
 
     fileOrder.forEach(fileInfo => {
@@ -459,11 +459,11 @@ function show_download_links(files,quarter,docname) {
                                 <div style="font-size: 11px; color: #8d99a6; overflow-wrap: anywhere;">${file.filename}</div>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 5px;">
-                            <a href="${file.file_url}" target="_blank" class="btn ${fileInfo.color} btn-xs" style="flex: 1; text-align: center;">
+                        <div style="display: flex; gap: 5px; align-item:center; ">
+                            <a href="${file.file_url}" target="_blank" class="btn btn-${fileInfo.color} p-1 border border-${fileInfo.color}" style="flex: 1;">
                                 <i class="fa fa-eye"></i> View
                             </a>
-                            <a href="${file.file_url}" download="${file.filename}" class="btn btn-default btn-xs download-link" style="flex: 1; text-align: center;" data-content-type="${file.content_type}" data-size="${file.size}">
+                            <a href="${file.file_url}" download="${file.filename}" class="btn download-link p-1 border border-secondary" style="flex: 1;" data-content-type="${file.content_type}" data-size="${file.size}">
                                 <i class="fa fa-download"></i> Download
                             </a>
                         </div>
