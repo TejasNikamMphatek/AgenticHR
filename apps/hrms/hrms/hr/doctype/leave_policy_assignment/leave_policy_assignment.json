@@ -11,6 +11,7 @@
   "company",
   "leave_policy",
   "carry_forward",
+  "custom_override_existing_assignment",
   "column_break_5",
   "assignment_based_on",
   "leave_period",
@@ -109,11 +110,17 @@
    "label": "Leaves Allocated",
    "no_copy": 1,
    "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "custom_override_existing_assignment",
+   "fieldtype": "Check",
+   "label": "Override Existing Assignment"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-24 17:42:12.610845",
+ "modified": "2025-09-25 16:48:18.336605",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Policy Assignment",
