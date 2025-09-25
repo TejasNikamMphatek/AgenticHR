@@ -1,4 +1,4 @@
-# Copyright (c) 2025,  Pipal ERP Pvt. Ltd. and Contributors
+# Copyright (c) 2025, Pipal ERP Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
 import frappe
@@ -79,7 +79,7 @@ class LeaveControlPanel(Document):
 
 	def create_leave_policy_assignments(self, employees: list) -> dict:
 		from_date, to_date = self.get_from_to_date()
-		assignment_based_on = None if self.dates_based_on == "Custom Range" else self.dates_based_on
+		assignment_based_on = "Custom Range" if self.dates_based_on == "Custom Range" else self.dates_based_on
 		failure = []
 		success = []
 		savepoint = "before_assignment_submission"
@@ -95,7 +95,7 @@ class LeaveControlPanel(Document):
 					"Employee", employee, "date_of_joining"
 				)
 				assignment.effective_to = to_date
-				assignment.leave_period = self.get("leave_period")
+				assignment.leave_period = self.leave_period if self.dates_based_on == "Leave Period" else None
 				assignment.carry_forward = self.carry_forward
 				assignment.save()
 				assignment.submit()

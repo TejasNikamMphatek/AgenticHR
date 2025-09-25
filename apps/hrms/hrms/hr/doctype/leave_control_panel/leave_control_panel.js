@@ -59,6 +59,26 @@ frappe.ui.form.on("Leave Control Panel", {
 	},
 
 	dates_based_on(frm) {
+		if (frm.doc.dates_based_on === "Custom Range") {
+			frm.set_value("leave_period", null);
+			frm.set_df_property("leave_period", "reqd", 0);
+			frm.set_df_property("from_date", "reqd", 1);
+			frm.set_df_property("to_date", "reqd", 1);
+			frm.set_value("from_date", frappe.datetime.get_today());
+			frm.set_value("to_date", null);
+		} else if (frm.doc.dates_based_on === "Leave Period") {
+			frm.set_df_property("leave_period", "reqd", 1);
+			frm.set_df_property("from_date", "reqd", 0);
+			frm.set_df_property("to_date", "reqd", 0);
+			frm.set_value("from_date", null);
+			frm.set_value("to_date", null);
+		} else if (frm.doc.dates_based_on === "Joining Date") {
+			frm.set_value("leave_period", null);
+			frm.set_df_property("leave_period", "reqd", 0);
+			frm.set_df_property("from_date", "reqd", 0);
+			frm.set_df_property("to_date", "reqd", 1);
+			frm.set_value("from_date", null);
+		}
 		frm.trigger("reset_leave_details");
 		frm.trigger("get_employees");
 	},
@@ -72,6 +92,12 @@ frappe.ui.form.on("Leave Control Panel", {
 	},
 
 	leave_period(frm) {
+		if (frm.doc.dates_based_on === "Leave Period" && frm.doc.leave_period) {
+			frappe.db.get_value("Leave Period", frm.doc.leave_period, ["from_date", "to_date"], (r) => {
+				frm.set_value("from_date", r.from_date);
+				frm.set_value("to_date", r.to_date);
+			});
+		}
 		frm.trigger("get_employees");
 	},
 
@@ -91,6 +117,9 @@ frappe.ui.form.on("Leave Control Panel", {
 		if (frm.doc.dates_based_on === "Leave Period") {
 			frm.add_fetch("leave_period", "from_date", "from_date");
 			frm.add_fetch("leave_period", "to_date", "to_date");
+		} else {
+			frm.add_fetch("leave_period", "from_date", "from_date", 0);
+			frm.add_fetch("leave_period", "to_date", "to_date", 0);
 		}
 	},
 
@@ -98,7 +127,7 @@ frappe.ui.form.on("Leave Control Panel", {
 		frm.call("get_latest_leave_period").then((r) => {
 			frm.set_value({
 				dates_based_on: "Leave Period",
-				from_date: frappe.datetime.get_today(),
+				from_date: null,
 				to_date: null,
 				leave_period: r.message,
 				carry_forward: 1,
@@ -177,47 +206,47 @@ frappe.ui.form.on("Leave Control Panel", {
 			frm.trigger("allocate_leave");
 		});
 	},
-    allocate_leave(frm) {
-    const check_map = frm.employees_datatable.rowmanager.checkMap;
-    const selected_employees = [];
-    check_map.forEach((is_checked, idx) => {
-        if (is_checked)
-            selected_employees.push(frm.employees_datatable.datamanager.data[idx].employee);
-    });
 
-    // Only proceed if there are selected employees
-    if (!selected_employees.length) return;
+	allocate_leave(frm) {
+		const check_map = frm.employees_datatable.rowmanager.checkMap;
+		const selected_employees = [];
+		check_map.forEach((is_checked, idx) => {
+			if (is_checked)
+				selected_employees.push(frm.employees_datatable.datamanager.data[idx].employee);
+		});
 
-    frm.call({
-        method: "allocate_leave",
-        doc: frm.doc,
-        args: {
-            employees: selected_employees,
-        },
-        freeze: true,
-        freeze_message: __("Allocating Leave"),
-    }).then((r) => {
-        // Prevent re-calling allocate_leave if allocation succeeded
-        if (r.message && r.message.success && r.message.success.length > 0) {
-            // Allocation succeeded, no need to show confirm dialog
-            frm.refresh();
-            frappe.show_alert({
-                message: __("Leave allocated successfully for {0} employee(s)", [r.message.success.length]),
-                indicator: "green",
-            });
-            return;
-        }
+		// Only proceed if there are selected employees
+		if (!selected_employees.length) return;
 
-        // Only show confirm dialog if some employees failed
-        if (r.message && r.message.failed && r.message.failed.length > 0) {
-            frm.events.show_confirm_dialog(frm, r.message.failed);
-        }
-    });
+		frm.call({
+			method: "allocate_leave",
+			doc: frm.doc,
+			args: {
+				employees: selected_employees,
+			},
+			freeze: true,
+			freeze_message: __("Allocating Leave"),
+		}).then((r) => {
+			// Prevent re-calling allocate_leave if allocation succeeded
+			if (r.message && r.message.success && r.message.success.length > 0) {
+				// Allocation succeeded, no need to show confirm dialog
+				frm.refresh();
+				frappe.show_alert({
+					message: __("Leave allocated successfully for {0} employee(s)", [r.message.success.length]),
+					indicator: "green",
+				});
+				return;
+			}
 
-    hrms.validate_mandatory_fields(frm, selected_employees);
-},
+			// Only show confirm dialog if some employees failed
+			if (r.message && r.message.failed && r.message.failed.length > 0) {
+				frm.events.show_confirm_dialog(frm, r.message.failed);
+			}
+		});
 
-	
+		hrms.validate_mandatory_fields(frm, selected_employees);
+	},
+
 	show_confirm_dialog(frm, selected_employees) {
 		frappe.confirm(
 			__("Allocate Leave to {0} employee(s)?", [selected_employees.length]),
