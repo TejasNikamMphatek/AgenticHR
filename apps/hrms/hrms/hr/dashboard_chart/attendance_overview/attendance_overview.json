@@ -1,0 +1,32 @@
+{
+ "chart_name": "Attendance Overview",
+ "chart_type": "Report",
+ "creation": "2025-09-24 11:22:33.459103",
+ "custom_options": "{\n\t\"type\": \"line\",\n\t\"axisOptions\": {\n\t\t\"shortenYAxisNumbers\": 1\n\t},\n\t\"tooltipOptions\": {}\n}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{\"month\":\"frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth() + 1\",\"year\":\"frappe.datetime.str_to_obj(frappe.datetime.get_today()).getFullYear();\",\"company\":\"frappe.defaults.get_user_default(\\\"Company\\\")\"}",
+ "filters_json": "{\"summarized_view\":0}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2025-09-24 11:22:33.459103",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Attendance Overview",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Monthly Attendance Sheet",
+ "roles": [
+  {
+   "role": "HR Manager"
+  }
+ ],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Heatmap",
+ "use_report_chart": 1,
+ "y_axis": []
+}
