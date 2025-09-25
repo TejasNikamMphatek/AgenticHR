@@ -49,7 +49,7 @@
    "fieldname": "assignment_based_on",
    "fieldtype": "Select",
    "label": "Assignment based on",
-   "options": "\nLeave Period\nJoining Date"
+   "options": "Leave Period\nJoining Date\nCustom Range"
   },
   {
    "depends_on": "eval:doc.assignment_based_on == \"Leave Period\"",
@@ -113,7 +113,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-27 13:10:01.746553",
+ "modified": "2025-09-24 17:42:12.610845",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Policy Assignment",

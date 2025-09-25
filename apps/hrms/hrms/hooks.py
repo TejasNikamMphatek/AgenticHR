@@ -44,6 +44,7 @@ doctype_js = {
 	"Journal Entry": "public/js/erpnext/journal_entry.js",
 	"Delivery Trip": "public/js/erpnext/delivery_trip.js",
 	"Bank Transaction": "public/js/erpnext/bank_transaction.js",
+    "Leave Policy Assignment": "public/js/leave_policy_assignment.js",
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -143,6 +144,7 @@ override_doctype_class = {
 	"Timesheet": "hrms.overrides.employee_timesheet.EmployeeTimesheet",
 	"Payment Entry": "hrms.overrides.employee_payment_entry.EmployeePaymentEntry",
 	"Project": "hrms.overrides.employee_project.EmployeeProject",
+	"Leave Policy Assignment": "hrms.overrides.leave_policy_assignment.LeavePolicyAssignmentOverride"
 }
 
 # Document Events
@@ -315,6 +317,7 @@ has_permission.update({
     "Employee Tax Exemption Proof Submission": "hrms.payroll.doctype.employee_tax_exemption_proof_submission.Permission.has_permission"
 })
 
+
 # exempt linked doctypes from being automatically cancelled
 #
 # auto_cancel_exempted_doctypes = ["Auto Repeat"]
@@ -358,4 +361,3 @@ has_permission.update({
 # Recommended only for DocTypes which have limited documents with untranslated names
 # For example: Role, Gender, etc.
 # translated_search_doctypes = []
-#----------------
