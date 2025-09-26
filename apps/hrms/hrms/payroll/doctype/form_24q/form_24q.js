@@ -681,7 +681,7 @@ function validate_download_readiness() {
         const extension = fileName.split('.').pop().toLowerCase();
         const expectedMimeTypes = {
             'html': 'text/html',
-            'fvu': 'application/xml',
+            'fvu': 'application/octet-stream',
             'txt': 'text/plain',
             'csi': 'text/plain',
             'log': 'text/plain',
