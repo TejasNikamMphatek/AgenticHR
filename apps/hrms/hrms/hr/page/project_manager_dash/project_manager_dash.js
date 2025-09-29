@@ -118,7 +118,7 @@ if(frappe.user.has_role("Projects Manager")){
 						this.callRefreshData()
 					} else {
 						me.checkInLogType = "IN"
-						frappe.show_alert({ message: __("Signed Out Successfully ! "), indicator: "gray" });
+						frappe.show_alert({ message: __("Signed Out Successfully ! "), indicator: "green" });
 					}
 
 

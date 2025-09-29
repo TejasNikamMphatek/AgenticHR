@@ -72,6 +72,16 @@ def build_filters(employee, leave_type, year):
     filters['to_date'] = f"{filters['year']}-12-31"
     
     return filters
+
+def format_leave_value(value):
+    """Format leave value to show as integer or 1 decimal place."""
+    value = flt(value)
+    # If it's effectively an integer (like 4.0), show as 4
+    if value.is_integer():
+        return int(value)
+    # Else show one decimal (like 4.5)
+    return round(value, 1)
+
 def get_leave_balance_data(filters):
     try:
         from_date = getdate(filters["from_date"])
@@ -110,13 +120,13 @@ def get_leave_balance_data(filters):
 
                 # Get leave applications and use its count directly
                 leave_applications = get_leave_application_details(employee, leave_type, filters)
+                row["opening_balance"] = format_leave_value(opening)
+                row["total_leaves_taken"] = format_leave_value(taken)
+                row["balance"] = format_leave_value(final_balance)
+                row["total_allocated"] = format_leave_value(total_allocated)
+                row["new_allocated"] = format_leave_value(new_allocated)
 
-                # Build response row
-                row["opening_balance"] = round(opening, 2)
-                row["total_leaves_taken"] = round(taken, 2)
-                row["balance"] = round(final_balance, 2)
-                row["total_allocated"] = round(total_allocated, 2)
-                row["new_allocated"] = round(new_allocated, 2)
+               
                 row["total_applications"] = len(leave_applications)
                 row["utilization_percentage"] = calculate_utilization_percentage(taken, opening + new_allocated)
                 row["status"] = get_balance_status(row["balance"])
