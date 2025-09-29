@@ -49,7 +49,10 @@ frappe.ui.Page = class Page {
 			$('[data-fieldname="status"]').closest('div')
 				.removeClass('dropdown bootstrap-select input-with-feedback form-control input-xs ellipsis')
 				.find('button.btn.dropdown-toggle').remove();
-		}, 200);
+
+			$('#navbar-breadcrumbs').closest('ul').find('li').last().addClass('d-none'); // for Hide Document Records Label from Navbar 
+		
+			}, 200);
 	}
 
 	setup_scroll_handler() {

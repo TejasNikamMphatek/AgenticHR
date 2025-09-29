@@ -508,9 +508,9 @@
         "Other User" : ["Toggle Sidebar" ,"Print", "PDF"]
     },
     "User Permission":{
-        "Administrator" : ["Kanban", "Dashboard", "Toggle Chart", "Save"],
-        "System Manager" : ["Kanban", "Dashboard", "Toggle Chart", "Save"],
-        "Other User" : ["Toggle Sidebar" ,"Kanban", "Dashboard", "Toggle Chart", "Save"] 
+        "Administrator" : ["Kanban", "Dashboard", "Toggle Chart", "Save", "Report"],
+        "System Manager" : ["Kanban", "Dashboard", "Toggle Chart", "Save", "Report"],
+        "Other User" : ["Toggle Sidebar" ,"Kanban", "Dashboard", "Toggle Chart", "Save", "Report"] 
     },
     "Project Timesheet Management":{
         "Administrator" : ["Kanban", "Dashboard"],
