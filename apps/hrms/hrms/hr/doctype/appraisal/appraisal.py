@@ -27,6 +27,16 @@ class Appraisal(Document):
 		self.calculate_avg_feedback_score()
 		self.calculate_final_score()
 
+	def before_save(self):
+		if self.status == "Submitted":
+			frappe.throw("Status should be 'Completed' before submitting.")
+
+	def before_submit(self):
+		if self.status in ["Draft", "Cancelled"]:
+			frappe.throw("Status should be 'Completed' before submitting.")
+		elif self.status == "Completed":
+			self.status = "Submitted"
+
 	def validate_duplicate(self):
 		Appraisal = frappe.qb.DocType("Appraisal")
 		duplicate = (
