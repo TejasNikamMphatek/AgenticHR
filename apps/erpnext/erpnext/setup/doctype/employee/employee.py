@@ -11,7 +11,7 @@ from frappe.permissions import (
 	has_permission,
 	remove_user_permission,
 )
-from frappe.utils import cstr, getdate, today, validate_email_address
+from frappe.utils import cstr, getdate, today, validate_email_address, get_fullname
 from frappe.utils.nestedset import NestedSet
 
 from erpnext.utilities.transaction_base import delete_events
@@ -102,6 +102,64 @@ class Employee(NestedSet):
 
 		if joining_date and self.confirmation_status != "Confirmed":
 			self.final_confirmation_date = joining_date + timedelta(days=180)
+
+	def after_insert(self):
+		self.notify_hr_after_self_onboarding()
+
+
+	def notify_hr_after_self_onboarding(self):
+		if self.employee_number and self.user_id:
+			parent_doc = frappe.get_doc("Employee", self.name)
+			args = parent_doc.as_dict()
+
+			# Get the email template name from settings
+			template = frappe.db.get_single_value("Email Template Setting", "notify_hr_after_self_onboarding")
+			if not template:
+				frappe.msgprint(
+					_("Please set the default template for 'Notify HR After Self Onboarding' in Email Template Settings.")
+				)
+				return
+
+			email_template = frappe.get_doc("Email Template", template)
+
+
+			hr_email = frappe.db.get_single_value("HR Settings", "hr_common_email")
+			if not hr_email:
+				frappe.msgprint(
+					_("Please set default HR Common Email in HR Settings.")
+				)
+				return
+
+			message = frappe.render_template(email_template.response_, args)
+
+			# Send notification
+			self.notify({
+				"message_to": hr_email,
+				"subject": email_template.subject,
+				"message": message,
+			})
+		
+	def notify(self, args):
+		args = frappe._dict(args)
+		contact = args.message_to
+		if not isinstance(contact, list):
+			if not args.notify == "employee":
+				contact = frappe.get_doc("User", contact).email or contact
+
+			sender = dict()
+			sender["email"] = frappe.get_doc("User", frappe.session.user).email
+			sender["full_name"] = get_fullname(sender["email"])
+
+			try:
+				frappe.sendmail(
+					recipients=contact,
+					sender=sender["email"],
+					subject=args.subject,
+					message=args.message,
+				)
+				frappe.msgprint(_("Email sent to {0}").format(contact))
+			except frappe.OutgoingEmailError:
+				pass
 
 
 	def validate_employee_number(self):
