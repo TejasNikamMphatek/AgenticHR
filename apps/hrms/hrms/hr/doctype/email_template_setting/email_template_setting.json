@@ -11,7 +11,8 @@
   "column_break_oxax",
   "help_desk_update_to_final_status",
   "resign_status_update_to_employee",
-  "notify_hr_asset_recovery"
+  "notify_hr_asset_recovery",
+  "notify_hr_after_self_onboarding"
  ],
  "fields": [
   {
@@ -54,12 +55,18 @@
    "fieldtype": "Link",
    "label": "Notify HR Asset Recovery",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "notify_hr_after_self_onboarding",
+   "fieldtype": "Link",
+   "label": "Notify HR After Self Onboarding",
+   "options": "Email Template"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-10-23 12:42:51.174377",
+ "modified": "2025-09-29 18:45:03.758149",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Email Template Setting",
