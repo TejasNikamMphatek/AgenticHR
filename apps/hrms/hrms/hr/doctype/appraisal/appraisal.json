@@ -93,7 +93,7 @@
    "oldfieldname": "status",
    "oldfieldtype": "Select",
    "options": "\nDraft\nSubmitted\nCompleted\nCancelled",
-   "read_only": 1,
+   "read_only_depends_on": "eval:frappe.user.has_role([\"System Manager\",\"Projects Manager\"]) != 1 ",
    "reqd": 1,
    "search_index": 1
   },
@@ -314,7 +314,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-05-07 17:40:50.176944",
+ "modified": "2025-09-29 16:28:06.126689",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Appraisal",
