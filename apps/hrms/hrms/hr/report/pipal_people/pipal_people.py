@@ -18,6 +18,8 @@ def get_columns():
 		_("Company") + ":Data:120",
 		_("Reports To Name") + ":Data:100",
 		_("Date of Joining") + ":Date:100",
+		_("Department") + ":Data:100",
+		_("Designation") + ":Data:100",
 	]
 
 def get_employees(filters):
@@ -30,7 +32,9 @@ def get_employees(filters):
 			date_of_birth, 
 			company, 
 			report_to_name, 
-			date_of_joining
+			date_of_joining,
+			department,
+			designation
 		FROM `tabEmployee`
 		WHERE status = 'Active' {conditions}
 		ORDER BY employee_number ASC limit 10
@@ -48,7 +52,10 @@ def get_employees(filters):
 			dob,
 			row.company,
 			row.report_to_name,
-			row.date_of_joining
+			row.date_of_joining,
+			row.department,
+			row.designation
+
 		])
 
 	return data
