@@ -664,3 +664,19 @@ def get_user_details(employee_number):
 		"email": employee_data.get("name"),
 		"date_of_joining": employee_data.get("date_of_joining")
     }
+
+@frappe.whitelist()
+def get_approvers_details(reports_to):
+    """Return basic approver details for a given Employee ID (reports_to)."""
+    if not reports_to:
+        return
+	
+    employee = frappe.db.get_value(
+        "Employee",
+        reports_to,
+        ["name", "user_id", "reports_to"],
+        as_dict=True
+    )
+
+    return employee or {}
+

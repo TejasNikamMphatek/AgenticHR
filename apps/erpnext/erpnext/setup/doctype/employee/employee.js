@@ -102,7 +102,42 @@ frappe.ui.form.on("Employee", {
 		}
 	},
 
-	
+	reports_to: function(frm){
+		frm.events.setApprovers(frm);
+	},
+
+	setApprovers: function(frm) {
+		if (!frm.doc.reports_to) return;
+
+		frappe.call({
+			method: "erpnext.setup.doctype.employee.employee.get_approvers_details",
+			args: {
+				reports_to: frm.doc.reports_to
+			},
+			callback: function(r) {
+				if (r.message && r.message.user_id) {
+					// console.log("Approver details:", r.message);
+
+					const approverFields = [
+						"expense_approver",
+						"shift_request_approver",
+						"leave_approver"
+					];
+					approverFields.forEach(field => {
+						
+						if (!frm.doc[field]) {
+							frm.set_value(field, r.message.user_id);
+						}
+					});
+
+					frm.refresh_fields(approverFields);
+				} else {
+					// console.log("No approver details found for:", frm.doc.reports_to);
+				}
+			}
+		});
+	},
+
 	status: function (frm) {
 		return frm.call({
 			method: "deactivate_sales_person",
