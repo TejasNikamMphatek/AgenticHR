@@ -8,6 +8,10 @@ frappe.ui.form.on("Auto Email", {
 			frm.trigger("fetch_report_filters");
 		}
 
+		$('button[title="Print"], button[data-original-title="Print"]').hide();
+		$('li .menu-item-label[data-label="Print"]').closest('li').hide();
+
+
 		if (!frm.is_new()) {
 			frm.add_custom_button(__("Download"), function () {
 				// Ensure the document is saved before downloading

@@ -7,9 +7,10 @@ from frappe.model.document import Document
 
 class EmployeeContract(Document):
     def before_save(self):
+        pass
         if self.contracts_information:
             seen = set()
             for contract_info in self.contracts_information:
-                if contract_info.employee in seen:
-                    frappe.throw(f"Contract already available for employee {contract_info.employee}.")
-                seen.add(contract_info.employee)
+                if (contract_info.name_of_contract in seen):
+                    frappe.throw(f"Contract already available for employee {contract_info.name_of_contract}.")
+                seen.add(contract_info.name_of_contract)
