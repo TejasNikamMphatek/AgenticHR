@@ -20,19 +20,21 @@
   "notice_period",
   "section_break_dobn",
   "applying_to",
-  "employee_remark",
   "column_break_scjj",
   "alternate_email_id",
   "alternate_mobile_number",
   "section_break_nfnb",
   "resign_attachment",
   "section_break_btfd",
-  "approved_lwd",
+  "resign_type",
   "fit_to_rehire",
-  "remark_for_employee",
-  "remark_for_manager",
+  "hr_exit_discussion",
+  "exit_reason_for_employee",
+  "exit_reason_for_manager",
+  "exit_reason_for__hr",
   "amended_from",
   "column_break_ubqr",
+  "approved_lwd",
   "final_decision_status",
   "stop_salary_process_date",
   "table_for_activity",
@@ -204,25 +206,11 @@
    "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager','Projects Manager']) != 1"
   },
   {
-   "default": "0",
    "fieldname": "fit_to_rehire",
-   "fieldtype": "Check",
+   "fieldtype": "Select",
    "label": "Fit To Rehire",
+   "options": "Yes\nNo",
    "read_only_depends_on": "eval:frappe.user.has_role(['Projects Manager', 'HR Manager']) != 1"
-  },
-  {
-   "fieldname": "remark_for_employee",
-   "fieldtype": "Small Text",
-   "label": "Remark For Employee",
-   "max_height": "70px",
-   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager', 'Projects Manager']) != 1"
-  },
-  {
-   "fieldname": "remark_for_manager",
-   "fieldtype": "Small Text",
-   "label": "Remark For Manager",
-   "max_height": "70px",
-   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager']) != 1"
   },
   {
    "fieldname": "column_break_ubqr",
@@ -252,12 +240,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "employee_remark",
-   "fieldtype": "Small Text",
-   "label": "Employee Remark",
-   "max_height": "70px"
-  },
-  {
    "fieldname": "alternate_email_id",
    "fieldtype": "Data",
    "label": "Alternate Email ID",
@@ -274,11 +256,46 @@
    "fieldtype": "Date",
    "label": "Stop Salary Process Date",
    "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
+  },
+  {
+   "fieldname": "resign_type",
+   "fieldtype": "Select",
+   "label": "Resign Type",
+   "options": "Voluntary\nNon-voluntary"
+  },
+  {
+   "default": "0",
+   "fieldname": "hr_exit_discussion",
+   "fieldtype": "Check",
+   "label": "HR Exit Discussion",
+   "mandatory_depends_on": "eval:frappe.user.has_role([\"HR Manager\"]) != 1",
+   "read_only_depends_on": "eval:frappe.user.has_role([\"HR Manager\"]) != 1"
+  },
+  {
+   "fieldname": "exit_reason_for_manager",
+   "fieldtype": "Small Text",
+   "label": "Exit Reason for Manager",
+   "max_height": "70px",
+   "read_only_depends_on": "eval:frappe.user.has_role(['Projects Manager']) != 1"
+  },
+  {
+   "fieldname": "exit_reason_for_employee",
+   "fieldtype": "Small Text",
+   "label": "Exit Reason for  Employee",
+   "max_height": "70px",
+   "read_only_depends_on": "eval:frappe.user.has_role(['Projects Manager', 'System Manager']) == 1"
+  },
+  {
+   "fieldname": "exit_reason_for__hr",
+   "fieldtype": "Small Text",
+   "label": "Exit Reason for  HR",
+   "max_height": "70px",
+   "read_only_depends_on": "eval:frappe.user.has_role([\"HR Manager\"]) != 1"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-03 16:32:36.534907",
+ "modified": "2025-09-30 11:58:33.048927",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",

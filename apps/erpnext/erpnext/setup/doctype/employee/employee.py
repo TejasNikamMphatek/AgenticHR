@@ -332,7 +332,7 @@ class Employee(NestedSet):
 				message += _("Please make sure the employees above report to another Active employee.")
 				throw(message, InactiveEmployeeStatusError, _("Cannot Relieve Employee"))
 			if not self.relieving_date:
-				throw(_("Please enter relieving date."))
+				throw(_("Employee Status is Not Active . Relieving date is Required."))
 
 	def validate_for_enabled_user_id(self, enabled):
 		if not self.status == "Active":
