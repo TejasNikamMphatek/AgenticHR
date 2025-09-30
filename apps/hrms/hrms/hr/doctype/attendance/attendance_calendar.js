@@ -30,8 +30,8 @@ frappe.views.calendar["Attendance"] = {
         },
         selectable: false,
 
-         // Initialize legend on calendar render
         viewRender: function (view, element) {
+            // Initialize legend
             let legendHtml = `
                 <div id="calendar-legend" style="margin: 10px; padding: 10px; background: #f9f9f9; border-radius: 5px;">
                     <h6>Legend</h6>
@@ -60,10 +60,26 @@ frappe.views.calendar["Attendance"] = {
             if (!$("#calendar-legend").length) {
                 $(".fc-view-container").after(legendHtml);
             }
+
+            // Add Attendance Request button
+            if ($(".attendance-request-btn").length === 0) {
+                let button_area = $(".calendar-actions");
+                if (!button_area.length) {
+                    button_area = $(".page-actions");
+                }
+
+                if (button_area.length) {
+                    $('<button class="btn btn-primary attendance-request-btn">Attendance Request</button>')
+                        .appendTo(button_area)
+                        .on("click", function () {
+                            frappe.new_doc("Attendance Request");
+                        });
+                }
+            }
         },
 
         eventClick: function (event, jsEvent, view) {
-            // Fetch user roles
+            // Existing eventClick logic remains unchanged
             frappe.call({
                 method: "hrms.hr.doctype.attendance.attendance.get_user_roles",
                 callback: function (r) {
@@ -99,7 +115,6 @@ frappe.views.calendar["Attendance"] = {
                                 return;
                             }
 
-                            // ✅ Build shift line dynamically
                             let shift_text = "";
                             if (typeof data.shift?.type === "string") {
                                 shift_text = `Shift: ${data.shift.type}`;
@@ -160,22 +175,5 @@ frappe.views.calendar["Attendance"] = {
 
     get_events_method: "hrms.hr.doctype.attendance.attendance.get_events",
 
-    refresh: function (calendar_view) {
-        if ($(".attendance-request-btn").length === 0) {
-            setTimeout(() => {
-                let button_area = $(".calendar-actions");
-                if (!button_area.length) {
-                    button_area = $(".page-actions");
-                }
-
-                if (button_area.length) {
-                    $('<button class="btn btn-primary attendance-request-btn">Attendance Request</button>')
-                        .appendTo(button_area)
-                        .on("click", function () {
-                            frappe.new_doc("Attendance Request");
-                        });
-                }
-            }, 300);
-        }
-    },
+    // Remove the refresh function as it's no longer needed
 };
