@@ -89,6 +89,8 @@
   "ctc",
   "salary_currency",
   "salary_mode",
+  "column_break_udvm",
+  "uan",
   "bank_details_section",
   "bank_name",
   "column_break_heye",
@@ -1050,6 +1052,15 @@
    "fieldtype": "Link",
    "label": "Family Details",
    "options": "Family Details"
+  },
+  {
+   "fieldname": "column_break_udvm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "uan",
+   "fieldtype": "Data",
+   "label": "UAN"
   }
  ],
  "icon": "fa fa-user",
@@ -1057,7 +1068,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-09-08 17:39:31.911630",
+ "modified": "2025-09-30 10:35:48.215873",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
