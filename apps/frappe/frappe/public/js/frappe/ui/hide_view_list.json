@@ -110,8 +110,9 @@
         "Other User" : ["Toggle Sidebar"]
     },
     "Training Event Employee" : {
-        "System Manager" : [],
-        "Other User" : ["Toggle Sidebar"]
+        "Administrator" : ["Report", "Dashboard", "Gantt", "Kanban"],
+        "System Manager" : ["Report", "Dashboard", "Gantt", "Kanban"],
+        "Other User" : ["Toggle Sidebar", "Report", "Dashboard", "Gantt", "Kanban"]
     },
     "Training Event" : {
         "System Manager" : [],

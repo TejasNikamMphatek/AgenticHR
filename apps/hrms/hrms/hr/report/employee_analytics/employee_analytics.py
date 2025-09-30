@@ -23,14 +23,14 @@ def execute(filters=None):
 
 def get_columns():
     return [
-        _("Employee") + ":Link/Employee:120",
+        _("Employee") + ":Data/Employee:120",
         _("Name") + ":Data:200",
         _("Date of Birth") + ":Date:100",
-        _("Branch") + ":Link/Branch:120",
-        _("Department") + ":Link/Department:120",
-        _("Designation") + ":Link/Designation:120",
+        _("Branch") + ":Data/Branch:120",
+        _("Department") + ":Data/Department:120",
+        _("Designation") + ":Data/Designation:120",
         _("Gender") + "::100",
-        _("Company") + ":Link/Company:120",
+        _("Company") + ":Data/Company:120",
     ]
 
 
