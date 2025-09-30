@@ -531,6 +531,27 @@
         "Administrator" : ["Print"],
         "System Manager" : ["Print"],
         "Other User" : ["Print"] 
+    },
+    "Monthly Attendance Sheet" : {
+        "Administrator" : ["Print","PDF"],
+        "System Manager" : ["Print","PDF"],
+        "Other User" : ["Print","PDF"] 
+    },
+    "Employee Assets Manage":{
+        "Administrator" : ["Kanban", "Dashboard","Report"],
+        "System Manager" : ["Kanban", "Dashboard","Report"],
+        "Other User" : ["Toggle Sidebar" ,"Kanban", "Dashboard", "Report"] 
+    },
+    "Auto Email": {
+        "Administrator" : ["Kanban", "Dashboard","Report"],
+        "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
+    },
+    "Employee Contract": {
+        "Administrator" : ["Kanban", "Dashboard","Report"],
+        "System Manager" :["Report", "Dashboard", "Kanban"],
+        "Other User" : ["Report", "Dashboard", "Kanban"]
     }
+   
 
 }

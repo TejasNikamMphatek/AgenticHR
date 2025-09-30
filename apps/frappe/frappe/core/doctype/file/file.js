@@ -1,5 +1,10 @@
 frappe.ui.form.on("File", {
 	refresh: function (frm) {
+
+		$('button[title="Print"], button[data-original-title="Print"]').hide();
+		$('li .menu-item-label[data-label="Print"]').closest('li').hide();
+
+
 		if (!frm.doc.is_folder) {
 			// add download button
 			frm.add_custom_button(__("Download"), () => frm.trigger("download"), "fa fa-download");
