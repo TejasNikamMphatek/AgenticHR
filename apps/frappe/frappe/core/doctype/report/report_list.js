@@ -14,8 +14,7 @@ frappe.listview_settings["Report"] = {
             }
 
             // 2) Also remove unwanted classes from any leftover wrapper
-            $field.find('div.dropdown.bootstrap-select')
-                .removeClass('dropdown bootstrap-select input-with-feedback form-control input-xs ellipsis');
+            $field.find('div.dropdown.bootstrap-select').removeClass('dropdown bootstrap-select input-with-feedback form-control input-xs ellipsis');
         };
 
         // Run now and after render

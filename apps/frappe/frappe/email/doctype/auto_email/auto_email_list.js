@@ -16,7 +16,19 @@ frappe.listview_settings["Auto Email"] = {
             // 2) Also remove unwanted classes from any leftover wrapper
             $field.find('div.dropdown.bootstrap-select')
                 .removeClass('dropdown bootstrap-select input-with-feedback form-control input-xs ellipsis');
-        };
+        
+            // For placeholder
+            $('.frappe-control[data-fieldtype="Select"].form-group .placeholder.xs').css({
+            'top': '6px'
+            });
+
+            // For select icon
+            $('.frappe-control[data-fieldtype="Select"].form-group .select-icon.xs').css({
+            'top': '6px',
+            'right': '10px'
+            });
+
+            };
 
         // Run now and after render
         frappe.after_ajax(clean);

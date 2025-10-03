@@ -24020,6 +24020,17 @@ section.content {
     float: right
 }
 
+
+.frappe-control[data-fieldtype="Select"].form-group .placeholder.xs {
+  top: 6px !important;
+}
+
+.frappe-control[data-fieldtype="Select"].form-group .select-icon.xs {
+  top: 6px !important;
+  right: 10px;
+}
+
+
 @media only screen and (max-width: 992px) {
     .file_manager .nav-tabs {
         padding-left: 0;

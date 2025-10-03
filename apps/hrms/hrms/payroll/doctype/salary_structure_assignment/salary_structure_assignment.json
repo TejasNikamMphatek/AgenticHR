@@ -54,7 +54,6 @@
    "fetch_from": "employee.department",
    "fieldname": "department",
    "fieldtype": "Link",
-   "in_standard_filter": 1,
    "label": "Department",
    "options": "Department",
    "read_only": 1
@@ -63,7 +62,6 @@
    "fetch_from": "employee.designation",
    "fieldname": "designation",
    "fieldtype": "Link",
-   "in_standard_filter": 1,
    "label": "Designation",
    "options": "Designation",
    "read_only": 1
@@ -208,7 +206,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-04 17:41:09.940416",
+ "modified": "2025-10-01 12:50:54.369206",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure Assignment",
