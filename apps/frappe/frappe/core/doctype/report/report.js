@@ -1,5 +1,8 @@
 frappe.ui.form.on("Report", {
 	refresh: function (frm) {
+
+		// $field.find('div.dropdown.bootstrap-select').removeClass('dropdown bootstrap-select input-with-feedback form-control input-xs ellipsis');
+
 		if (frm.doc.is_standard === "Yes" && !frappe.boot.developer_mode) {
 			// make the document read-only
 			frm.disable_form();
