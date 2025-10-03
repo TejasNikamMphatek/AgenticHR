@@ -514,7 +514,7 @@ class ShiftType(Document):
 
 def process_auto_attendance_for_all_shifts():
     """Process attendance for all shifts for the PREVIOUS day (EOD at midnight)."""
-    processing_date = getdate(now_datetime() - timedelta(days=1))
+    processing_date = getdate(now_datetime())
     try:
         shift_list = frappe.get_all("Shift Type", filters={"enable_auto_attendance": 1}, pluck="name")
 
