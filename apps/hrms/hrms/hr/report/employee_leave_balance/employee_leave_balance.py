@@ -183,37 +183,58 @@ def get_opening_balance(
 		opening_balance = get_leave_balance_on(employee, leave_type, opening_balance_date)
 
 	return opening_balance
+def get_allocated_and_expired_leaves(from_date: str, to_date: str, employee: str, leave_type: str) -> tuple[float, float, float]:
+    """
+    Calculate new allocation, expired leaves, and carry-forwarded leaves
+    exactly like the ERPNext page logic.
+    """
+    from frappe.utils import getdate
 
+    new_allocation = 0.0
+    expired_leaves = 0.0
+    carry_forwarded_leaves = 0.0
 
-def get_allocated_and_expired_leaves(
-	from_date: str, to_date: str, employee: str, leave_type: str
-) -> tuple[float, float, float]:
-	new_allocation = 0
-	expired_leaves = 0
-	carry_forwarded_leaves = 0
+    # Fetch all leave allocations overlapping the report period
+    records = frappe.db.get_all(
+        "Leave Ledger Entry",
+        filters={
+            "employee": employee,
+            "leave_type": leave_type,
+            "docstatus": 1,
+            "transaction_type": "Leave Allocation",
+            "from_date": ["<=", to_date],
+            "to_date": [">=", from_date]
+        },
+        fields=[
+            "from_date", "to_date", "leaves", "is_carry_forward", "is_expired"
+        ],
+        order_by="from_date asc"
+    )
 
-	records = get_leave_ledger_entries(from_date, to_date, employee, leave_type)
+    for record in records:
+        record_from = getdate(record["from_date"])
+        record_to = getdate(record["to_date"])
 
-	for record in records:
-		# new allocation records with `is_expired=1` are created when leave expires
-		# these new records should not be considered, else it leads to negative leave balance
-		if record.is_expired:
-			continue
+        # Skip records created as expired
+        if record["is_expired"]:
+            continue
 
-		if record.to_date < getdate(to_date):
-			# leave allocations ending before to_date, reduce leaves taken within that period
-			# since they are already used, they won't expire
-			expired_leaves += record.leaves
-			leaves_for_period = get_leaves_for_period(employee, leave_type, record.from_date, record.to_date)
-			expired_leaves -= min(abs(leaves_for_period), record.leaves)
+        # Count new allocations only if within the period and not carry forward
+        if record_from >= getdate(from_date) and not record["is_carry_forward"]:
+            new_allocation += record["leaves"]
 
-		if record.from_date >= getdate(from_date):
-			if record.is_carry_forward:
-				carry_forwarded_leaves += record.leaves
-			else:
-				new_allocation += record.leaves
+        # Count carry forwarded separately
+        if record["is_carry_forward"]:
+            carry_forwarded_leaves += record["leaves"]
 
-	return new_allocation, expired_leaves, carry_forwarded_leaves
+        # Calculate expired leaves
+        # Expired leaves = allocated leaves - balance at allocation end
+        balance_on_to_date = get_leave_balance_on(employee, leave_type, record_to)
+        expired = max(record["leaves"] - balance_on_to_date, 0)
+        expired_leaves += expired
+
+    return flt(new_allocation), flt(expired_leaves), flt(carry_forwarded_leaves)
+
 
 
 def get_leave_ledger_entries(from_date: str, to_date: str, employee: str, leave_type: str) -> list[dict]:
