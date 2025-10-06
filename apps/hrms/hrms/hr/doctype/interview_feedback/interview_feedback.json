@@ -99,7 +99,6 @@
    "fieldname": "result",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Result",
    "options": "\nCleared\nRejected",
    "reqd": 1
@@ -123,7 +122,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-27 13:09:51.973613",
+ "modified": "2025-10-06 17:18:10.920396",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Interview Feedback",
