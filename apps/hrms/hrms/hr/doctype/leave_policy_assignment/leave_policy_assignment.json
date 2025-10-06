@@ -64,7 +64,6 @@
    "fieldname": "effective_from",
    "fieldtype": "Date",
    "label": "Effective From",
-   "read_only_depends_on": "eval:doc.assignment_based_on",
    "reqd": 1
   },
   {
@@ -120,7 +119,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-25 16:48:18.336605",
+ "modified": "2025-10-06 17:52:05.619806",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Policy Assignment",
