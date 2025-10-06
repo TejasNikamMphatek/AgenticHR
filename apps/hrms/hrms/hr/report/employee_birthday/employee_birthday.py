@@ -21,20 +21,26 @@ def get_columns():
 		_("Employee") + ":Link/Employee:120",
 		_("Name") + ":Data:200",
 		_("Date of Birth") + ":Date:100",
-		_("Branch") + ":Link/Branch:120",
-		_("Department") + ":Link/Department:120",
+		# _("Branch") + ":Link/Branch:120",
+		# _("Department") + ":Link/Department:120",
 		_("Designation") + ":Link/Designation:120",
-		_("Gender") + "::60",
+		# _("Gender") + "::60",
 		_("Company") + ":Link/Company:120",
 	]
 
 
 def get_employees(filters):
 	conditions = get_conditions(filters)
+	# return frappe.db.sql(
+	# 	"""select name, employee_name, date_of_birth,
+	# branch, department, designation,
+	# gender, company from tabEmployee where status = 'Active' %s"""
+	# 	% conditions,
+	# 	as_list=1,
+	# )
+
 	return frappe.db.sql(
-		"""select name, employee_name, date_of_birth,
-	branch, department, designation,
-	gender, company from tabEmployee where status = 'Active' %s"""
+		"""select name, employee_name, date_of_birth, designation, company from tabEmployee where status = 'Active' %s"""
 		% conditions,
 		as_list=1,
 	)
