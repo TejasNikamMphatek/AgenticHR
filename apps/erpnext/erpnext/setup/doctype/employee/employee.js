@@ -58,7 +58,7 @@ frappe.ui.form.on("Employee", {
 	setEmployeeDetails: function(frm) {
     var employeeNumber = frappe.model.scrub(frm.doc.employee_number);
 
-		if (frm.doc.employee_number) {
+		if  (frm.doc.employee_number && Number.isInteger(Number(frm.doc.employee_number)))  {
 			frappe.call({
 				method: "erpnext.setup.doctype.employee.employee.get_user_details",
 				args: {
@@ -99,6 +99,8 @@ frappe.ui.form.on("Employee", {
 					}
 				}
 			});
+		}else {
+			frappe.msgprint("Please enter a valid integer employee number.");
 		}
 	},
 
