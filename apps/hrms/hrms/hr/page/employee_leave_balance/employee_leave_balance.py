@@ -83,67 +83,81 @@ def format_leave_value(value):
     return round(value, 1)
 
 def get_leave_balance_data(filters):
-    try:
-        from_date = getdate(filters["from_date"])
-        to_date = getdate(filters["to_date"])
-        values = {
-            "from_date": filters["from_date"],
-            "to_date": filters["to_date"]
-        }
+	try:
+		from_date = getdate(filters["from_date"])
+		to_date = getdate(filters["to_date"])
+		values = {"from_date": filters["from_date"], "to_date": filters["to_date"]}
 
-        if filters.get("employee"):
-            values["employee"] = filters["employee"]
-        if filters.get("leave_type"):
-            values["leave_type"] = filters["leave_type"]
+		if filters.get("employee"):
+			values["employee"] = filters["employee"]
+		if filters.get("leave_type"):
+			values["leave_type"] = filters["leave_type"]
 
-        allocations = get_employees_with_allocated_leave_types(filters)
-        final_data = []
+		allocations = get_employees_with_allocated_leave_types(filters)
+		final_data = []
 
-        for row in allocations:
-            try:
-                employee = row["employee"]
-                leave_type = row["leave_type"]
+		for row in allocations:
+			try:
+				employee = row["employee"]
+				leave_type = row["leave_type"]
 
-                # Opening as of 1 day before period
-                opening = get_leave_balance_on(employee, leave_type, add_days(from_date, -1))
+				# Opening as of 1 day before period
+				opening = get_leave_balance_on(employee, leave_type, add_days(from_date, -1))
 
-                # Final balance as of end of period
-                final_balance = get_leave_balance_on(employee, leave_type, to_date)
+				# Fetch allocation range for this employee & leave type
+				allocation_data = get_leave_allocation_data(employee, leave_type, filters["year"])
+				allocation_to_date = allocation_data.get("allocation_to_date")
+				allocation_from_date = allocation_data.get("allocation_from_date")
 
-                # Leaves taken during the period
-                taken = get_leaves_for_period(employee, leave_type, from_date, to_date) * -1
+				# Adjust effective end date to avoid false expiry
+				effective_to_date = to_date
+				if allocation_to_date:
+					alloc_to = getdate(allocation_to_date)
+					if alloc_to < to_date:
+						effective_to_date = alloc_to
 
-                # Total Allocated
-                allocation_data = get_leave_allocation_data(employee, leave_type, filters["year"])
-                total_allocated = allocation_data.get("total_allocated", 0)
-                new_allocated = allocation_data.get("new_allocated", total_allocated)
+				# Calculate final balance
+				final_balance = get_leave_balance_on(employee, leave_type, effective_to_date)
 
-                # Get leave applications and use its count directly
-                leave_applications = get_leave_application_details(employee, leave_type, filters)
-                row["opening_balance"] = format_leave_value(opening)
-                row["total_leaves_taken"] = format_leave_value(taken)
-                row["balance"] = format_leave_value(final_balance)
-                row["total_allocated"] = format_leave_value(total_allocated)
-                row["new_allocated"] = format_leave_value(new_allocated)
+				# Leaves taken during the period
+				taken = get_leaves_for_period(employee, leave_type, from_date, effective_to_date) * -1
 
-               
-                row["total_applications"] = len(leave_applications)
-                row["utilization_percentage"] = calculate_utilization_percentage(taken, opening + new_allocated)
-                row["status"] = get_balance_status(row["balance"])
-                row["leave_applications"] = leave_applications
+				# Total allocated
+				total_allocated = allocation_data.get("total_allocated", 0)
+				new_allocated = allocation_data.get("new_allocated", total_allocated)
 
-                final_data.append(row)
+				# Expired leaves
+				expired_leaves = 0
+				if allocation_to_date and getdate(allocation_to_date) < to_date:
+					expired_leaves = max(total_allocated - taken, 0)
 
-            except Exception as e:
-                frappe.logger().error(f"[get_leave_balance_data] Error processing {row['employee']}, {row['leave_type']}: {str(e)}")
+				# Leave Applications
+				leave_applications = get_leave_application_details(employee, leave_type, filters)
 
-        return final_data
+				row.update({
+					"opening_balance": format_leave_value(opening),
+					"total_leaves_taken": format_leave_value(taken),
+					"balance": format_leave_value(final_balance),
+					"total_allocated": format_leave_value(total_allocated),
+					"new_allocated": format_leave_value(new_allocated),
+					"total_applications": len(leave_applications),
+					"utilization_percentage": calculate_utilization_percentage(taken, opening + new_allocated),
+					"status": get_balance_status(final_balance),
+					"leave_applications": leave_applications,
+					"total_leaves_expired": format_leave_value(expired_leaves)
+				})
 
-    except Exception as e:
-        frappe.logger().error(f"Error in get_leave_balance_data(): {str(e)}")
-        raise
+				final_data.append(row)
 
-    
+			except Exception as e:
+				frappe.logger().error(f"[get_leave_balance_data] Error processing {row['employee']}, {row['leave_type']}: {str(e)}")
+
+		return final_data
+
+	except Exception as e:
+		frappe.logger().error(f"Error in get_leave_balance_data(): {str(e)}")
+		raise
+
 def get_leave_application_count(employee, leave_type, filters):
     try:
         return frappe.db.count("Leave Application", {
