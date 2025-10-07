@@ -96,10 +96,9 @@ def extract_email_id(email):
 	return cstr(parse_addr(email)[1])
 
 
-def validate_phone_number_with_country_code(phone_number: str, fieldname: str) -> None:
+def validate_phone_number_with_country_code(phone_number: str, fieldname: str, doctype: str = None) -> None:
 	from phonenumbers import NumberParseException, is_valid_number, parse
-
-	from frappe import _
+	from frappe import _, get_meta
 
 	if not phone_number:
 		return
@@ -107,6 +106,18 @@ def validate_phone_number_with_country_code(phone_number: str, fieldname: str) -
 	valid_number = False
 	error_message = _("Phone Number {0} set in field {1} is not valid.")
 	error_title = _("Invalid Phone Number")
+
+	# ✅ Convert fieldname to label if doctype is provided
+	field_label = fieldname
+	if doctype:
+		try:
+			meta = get_meta(doctype)
+			label = meta.get_label(fieldname)
+			if label:
+				field_label = label
+		except Exception:
+			field_label = fieldname
+
 	try:
 		if valid_number := is_valid_number(parse(phone_number)):
 			return True
@@ -117,7 +128,7 @@ def validate_phone_number_with_country_code(phone_number: str, fieldname: str) -
 	finally:
 		if not valid_number:
 			frappe.throw(
-				error_message.format(frappe.bold(phone_number), frappe.bold(fieldname)),
+				error_message.format(frappe.bold(phone_number), frappe.bold(field_label)),
 				title=error_title,
 				exc=frappe.InvalidPhoneNumberError,
 			)

@@ -890,7 +890,8 @@ class BaseDocument:
 		# data_field options defined in frappe.model.data_field_options
 		for phone_field in self.meta.get_phone_fields():
 			phone = self.get(phone_field.fieldname)
-			frappe.utils.validate_phone_number_with_country_code(phone, phone_field.fieldname)
+			
+			frappe.utils.validate_phone_number_with_country_code(phone, phone_field.fieldname, self.doctype)
 
 		for data_field in self.meta.get_data_fields():
 			data = self.get(data_field.fieldname)
@@ -915,7 +916,6 @@ class BaseDocument:
 			if data_field_options == "URL":
 				if not data:
 					continue
-
 				frappe.utils.validate_url(data, throw=True)
 
 	def _validate_constants(self):
