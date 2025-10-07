@@ -28,7 +28,7 @@ def getProbationEmployee():
 		filters = [
 			["status", "=", "Active"],
 			["confirmation_status","=","On Probation"],
-			["final_confirmation_date" ,"<", thirty_days_from_now]
+			#["final_confirmation_date" ,"<", thirty_days_from_now]
 			],
 		fields=[
 			"employee_name",
