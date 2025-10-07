@@ -208,59 +208,65 @@ frappe.confirmation_list = {
 		
 		
 	},
-	confirmEmpVal:function(btnVal){
-		let selectedRadio = $('input[type="radio"]:checked').val();
-		let feedbackForEmployee = $('#c_feedback_for_employee').val();
-		// let shareRemark = $('#c_share_remark').val();
-		// let fileAttachment = $('#c_file_attachment')[0].files[0]; 
+	confirmEmpVal: function(btnVal) {
+    let selectedRadio = $('input[type="radio"]:checked').val();
+    let feedbackForEmployee = $('#c_feedback_for_employee').val();
+    // let shareRemark = $('#c_share_remark').val();
+    // let fileAttachment = $('#c_file_attachment')[0].files[0]; 
 
-		if (btnVal == "c_submit" && selectedRadio == "confirm") 
-		{
-			frappe.confirm('Are you sure you want to proceed?',
-				(if_yes) => {
-					frappe.db.set_value('Employee', me.employee_id, {
-						confirmation_status: 'Confirmed',
-						confirmation_status_feedback : feedbackForEmployee
-					}).then(r => {
-						let doc = r.message;
-						if (doc) {
-							frappe.show_alert({ message: __("Confirmation Status Update Successfully ! "), indicator: "green" });
-							window.location.reload();
-						} else {
-							frappe.show_alert({ message: __("Not updated !"), indicator: "red" });
-						}
-					})
-				}, (if_no) => {
-					frappe.show_alert({ message: __("Not updated !"), indicator: "gray" });
-			})
-			
-		}else if (btnVal == "c_reject" && selectedRadio == "confirm"){
-			frappe.confirm('Are you sure you want to proceed?',
-				(if_yes) => {
-					frappe.db.set_value('Employee', me.employee_id, {
-						confirmation_status: 'Rejected',
-						confirmation_status_feedback:feedbackForEmployee
-					}).then(r => {
-						let doc = r.message;
-						if (doc) {
-							frappe.show_alert({ message: __("Confirmation Status Rejected Successfully ! "), indicator: "green" });
-							window.location.reload();
-						} else {
-							frappe.show_alert({ message: __("Not updated !"), indicator: "red" });
-						}
-					})
-				}, (if_no) => {
-					frappe.show_alert({ message: __("Not updated !"), indicator: "gray" });
-			})
-		} else {
-			frappe.show_alert({
-				message:__('Cancel Successfully'),
-				indicator:'green'
-			}, 5);
-			
-		}
-
-	},
+    if (btnVal == "c_submit" && selectedRadio == "confirm") 
+    {
+        frappe.confirm('Are you sure you want to proceed?',
+            (if_yes) => {
+                frappe.db.set_value('Employee', me.employee_id, {
+                    confirmation_status: 'Confirmed',
+                    confirmation_status_feedback: feedbackForEmployee
+                }).then(r => {
+                    let doc = r.message;
+                    if (doc) {
+                        frappe.show_alert({ message: __("Confirmation Status Update Successfully ! "), indicator: "green" });
+                        
+                        // New: Redirect to new Leave Policy Assignment with employee prefilled
+                        frappe.route_options = {
+                            employee: me.employee_id
+                        };
+                        frappe.new_doc('Leave Policy Assignment');
+                        
+                    } else {
+                        frappe.show_alert({ message: __("Not updated !"), indicator: "red" });
+                    }
+                })
+            }, (if_no) => {
+                frappe.show_alert({ message: __("Not updated !"), indicator: "gray" });
+        })
+        
+    } else if (btnVal == "c_reject" && selectedRadio == "confirm") {
+        frappe.confirm('Are you sure you want to proceed?',
+            (if_yes) => {
+                frappe.db.set_value('Employee', me.employee_id, {
+                    confirmation_status: 'Rejected',
+                    confirmation_status_feedback: feedbackForEmployee
+                }).then(r => {
+                    let doc = r.message;
+                    if (doc) {
+                        frappe.show_alert({ message: __("Confirmation Status Rejected Successfully ! "), indicator: "green" });
+                        window.location.reload();  // Keep reload for reject
+                    } else {
+                        frappe.show_alert({ message: __("Not updated !"), indicator: "red" });
+                    }
+                })
+            }, (if_no) => {
+                frappe.show_alert({ message: __("Not updated !"), indicator: "gray" });
+        })
+    } else {
+        frappe.show_alert({
+            message: __('Cancel Successfully'),
+            indicator: 'green'
+        }, 5);
+        
+    }
+},
+	
 
 	upComingConfirmation: function(upcoming_confirmation) {
 		let upcoming_confirm_emp ="";
