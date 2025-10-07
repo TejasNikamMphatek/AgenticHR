@@ -74,6 +74,16 @@ frappe.ui.form.PrintView = class {
 			icon: "refresh",
 		});
 
+
+		setTimeout(() => {
+			$('[data-fieldname="status"]').closest('div')
+				.removeClass('dropdown bootstrap-select input-with-feedback form-control input-xs ellipsis')
+				.find('button.btn.dropdown-toggle').remove();
+
+			$('#navbar-breadcrumbs').closest('ul').find('li').last().addClass('d-none'); // for Hide Document Records Label from Navbar 
+		
+			}, 200);
+
 		this.page.add_action_icon(
 			"es-line-filetype",
 			() => {
