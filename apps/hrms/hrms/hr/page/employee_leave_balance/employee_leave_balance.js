@@ -162,26 +162,9 @@ class EmployeeLeaveBalance {
 				console.log('Response received:', response);
 				this.hide_loading();
 				if (response.message && response.message.length > 0) {
-	// Round numeric fields to 1 decimal place for each record
-	this.data = response.message.map(item => {
-	const granted = Number(item.total_allocated || 0);
-	const balance = Number(item.balance || 0);
-	const consumed = granted - balance;
-
-	return {
-		...item,
-		total_allocated: granted.toFixed(1),
-		total_leaves_taken: Number(item.total_leaves_taken || 0).toFixed(2),
-		balance: balance.toFixed(2),
-		total_applications: Number(item.total_applications || 0).toFixed(0),
-		consumed: consumed.toFixed(2)  // 👈 Add this line
-	};
-});
-
-	this.render_data();
-}
-
-				else {
+					this.data = response.message;
+					this.render_data();
+				} else {
 					this.show_empty_state();
 				}
 			},
@@ -261,118 +244,53 @@ class EmployeeLeaveBalance {
 						</div>
 					</div>
 				</div>
-				<div class="leave-cards-container" style="background: white; padding: 20px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-					<div class="row leave-cards-row"></div>
-				</div>
-			</div>
+				<div class="leave-table-container" style="background: white; padding: 20px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+					<div class="table-responsive">
+						<table class="table table-bordered allocated-leaves-table">
+							<thead>
+								<tr>
+									<th>Leave Type</th>
+									<th>Total Allocated Leaves</th>
+									<th>Expired Leaves</th>
+									<th>Used Leaves</th>
+									<th>Leaves Pending Approval</th>
+									<th>Available Leaves</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
 		`);
 
-		// Add leave type cards
-		const cardsRow = employeeSection.find('.leave-cards-row');
-		
 		leaveData.forEach(leave => {
-			const card = this.create_leave_card(leave);
-			const cardCol = $('<div class="col-md-3" style="margin-bottom: 20px;"></div>');
-			cardCol.append(card);
-			cardsRow.append(cardCol);
+			employeeSection.find('tbody').append(`
+				<tr data-employee="${leave.employee}" data-leave-type="${leave.leave_type}">
+					<td>${leave.leave_type_name}</td>
+					<td>${leave.total_leaves}</td>
+					<td>${leave.expired_leaves}</td>
+					<td>${leave.leaves_taken}</td>
+					<td>${leave.leaves_pending_approval}</td>
+					<td><strong>${leave.remaining_leaves}</strong></td>
+					<td>
+						<button class="btn btn-sm btn-info view-details-btn" style="font-size: 12px;">
+							View Details
+						</button>
+					</td>
+				</tr>
+			`);
+		});
+
+		employeeSection.find('tbody').append('</tbody></table></div></div></div>');
+
+		// Add click handler for view details
+		employeeSection.find('.view-details-btn').on('click', (e) => {
+			e.stopPropagation();
+			const row = $(e.target).closest('tr');
+			const leave_type = row.data('leave-type');
+			const leaveDataItem = leaveData.find(l => l.leave_type === leave_type);
+			this.show_leave_details(leaveDataItem);
 		});
 
 		this.data_container.append(employeeSection);
-	}
-
-	create_leave_card(leaveData) {
-		const granted = parseFloat(leaveData.total_allocated || 0);
-		const taken = parseFloat(leaveData.total_leaves_taken || 0);
-		const balance = parseFloat(leaveData.balance || 0);
-		//const consumed = granted - balance;
-		const consumed = parseFloat(leaveData.consumed || 0);
-
-		
-		// Determine card color based on balance
-		let cardColor = '#28a745'; // Green for good balance
-		if (balance <= 2) {
-			cardColor = '#dc3545'; // Red for low balance
-		} else if (balance <= 5) {
-			cardColor = '#ffc107'; // Yellow for medium balance
-		}
-
-		const card = $(`
-			<div class="leave-card" style="
-				border: 1px solid #dee2e6; 
-				border-radius: 8px; 
-				padding: 20px; 
-				background: white;
-				box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-				transition: transform 0.2s, box-shadow 0.2s;
-				cursor: pointer;
-				height: 220px;
-				position: relative;
-			" data-employee="${leaveData.employee}" data-leave-type="${leaveData.leave_type}">
-				<div style="border-left: 4px solid ${cardColor}; padding-left: 15px; margin-left: -20px; margin-top: -20px; margin-bottom: 15px; padding-top: 20px;">
-					<h5">${leaveData.leave_type_name}</h5>
-					<p style="color: #6c757d;">Granted: ${granted}</p>
-				</div>
-				
-				<div class="text-center" style="">
-					<h5 style="color: ${cardColor}; line-height: 1;">
-						${balance}
-					</h5>
-					<p style="color: #6c757d;">
-						Balance
-					</p>
-				</div>
-
-				<div class="text-center">
-					<div style="color: #17a2b8; font-size: 14px; cursor: pointer; font-weight:bolder" class="view-details-link">
-						View Details
-					</div>
-				</div>
-
-				<div style="position: absolute; bottom: 15px; left: 20px; right: 20px;">
-					<div style="font-size: 11px; color: #6c757d;">
-						${consumed} of ${granted} Consumed
-					</div>
-					<div style="background: #e9ecef; height: 4px; border-radius: 2px; margin-top: 5px;">
-						<div style="
-							background: ${cardColor}; 
-							height: 100%; 
-							border-radius: 2px; 
-							width: ${granted > 0 ? (consumed / granted * 100) : 0}%;
-							transition: width 0.3s ease;
-						"></div>
-					</div>
-				</div>
-			</div>
-		`);
-
-		// Add hover effects
-		card.hover(
-			function() {
-				$(this).css({
-					'transform': 'translateY(-2px)',
-					'box-shadow': '0 4px 12px rgba(0,0,0,0.15)'
-				});
-			},
-			function() {
-				$(this).css({
-					'transform': 'translateY(0)',
-					'box-shadow': '0 2px 4px rgba(0,0,0,0.08)'
-				});
-			}
-		);
-
-		// Add click handler for details
-		card.find('.view-details-link').on('click', (e) => {
-			e.stopPropagation();
-			this.show_leave_details(leaveData);
-		});
-
-		// //Add click handler for card
-		// card.on('click', () => {
-		// 	this.show_employee_details(leaveData.employee);
-		// });
-
-		return card;
 	}
 
 	show_leave_details(leaveData) {
@@ -388,26 +306,30 @@ class EmployeeLeaveBalance {
 			]
 		});
 
-		// Prepare HTML content for leave applications
+		// Prepare HTML content for leave applications - matching Allocated Leaves
 		let detailsHtml = `
 			<div style="margin-bottom: 20px;">
 				<h5>Leave Summary</h5>
 				<div class="row">
-					<div class="col-sm-3">
-						<strong>Total Allocated:</strong><br>
-						<span style="font-size: 18px; color: #28a745;">${leaveData.total_allocated || 0}</span>
+					<div class="col-sm-4">
+						<strong>Total Allocated Leaves:</strong><br>
+						<span style="font-size: 18px; color: #28a745;">${leaveData.total_leaves || 0}</span>
 					</div>
-					<div class="col-sm-3">
-						<strong>Leaves Taken:</strong><br>
-						<span style="font-size: 18px; color: #dc3545;">${leaveData.total_leaves_taken || 0}</span>
+					<div class="col-sm-2">
+						<strong>Expired Leaves:</strong><br>
+						<span style="font-size: 18px; color: #dc3545;">${leaveData.expired_leaves || 0}</span>
 					</div>
-					<div class="col-sm-3">
-						<strong>Balance:</strong><br>
-						<span style="font-size: 18px; color: #17a2b8;">${leaveData.balance || 0}</span>
+					<div class="col-sm-2">
+						<strong>Used Leaves:</strong><br>
+						<span style="font-size: 18px; color: #ffc107;">${leaveData.leaves_taken || 0}</span>
 					</div>
-					<div class="col-sm-3">
-						<strong>Applications:</strong><br>
-						<span style="font-size: 18px; color: #6c757d;">${leaveData.total_applications || 0}</span>
+					<div class="col-sm-2">
+						<strong>Pending Approval:</strong><br>
+						<span style="font-size: 18px; color: #6c757d;">${leaveData.leaves_pending_approval || 0}</span>
+					</div>
+					<div class="col-sm-2">
+						<strong>Available Leaves:</strong><br>
+						<span style="font-size: 18px; color: #17a2b8;">${leaveData.remaining_leaves || 0}</span>
 					</div>
 				</div>
 			</div>
@@ -425,7 +347,6 @@ class EmployeeLeaveBalance {
 								<th>To Date</th>
 								<th>Days</th>
 								<th>Status</th>
-								<th>Type</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -438,8 +359,7 @@ class EmployeeLeaveBalance {
 						<td>${frappe.datetime.str_to_user(app.from_date)}</td>
 						<td>${frappe.datetime.str_to_user(app.to_date)}</td>
 						<td>${app.total_leave_days}</td>
-						<td><span class="text-success ${app.status === 'Approved' ? 'green' : app.status === 'Rejected' ? 'red' : 'text-danger'}">${app.status}</span></td>
-						<td>${app.leave_application_type || 'N/A'}</td>
+						<td><span class="badge badge-success">${app.status}</span></td>
 					</tr>
 				`;
 			});
