@@ -1,4 +1,13 @@
 frappe.listview_settings["Employee"] = {
+	onload: function (listview) {
+		$('.btn[data-label="Add Employee"] span.hidden-xs').html('Start Employee Onboarding');
+	},
+	refresh(frm) {
+		$('.btn[data-label="Add Employee"] span.hidden-xs').html('Start Employee Onboarding');
+		$('.btn.btn-default.btn-new-doc.hidden-xs').text('Start Employee Onboarding');
+
+	},
+
 	add_fields: ["status", "branch", "department", "designation", "image"],
 	filters: [["status", "=", "Active"]],
 	get_indicator: function (doc) {

@@ -215,7 +215,7 @@ scheduler_events = {
          "  50  23 * * *": [
              "hrms.hr.doctype.shift_type.shift_type.process_auto_attendance_for_all_shifts"
          ],
-         "  38 15 * * *": [
+         "  25 10 * * *": [
              "hrms.hr.doctype.employee_checkin.employee_checkin.scheduled_notify_general_shift"
          ]
      },
