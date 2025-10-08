@@ -4,9 +4,10 @@
 
 import frappe
 from frappe import _
+from datetime import datetime, timedelta, time
 from frappe.model.document import Document
-from frappe.utils import cint, get_datetime
-from frappe.utils import now_datetime , get_datetime
+from frappe.utils import cint, now_datetime , get_datetime, get_time, get_fullname
+
 
 from hrms.hr.doctype.shift_assignment.shift_assignment import (
 	get_actual_start_end_datetime_of_shift,
@@ -286,3 +287,366 @@ def update_attendance_in_checkins(log_names: list, attendance_id: str):
 		.set("attendance", attendance_id)
 		.where(EmployeeCheckin.name.isin(log_names))
 	).run()
+
+
+@frappe.whitelist()
+def scheduled_notify_general_shift():
+    try:
+        return notify_employee_if_not_sign_in("General Shift")
+    except Exception as e:
+        frappe.log_error(message=str(e), title="Scheduled Notify Employee Error")
+        return
+@frappe.whitelist()
+def notify_employee_if_not_sign_in(shift_name):
+    try:
+        # Get all related data
+        shift_details = get_shift_details(shift_name)
+        if not shift_details:
+            frappe.log_error(
+                message=f"Shift details not found for: {shift_name}",
+                title="Shift Not Found - Check-in Notification"
+            )
+            frappe.db.commit()
+            return {"status": "error", "message": "Shift not found"}
+
+        shift_assignments = get_shift_assignments(shift_details)
+        checked_in_employees = get_checkin_employees(shift_details)
+        leave_applications = get_leave_applications()
+        all_employees = get_active_employees(shift_details)
+
+        # Calculate employees not checked in
+        employees_not_checked_in = {emp["employee_number"] for emp in all_employees}
+
+        if shift_assignments:
+            employees_not_checked_in.update({sa["employee"] for sa in shift_assignments})
+
+        if checked_in_employees:
+            employees_not_checked_in.difference_update({c["employee"] for c in checked_in_employees})
+
+        if leave_applications and "leave_applications" in leave_applications:
+            leave_emps = {l["employee"] for l in leave_applications["leave_applications"]}
+            employees_not_checked_in.difference_update(leave_emps)
+
+        employees_not_checked_in = sorted(employees_not_checked_in)
+        
+        if not employees_not_checked_in:
+            return {"status": "success", "message": "No employees to notify", "count": 0}
+
+        employee_details = get_employee_details_by_ids(employees_not_checked_in)
+        
+        # Get email template
+        template_name = frappe.db.get_single_value("HR Settings", "employee_checkin_notification")
+        if not template_name:
+            frappe.log_error(
+                message="Email template not configured in HR Settings for 'employee_checkin_notification'",
+                title="Missing Email Template - Check-in Notification"
+            )
+            frappe.db.commit()
+            return {"status": "error", "message": "Email template not configured"}
+        
+        try:
+            email_template = frappe.get_doc("Email Template", template_name)
+        except Exception as e:
+            frappe.log_error(
+                message=f"Failed to fetch email template '{template_name}': {str(e)}",
+                title="Email Template Error - Check-in Notification"
+            )
+            frappe.db.commit()
+            return {"status": "error", "message": "Email template fetch failed"}
+        
+        # Send notifications
+        success_count = 0
+        failed_count = 0
+        
+        for employee in employee_details:
+            if not employee.get('user_id'):
+                continue
+                
+            try:
+                args = {
+                    "employee_number": employee.get('name'),
+                    "employee_name": employee.get('employee_name'),
+                    "date": datetime.today().strftime("%Y-%m-%d")
+                }
+                
+                message = frappe.render_template(email_template.response_, args)
+                
+                # Send email notification
+                email_sent = send_notification_email(
+                    recipient=employee.get('user_id'),
+                    subject=email_template.subject,
+                    message=message,
+                    employee_name=employee.get('employee_name'),
+                    employee_number=employee.get('name')
+                )
+                
+                if email_sent:
+                    success_count += 1
+                else:
+                    failed_count += 1
+                    
+            except Exception as e:
+                failed_count += 1
+                frappe.log_error(
+                    message=f"Failed to process notification for employee {employee.get('name')}: {str(e)}",
+                    title="Employee Notification Processing Error"
+                )
+                continue
+        
+        frappe.db.commit()
+        
+        return {
+            "status": "completed",
+            "total": len(employee_details),
+            "success": success_count,
+            "failed": failed_count
+        }
+        
+    except Exception as e:
+        frappe.log_error(
+            message=f"Critical error in notify_employee_if_not_sign_in for shift '{shift_name}': {str(e)}",
+            title="Critical Error - Check-in Notification"
+        )
+        frappe.db.commit()
+        return {"status": "error", "message": str(e)}
+
+
+@frappe.whitelist()
+def get_shift_details(shift_type=None):
+    """Get shift details with calculated actual start and end times for today"""
+    if not shift_type:
+        return {}
+    
+    try:
+        shift = frappe.db.get_value(
+            "Shift Type",
+            shift_type,
+            [
+                "name",
+                "start_time",
+                "end_time",
+                "begin_check_in_before_shift_start_time",
+                "allow_check_out_after_shift_end_time"
+            ],
+            as_dict=True
+        )
+
+        if not shift:
+            return {}
+
+        today = datetime.today().date()
+        
+        start_time_obj = get_time(shift.start_time)
+        end_time_obj = get_time(shift.end_time)
+        
+        start_time = datetime.combine(today, start_time_obj)
+        end_time = datetime.combine(today, end_time_obj)
+        
+        # Handle shifts that cross midnight
+        if end_time <= start_time:
+            end_time += timedelta(days=1)
+        
+        # Calculate actual times with grace periods
+        actual_start_time = start_time - timedelta(
+            minutes=shift.begin_check_in_before_shift_start_time or 0
+        )
+        actual_end_time = end_time + timedelta(
+            minutes=shift.allow_check_out_after_shift_end_time or 0
+        )
+        
+        return {
+            "name": shift.name,
+            "shift": shift.name,
+            "actual_start_time": actual_start_time,
+            "actual_end_time": actual_end_time
+        }
+    
+    except Exception as e:
+        frappe.log_error(
+            message=f"Error processing shift details for {shift_type}: {str(e)}",
+            title="Shift Details Processing Error"
+        )
+        return {}
+
+
+@frappe.whitelist()
+def get_leave_applications():
+    """Get approved leave applications for today"""
+    try:
+        today = datetime.today().date()
+
+        leave_applications = frappe.db.get_all(
+            "Leave Application",
+            filters={
+                "from_date": ["<=", today],
+                "to_date": [">=", today],
+                "status": "Approved"
+            },
+            fields=["employee", "from_date", "to_date"]
+        )
+
+        for app in leave_applications:
+            app["company_email"] = frappe.db.get_value("Employee", app["employee"], "company_email")
+
+        return {"leave_applications": leave_applications} if leave_applications else {}
+        
+    except Exception as e:
+        frappe.log_error(
+            message=f"Error fetching leave applications: {str(e)}",
+            title="Leave Applications Fetch Error"
+        )
+        return {}
+
+
+@frappe.whitelist()
+def get_shift_assignments(shift_details):
+    """Get active shift assignments for today"""
+    if not shift_details or not shift_details.get('shift'):
+        return []
+    
+    try:
+        today = datetime.today().date()
+        
+        shift_assignments = frappe.db.get_all(
+            "Shift Assignment",
+            filters={
+                "shift_type": shift_details['shift'],
+                "start_date": ["<=", today],
+                "end_date": [">=", today],
+                "status": "Active",
+            },
+            fields=["employee", "employee_name"]
+        )
+        
+        return shift_assignments
+        
+    except Exception as e:
+        frappe.log_error(
+            message=f"Error fetching shift assignments for {shift_details.get('shift')}: {str(e)}",
+            title="Shift Assignments Fetch Error"
+        )
+        return []
+
+
+@frappe.whitelist()
+def get_checkin_employees(shift_details):
+    """Get employees who have checked in for the shift"""
+    try:
+        shift = shift_details['shift']
+        start_time = get_datetime(shift_details['actual_start_time'])
+        end_time = get_datetime(shift_details['actual_end_time'])
+
+        employees = frappe.db.get_all(
+            "Employee Checkin",
+            filters=[
+                ["log_type", "=", "IN"],
+                ["shift", "=", shift],
+                ["time", ">=", start_time],
+                ["time", "<=", end_time],
+            ],
+            fields=["employee", "log_type", "time"],
+            order_by="time asc"
+        )
+
+        return employees
+        
+    except Exception as e:
+        frappe.log_error(
+            message=f"Error fetching checked-in employees for shift {shift_details.get('shift')}: {str(e)}",
+            title="Check-in Employees Fetch Error"
+        )
+        return []
+
+
+@frappe.whitelist()
+def get_employee_details_by_ids(employee_ids):
+    """Get employee details for specific employee IDs"""
+    if not employee_ids:
+        return []
+    
+    try:
+        employees = frappe.db.get_all(
+            "Employee",
+            filters={
+                "name": ["in", employee_ids],
+                "status": "Active",
+            },
+            fields=["name", "employee_name", "user_id", "company_email"]
+        )
+        
+        return employees
+        
+    except Exception as e:
+        frappe.log_error(
+            message=f"Error fetching employee details: {str(e)}",
+            title="Employee Details Fetch Error"
+        )
+        return []
+
+
+@frappe.whitelist()
+def get_active_employees(shift_details):
+    """Get active employees assigned to the shift"""
+    try:
+        shift_name = shift_details['shift']
+        employees = frappe.db.get_all(
+            "Employee",
+            filters=[
+                ["status", "=", "Active"],
+                ["default_shift", "=", shift_name],
+                ["user_id", "is", "set"]
+            ],
+            fields=["name", "employee_number"]
+        )
+        return employees
+        
+    except Exception as e:
+        frappe.log_error(
+            message=f"Error fetching active employees for shift {shift_details.get('shift')}: {str(e)}",
+            title="Active Employees Fetch Error"
+        )
+        return []
+
+
+def send_notification_email(recipient, subject, message, employee_name, employee_number):
+    """
+    Send email notification with error handling.
+    Returns True if sent successfully, False otherwise.
+    """
+    try:
+        # Try to send immediately
+        frappe.sendmail(
+            recipients=recipient,
+            subject=subject,
+            message=message,
+            now=True
+        )
+        return True
+        
+    except frappe.OutgoingEmailError as e:
+        # If immediate sending fails, try queuing
+        try:
+            frappe.sendmail(
+                recipients=recipient,
+                subject=subject,
+                message=message,
+                now=False  # Queue for later
+            )
+            frappe.log_error(
+                message=f"Email queued (immediate send failed) for employee {employee_number} ({employee_name}) at {recipient}. Error: {str(e)}",
+                title="Email Queued - Check-in Notification"
+            )
+            return True
+        except Exception as queue_error:
+            frappe.log_error(
+                message=f"Failed to send/queue email for employee {employee_number} ({employee_name}) at {recipient}. Error: {str(queue_error)}",
+                title="Email Send Failed - Check-in Notification"
+            )
+            return False
+            
+    except Exception as e:
+        frappe.log_error(
+            message=f"Unexpected error sending email to employee {employee_number} ({employee_name}) at {recipient}. Error: {str(e)}",
+            title="Email Send Error - Check-in Notification"
+        )
+        return False
