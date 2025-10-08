@@ -35,10 +35,12 @@
   "sandwich_leave",
   "attendance_request_setting_section",
   "attendance_request_template",
-  "attendance_request_response_template",
   "column_break_lvbm",
+  "attendance_request_response_template",
   "shift_settings_section",
   "allow_multiple_shift_assignments",
+  "sign_in_notification_templates_column",
+  "employee_checkin_notification",
   "hiring_settings_section",
   "check_vacancies",
   "send_interview_reminder",
@@ -306,7 +308,7 @@
    "collapsible": 1,
    "fieldname": "shift_settings_section",
    "fieldtype": "Section Break",
-   "label": "Shift Settings"
+   "label": "Shift & Sign-IN Template Settings"
   },
   {
    "default": "1",
@@ -353,13 +355,24 @@
    "fieldname": "sandwich_leave",
    "fieldtype": "Check",
    "label": "Sandwich Leave"
+  },
+  {
+   "fieldname": "sign_in_notification_templates_column",
+   "fieldtype": "Column Break",
+   "label": "Sign IN Notification Templates"
+  },
+  {
+   "fieldname": "employee_checkin_notification",
+   "fieldtype": "Link",
+   "label": "Employee Checkin Notification",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-06-19 11:41:48.743796",
+ "modified": "2025-10-08 15:24:31.090123",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
