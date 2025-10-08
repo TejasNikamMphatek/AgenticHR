@@ -261,7 +261,8 @@
    "fieldname": "resign_type",
    "fieldtype": "Select",
    "label": "Resign Type",
-   "options": "Voluntary\nNon-voluntary"
+   "options": "Voluntary\nNon-voluntary",
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager']) != 1"
   },
   {
    "default": "0",
@@ -295,7 +296,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-30 11:58:33.048927",
+ "modified": "2025-10-08 17:17:14.234941",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",
