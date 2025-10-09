@@ -81,14 +81,14 @@ class EmployeeSeparation(EmployeeBoardingController):
 		employee.relieving_date = self.approved_lwd or self.lwd_as_per_policy
 		employee.resignation_letter_date = self.submission_date
 		employee.reason_for_leaving = f"Reason :{self.reason}  Description: {self.exit_reason_for_employee}"
-		employee.save()
+		employee.save(ignore_permissions=True) 
 
 	def update_after_cancel_employee_relieving_date(self):
 		employee = frappe.get_doc("Employee", self.employee)
 		employee.relieving_date = None
 		employee.resignation_letter_date = None
 		employee.reason_for_leaving = None
-		employee.save()
+		employee.save(ignore_permissions=True) 
 
 	def insertHoldSalary(self):
 		hold_sal_emp = frappe.get_doc({

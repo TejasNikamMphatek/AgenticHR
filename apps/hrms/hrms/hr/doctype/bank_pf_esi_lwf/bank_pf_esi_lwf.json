@@ -160,8 +160,9 @@
   },
   {
    "fieldname": "uan",
-   "fieldtype": "Data",
-   "label": "UAN"
+   "fieldtype": "Int",
+   "label": "PF UAN",
+   "unique": 1
   },
   {
    "fieldname": "family_pf_number",
@@ -219,7 +220,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-27 11:37:56.448769",
+ "modified": "2025-10-09 12:46:19.442310",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Bank PF ESI LWF",
