@@ -1,14 +1,10 @@
+
 frappe.ui.form.on("Bank PF ESI LWF", {
     validate(frm) {
-        // Regex for numeric only
-        const numeric = /^[0-9]*$/;
 
-        if (frm.doc.uan && !numeric.test(frm.doc.uan)) {
-            frappe.throw("UAN must contain numeric values only.");
-        }
-
-        if (frm.doc.esi_number && !numeric.test(frm.doc.esi_number)) {
-            frappe.throw("ESI Number must contain numeric values only.");
-        }
+        // const uan_pattern = /^\d{12}$/;
+        // if (frm.doc.uan && !uan_pattern.test(frm.doc.uan)) {
+        //     frappe.throw("PF UAN must be exactly 12 digits and contain only numbers.");
+        // }
     }
 });

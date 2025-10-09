@@ -17,7 +17,8 @@ frappe.ui.form.on("Leave Application", {
 	},
 
 	onload: function (frm) {
-		// Ignore cancellation of doctype on cancel all.
+        frm.set_df_property("naming_series", "hidden", 1);
+		
 		frm.ignore_doctypes_on_cancel_all = ["Leave Ledger Entry"];
 
 		if (!frm.doc.posting_date) {
@@ -93,6 +94,15 @@ frappe.ui.form.on("Leave Application", {
 	},
 
 	refresh: function (frm) {
+
+		const editable_fields = ["employee","from_date", "to_date", "half_day", "half_day_date", "leave_type", "description"];
+		const is_creator = frm.doc.owner === frappe.session.user;
+
+		editable_fields.forEach(field => {
+			frm.set_df_property(field, "read_only", frm.is_new() ? 0 : is_creator ? 0 : 1);
+		});
+
+
 		if(frappe.user.has_role("HR Manager")){
 			hrms.leave_utils.add_view_ledger_button(frm);
 		}
