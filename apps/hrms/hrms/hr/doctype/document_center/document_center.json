@@ -74,12 +74,13 @@
    "fieldname": "verification_status",
    "fieldtype": "Select",
    "label": "verification_status",
-   "options": "Pending\nVerified\nInvalid"
+   "options": "Pending\nVerified\nInvalid",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-09 15:37:05.927142",
+ "modified": "2025-10-10 14:18:15.986117",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Document Center",
