@@ -13,6 +13,7 @@
   "files_section",
   "digital_signature_file",
   "private_key_file",
+  "verified_key",
   "column_break_wnyx",
   "certificate_file"
  ],
@@ -70,12 +71,17 @@
    "fieldname": "certificate_file",
    "fieldtype": "Attach",
    "label": "Certificate File"
+  },
+  {
+   "fieldname": "verified_key",
+   "fieldtype": "Attach Image",
+   "label": "Verified Key"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-09-08 17:11:18.966544",
+ "modified": "2025-10-10 12:17:54.367932",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Upload Digital Sign",

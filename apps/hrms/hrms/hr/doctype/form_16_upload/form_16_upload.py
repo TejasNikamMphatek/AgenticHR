@@ -66,7 +66,7 @@ class Form16Upload(Document):
         except Exception as e:
             frappe.throw(f"❌ Unexpected error while extracting {part_name}: {str(e)}")
 
-
+    
     def apply_digital_signature_external(self, part_name=None):
 
         # 1️⃣ Get active digital signature
@@ -101,6 +101,7 @@ class Form16Upload(Document):
 
         # 4️⃣ Password
         cert_pass = getattr(sign_conf, "private_key_password", "mphatek@123")
+       
 
         for root, dirs, files in os.walk(base_dir):
             for file in files:
@@ -116,14 +117,13 @@ class Form16Upload(Document):
                         location or "PUNE",
                         part_name  # Pass the part_name to determine signing method
                     ]
-
                     try:
                         result = subprocess.run(cmd, check=True, capture_output=True, text=True)
-                        # frappe.msgprint(f"Successfully signed {file} for {part_name}")
                     except subprocess.CalledProcessError as e:
-                        # print(f"Error signing {file}: {e.stderr}")
-                        frappe.throw(f"Failed to sign {file}")
+                        frappe.log_error(f"Signing failed for {file}\nSTDOUT: {e.stdout}\nSTDERR: {e.stderr}", "Form16Upload")
+                        frappe.throw(f"Failed to sign {file}. See error log for details.")
 
+                    
         return f"Digital signatures applied to {part_name}"
 
 

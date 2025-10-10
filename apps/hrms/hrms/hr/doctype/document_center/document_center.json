@@ -9,11 +9,12 @@
   "employee",
   "employee_name",
   "publish_date",
+  "signature_verified",
+  "verification_status",
   "column_break_bkum",
   "document_type",
   "document_name",
-  "document",
-  "download_document"
+  "document"
  ],
  "fields": [
   {
@@ -63,15 +64,22 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval:document",
-   "fieldname": "download_document",
-   "fieldtype": "Button",
-   "label": "Download Document"
+   "default": "0",
+   "fieldname": "signature_verified",
+   "fieldtype": "Check",
+   "label": "Signature Verified"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "verification_status",
+   "fieldtype": "Select",
+   "label": "verification_status",
+   "options": "Pending\nVerified\nInvalid"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-09 22:15:59.395749",
+ "modified": "2025-10-09 15:37:05.927142",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Document Center",
