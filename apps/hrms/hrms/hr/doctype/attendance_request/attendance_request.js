@@ -2,8 +2,15 @@
 // For license information, please see license.txt
 frappe.ui.form.on("Attendance Request", {
 	refresh(frm) {
-		frm.trigger("show_attendance_warnings");
 
+		const editable_fields = ["employee","from_date", "to_date", "half_day", "half_day_date", "reason", "explanation"];
+		const is_creator = frm.doc.owner === frappe.session.user;
+
+		editable_fields.forEach(field => {
+			frm.set_df_property(field, "read_only", frm.is_new() ? 0 : is_creator ? 0 : 1);
+		});
+
+		frm.trigger("show_attendance_warnings");
 
 		// Auto-select employee field for non-HR roles
 		if (

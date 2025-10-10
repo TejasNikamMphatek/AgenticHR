@@ -21,6 +21,7 @@
   "half_day",
   "half_day_date",
   "total_leave_days",
+  "upload_supporting_document",
   "column_break1",
   "description",
   "leave_balance",
@@ -271,6 +272,13 @@
    "fieldtype": "Check",
    "label": "Leave Without Pay",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:in_list([\"Sick Leave (Confirmed)\", \"Sick Leave (Probation)\"], doc.leave_type)",
+   "fieldname": "upload_supporting_document",
+   "fieldtype": "Attach",
+   "label": "Upload Supporting Document",
+   "mandatory_depends_on": "eval: doc.total_leave_days > 1\n"
   }
  ],
  "icon": "fa fa-calendar",
@@ -278,7 +286,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2025-10-09 16:43:30.796909",
+ "modified": "2025-10-10 12:18:36.038271",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
