@@ -643,3 +643,24 @@ default_log_clearing_doctypes = {
 export_python_type_annotations = True
 
 fields_for_group_similar_items = ["qty", "amount"]
+
+
+
+# Permission Queries
+permission_query_conditions = {
+
+    "Employee": (
+        "erpnext.setup.doctype.employee.permission."
+        "get_permission_query_conditions"
+    ),
+}
+
+# Has Permission
+has_permission = {
+
+    "Employee": (
+        "erpnext.setup.doctype.employee.permission."
+        "has_permission"
+    ),
+}
+
