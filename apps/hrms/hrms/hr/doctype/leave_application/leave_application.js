@@ -95,13 +95,53 @@ frappe.ui.form.on("Leave Application", {
 
 	refresh: function (frm) {
 
-		const editable_fields = ["employee","from_date", "to_date", "half_day", "half_day_date", "leave_type", "description"];
-		const is_creator = frm.doc.owner === frappe.session.user;
+		const editable_fields = ["employee", "from_date", "to_date", "half_day", "half_day_date", "leave_type", "description", "leave_approver"];
+        const approver_editable_fields = ["status", "leave_approver_remarks"];
+        const is_creator = frm.doc.owner === frappe.session.user;
 
-		editable_fields.forEach(field => {
-			frm.set_df_property(field, "read_only", frm.is_new() ? 0 : is_creator ? 0 : 1);
-		});
+        
+        if (frm.is_new()) {
+            editable_fields.forEach(field => {
+                frm.set_df_property(field, "read_only", 0);
+            });
+            frm.enable_save();
+            return;
+        }
+        
+        if (!frm.is_new()) {
 
+            if (is_creator && !frappe.user.has_role("Leave Approver")) {
+               
+                Object.keys(frm.fields_dict).forEach(fieldname => {
+                    frm.set_df_property(fieldname, "read_only", 1);
+                });
+                frm.disable_save();
+            }
+
+            
+            else if (frappe.user.has_role("Leave Approver")) {
+                
+                Object.keys(frm.fields_dict).forEach(fieldname => {
+                    frm.set_df_property(fieldname, "read_only", 1);
+                });
+
+                
+                approver_editable_fields.forEach(field => {
+                    frm.set_df_property(field, "read_only", 0);
+                });
+
+                
+                frm.enable_save();
+            }
+
+            else {
+                
+                Object.keys(frm.fields_dict).forEach(fieldname => {
+                    frm.set_df_property(fieldname, "read_only", 1);
+                });
+                frm.disable_save();
+            }
+        }
 
 		if(frappe.user.has_role("HR Manager")){
 			hrms.leave_utils.add_view_ledger_button(frm);
