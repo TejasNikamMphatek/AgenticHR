@@ -278,7 +278,7 @@
    "fieldname": "upload_supporting_document",
    "fieldtype": "Attach",
    "label": "Upload Supporting Document",
-   "mandatory_depends_on": "eval: doc.total_leave_days > 1\n"
+   "mandatory_depends_on": "eval: doc.total_leave_days > 2 && [\"Sick Leave (Confirmed)\", \"Sick Leave (Probation)\"].includes(doc.leave_type)\n"
   }
  ],
  "icon": "fa fa-calendar",
@@ -286,7 +286,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2025-10-10 12:18:36.038271",
+ "modified": "2025-10-10 17:42:13.332437",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",

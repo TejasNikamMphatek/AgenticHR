@@ -10,6 +10,52 @@ frappe.ui.form.on("Attendance Request", {
 			frm.set_df_property(field, "read_only", frm.is_new() ? 0 : is_creator ? 0 : 1);
 		});
 
+
+        
+        if (frm.is_new()) {
+            editable_fields.forEach(field => {
+                frm.set_df_property(field, "read_only", 0);
+            });
+            frm.enable_save();
+            return;
+        }
+        
+        if (!frm.is_new()) {
+
+            if (is_creator && !frappe.user.has_role("Leave Approver")) {
+               
+                Object.keys(frm.fields_dict).forEach(fieldname => {
+                    frm.set_df_property(fieldname, "read_only", 1);
+                });
+                frm.disable_save();
+            }
+
+            
+            else if (frappe.user.has_role("Leave Approver")) {
+                
+                Object.keys(frm.fields_dict).forEach(fieldname => {
+                    frm.set_df_property(fieldname, "read_only", 1);
+                });
+
+                
+                approver_editable_fields.forEach(field => {
+                    frm.set_df_property(field, "read_only", 0);
+                });
+
+                
+                frm.enable_save();
+            }
+
+            else {
+                
+                Object.keys(frm.fields_dict).forEach(fieldname => {
+                    frm.set_df_property(fieldname, "read_only", 1);
+                });
+                frm.disable_save();
+            }
+        }
+
+
 		frm.trigger("show_attendance_warnings");
 
 		// Auto-select employee field for non-HR roles

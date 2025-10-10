@@ -15,7 +15,6 @@
   "submission_date",
   "required_lwd",
   "reason",
-  "resign_status",
   "lwd_as_per_policy",
   "notice_period",
   "section_break_dobn",
@@ -35,6 +34,7 @@
   "amended_from",
   "column_break_ubqr",
   "approved_lwd",
+  "resign_status",
   "final_decision_status",
   "stop_salary_process_date",
   "table_for_activity",
@@ -219,6 +219,7 @@
   {
    "fieldname": "final_decision_status",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Final Decision Status",
    "options": "In Process\nRetain\nExit Approved",
    "read_only_depends_on": "eval:frappe.user.has_role(['Projects Manager', 'HR Manager']) != 1"
@@ -296,7 +297,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-09 15:35:41.809521",
+ "modified": "2025-10-10 15:55:12.858281",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",
