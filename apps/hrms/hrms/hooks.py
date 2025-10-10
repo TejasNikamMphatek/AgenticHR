@@ -298,27 +298,66 @@ override_doctype_dashboards = {
     "Project": "hrms.overrides.dashboard_overrides.get_dashboard_for_project",
     "Timesheet": "hrms.overrides.dashboard_overrides.get_dashboard_for_timesheet",
 }
-# Add this to your existing hooks.py file
+
 
 # Permission Queries
 permission_query_conditions = {
-    "Employee Tax Exemption Declaration": "hrms.payroll.doctype.employee_tax_exemption_declaration.Permission.get_permission_query_conditions"
+    "Employee Tax Exemption Declaration": (
+        "hrms.payroll.doctype.employee_tax_exemption_declaration.permission."
+        "get_permission_query_conditions"
+    ),
+    "Employee Tax Exemption Proof Submission": (
+        "hrms.payroll.doctype.employee_tax_exemption_proof_submission.permission."
+        "get_permission_query_conditions"
+    ),
+    "Salary Slip": (
+        "hrms.payroll.doctype.salary_slip.permission."
+        "get_permission_query_conditions"
+    ),
+    "Employee": (
+        "erpnext.setup.doctype.employee.permission."
+        "get_permission_query_conditions"
+    ),
 }
 
-# If you want to use the has_permission function from Permission.py as well
+# Has Permission
 has_permission = {
-    "Employee Tax Exemption Declaration": "hrms.payroll.doctype.employee_tax_exemption_declaration.Permission.has_permission"
+    "Employee Tax Exemption Declaration": (
+        "hrms.payroll.doctype.employee_tax_exemption_declaration.permission.has_permission"
+    ),
+    "Employee Tax Exemption Proof Submission": (
+        "hrms.payroll.doctype.employee_tax_exemption_proof_submission.permission.has_permission"
+    ),
+    "Salary Slip": (
+        "hrms.payroll.doctype.salary_slip.permission.has_permission"
+    ),
+    "Employee": (
+        "erpnext.setup.doctype.employee.permission."
+        "has_permission"
+    ),
 }
 
 
-# For Submission
-permission_query_conditions.update({
-    "Employee Tax Exemption Proof Submission": "hrms.payroll.doctype.employee_tax_exemption_proof_submission.Permission.get_permission_query_conditions"
-})
 
-has_permission.update({
-    "Employee Tax Exemption Proof Submission": "hrms.payroll.doctype.employee_tax_exemption_proof_submission.Permission.has_permission"
-})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # exempt linked doctypes from being automatically cancelled
