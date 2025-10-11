@@ -42,17 +42,18 @@
   "report_to_name",
   "column_break_18",
   "branch",
+  "working_for",
   "employment_details",
   "confirmation_extend_reason_section",
   "final_confirmation_date",
   "confirmation_status",
-  "scheduled_confirmation_date",
   "column_break_32",
   "confirmation_extend_date",
   "confirmation_extend_reason",
   "col_break_22",
   "contract_end_date",
   "notice_number_of_days",
+  "probation_days",
   "date_of_retirement",
   "section_break_zcbs",
   "confirmation_status_feedback",
@@ -346,14 +347,6 @@
    "fieldname": "employment_details",
    "fieldtype": "Tab Break",
    "label": "Confirmation"
-  },
-  {
-   "fieldname": "scheduled_confirmation_date",
-   "fieldtype": "Date",
-   "hidden": 1,
-   "label": "Offer Date",
-   "oldfieldname": "scheduled_confirmation_date",
-   "oldfieldtype": "Date"
   },
   {
    "fieldname": "final_confirmation_date",
@@ -1061,6 +1054,21 @@
    "fieldname": "uan",
    "fieldtype": "Data",
    "label": "UAN"
+  },
+  {
+   "default": "180",
+   "fieldname": "probation_days",
+   "fieldtype": "Int",
+   "label": "Probation Days",
+   "length": 3,
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager']) != 1"
+  },
+  {
+   "fieldname": "working_for",
+   "fieldtype": "Link",
+   "label": "Working For",
+   "options": "Client",
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager']) != 1"
   }
  ],
  "icon": "fa fa-user",
@@ -1068,7 +1076,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-10-07 11:01:17.275960",
+ "modified": "2025-10-11 13:41:16.852297",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",

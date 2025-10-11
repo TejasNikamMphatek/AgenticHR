@@ -18,8 +18,11 @@ def get_permission_query_conditions(user=None):
         # User not linked to any Employee record
         return "1 = 0"
 
-    # Restrict to employee's own records
-    return f"`tabSalary Slip`.employee = {frappe.db.escape(employee)}"
+    # ✅ Employee can see only their own submitted Salary Slips
+    return (
+        f"`tabSalary Slip`.employee = {frappe.db.escape(employee)} "
+        f"AND `tabSalary Slip`.docstatus = 1"
+    )
 
 
 @frappe.whitelist(allow_guest=False)
@@ -36,5 +39,8 @@ def has_permission(doc, user=None):
     if not employee:
         return False
 
-    # Employee can access their own Salary Slip
-    return doc.employee == employee
+    # ✅ Employee can access only their own Salary Slip if it's submitted
+    if doc.employee == employee and doc.docstatus == 1:
+        return True
+
+    return False
