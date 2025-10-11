@@ -100,8 +100,8 @@ class Employee(NestedSet):
 		else:
 			joining_date = None  # Or some default value
 
-		if joining_date and self.confirmation_status != "Confirmed":
-			self.final_confirmation_date = joining_date + timedelta(days=180)
+		if joining_date and self.confirmation_status != "Confirmed" and self.probation_days > 0:
+			self.final_confirmation_date = joining_date + timedelta(days=self.probation_days)
 
 	def after_insert(self):
 		self.notify_hr_after_self_onboarding()
