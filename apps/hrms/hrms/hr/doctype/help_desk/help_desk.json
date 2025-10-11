@@ -118,7 +118,7 @@
    "fieldname": "application_date",
    "fieldtype": "Date",
    "label": "Application Date",
-   "read_only_depends_on": "eval:frappe.user.has_role('HR Manager') != 1"
+   "read_only_depends_on": "eval:frappe.user.has_role('Administrator') != 1"
   },
   {
    "fieldname": "section_break_nrle",
@@ -140,7 +140,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-13 11:32:00.670466",
+ "modified": "2025-10-11 15:07:40.060160",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Help Desk",
