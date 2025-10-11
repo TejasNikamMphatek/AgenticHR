@@ -2,6 +2,14 @@
 // For license information, please see license.txt
 
 frappe.query_reports["Salary Register"] = {
+	onload: function(report) {
+        if (frappe.user.has_role("Project Manager") && !frappe.user.has_role("HR Manager")) {
+            const employee_filter = report.get_filter("employee");
+            employee_filter.df.read_only = 1;
+            employee_filter.df.hidden = 1;
+            employee_filter.refresh();
+        }
+    },
 	filters: [
 		{
 			fieldname: "from_date",

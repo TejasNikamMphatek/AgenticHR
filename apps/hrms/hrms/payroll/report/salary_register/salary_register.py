@@ -263,32 +263,74 @@ def get_salary_component_type(salary_component):
 	return frappe.db.get_value("Salary Component", salary_component, "type", cache=True)
 
 
+# def get_salary_slips(filters, company_currency):
+# 	doc_status = {"Draft": 0, "Submitted": 1, "Cancelled": 2}
+
+# 	query = frappe.qb.from_(salary_slip).select(salary_slip.star)
+
+# 	if filters.get("docstatus"):
+# 		query = query.where(salary_slip.docstatus == doc_status[filters.get("docstatus")])
+
+# 	if filters.get("from_date"):
+# 		query = query.where(salary_slip.start_date >= filters.get("from_date"))
+
+# 	if filters.get("to_date"):
+# 		query = query.where(salary_slip.end_date <= filters.get("to_date"))
+
+# 	if filters.get("company"):
+# 		query = query.where(salary_slip.company == filters.get("company"))
+
+# 	if filters.get("employee"):
+# 		query = query.where(salary_slip.employee == filters.get("employee"))
+
+# 	if filters.get("currency") and filters.get("currency") != company_currency:
+# 		query = query.where(salary_slip.currency == filters.get("currency"))
+
+# 	salary_slips = query.run(as_dict=1)
+
+# 	return salary_slips or []
+
 def get_salary_slips(filters, company_currency):
-	doc_status = {"Draft": 0, "Submitted": 1, "Cancelled": 2}
+    """Filter Salary Slips based on role and ownership."""
+    doc_status = {"Draft": 0, "Submitted": 1, "Cancelled": 2}
+    query = frappe.qb.from_(salary_slip).select(salary_slip.star)
 
-	query = frappe.qb.from_(salary_slip).select(salary_slip.star)
+    # Apply basic filters
+    if filters.get("docstatus"):
+        query = query.where(salary_slip.docstatus == doc_status[filters.get("docstatus")])
 
-	if filters.get("docstatus"):
-		query = query.where(salary_slip.docstatus == doc_status[filters.get("docstatus")])
+    if filters.get("from_date"):
+        query = query.where(salary_slip.start_date >= filters.get("from_date"))
 
-	if filters.get("from_date"):
-		query = query.where(salary_slip.start_date >= filters.get("from_date"))
+    if filters.get("to_date"):
+        query = query.where(salary_slip.end_date <= filters.get("to_date"))
 
-	if filters.get("to_date"):
-		query = query.where(salary_slip.end_date <= filters.get("to_date"))
+    if filters.get("company"):
+        query = query.where(salary_slip.company == filters.get("company"))
 
-	if filters.get("company"):
-		query = query.where(salary_slip.company == filters.get("company"))
+    if filters.get("employee"):
+        query = query.where(salary_slip.employee == filters.get("employee"))
 
-	if filters.get("employee"):
-		query = query.where(salary_slip.employee == filters.get("employee"))
+    if filters.get("currency") and filters.get("currency") != company_currency:
+        query = query.where(salary_slip.currency == filters.get("currency"))
 
-	if filters.get("currency") and filters.get("currency") != company_currency:
-		query = query.where(salary_slip.currency == filters.get("currency"))
+    # ----------------------------
+    # 🔒 Role-based visibility control
+    # ----------------------------
+    current_user = frappe.session.user
+    roles = frappe.get_roles(current_user)
 
-	salary_slips = query.run(as_dict=1)
+    # Only HR Manager and Administrator can see all
+    if "HR Manager" not in roles and current_user != "Administrator":
+        emp_id = frappe.db.get_value("Employee", {"user_id": current_user}, "name")
+        if emp_id:
+            query = query.where(salary_slip.employee == emp_id)
+        else:
+            # If not linked to Employee record, show nothing
+            query = query.where(salary_slip.name == "")
 
-	return salary_slips or []
+    salary_slips = query.run(as_dict=1)
+    return salary_slips or []
 
 
 def get_employee_doj_map():
