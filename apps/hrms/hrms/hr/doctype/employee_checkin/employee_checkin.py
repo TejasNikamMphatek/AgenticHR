@@ -292,10 +292,36 @@ def update_attendance_in_checkins(log_names: list, attendance_id: str):
 @frappe.whitelist()
 def scheduled_notify_general_shift():
     try:
-        return notify_employee_if_not_sign_in("General Shift")
+        today = datetime.today().date()
+        shift_name = "General Shift"
+        shift_details = get_shift_details(shift_name)
+        
+        if not shift_details:
+            frappe.log_error(f"No shift details found for {shift_name}", "Shift Not Found")
+            return {"error": "Shift details not found"}
+        
+        is_holiday = validate_holiday_off(shift_details['holiday_list'], today)
+        
+        if is_holiday:
+            return {"date": str(today), "holiday": True}
+        
+        return notify_employee_if_not_sign_in(shift_name)
+            
     except Exception as e:
         frappe.log_error(message=str(e), title="Scheduled Notify Employee Error")
         return
+
+
+def validate_holiday_off(holiday_listname=None, holiday_date=None):
+    
+    if holiday_date and holiday_listname:
+        is_holiday = frappe.db.exists(
+            "Holiday", 
+            {"parent": holiday_listname, "holiday_date": holiday_date}
+        )
+        return bool(is_holiday)
+		
+
 @frappe.whitelist()
 def notify_employee_if_not_sign_in(shift_name):
     try:
@@ -423,6 +449,7 @@ def get_shift_details(shift_type=None):
             shift_type,
             [
                 "name",
+                "holiday_list",
                 "start_time",
                 "end_time",
                 "begin_check_in_before_shift_start_time",
@@ -457,6 +484,7 @@ def get_shift_details(shift_type=None):
         return {
             "name": shift.name,
             "shift": shift.name,
+            "holiday_list":shift.holiday_list,
             "actual_start_time": actual_start_time,
             "actual_end_time": actual_end_time
         }

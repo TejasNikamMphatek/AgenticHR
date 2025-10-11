@@ -67,6 +67,7 @@ from frappe.model.document import Document
 class LeaveApplication(Document, PWANotificationsMixin):
 	def get_feed(self):
 		return _("{0}: From {0} of type {1}").format(self.employee_name, self.leave_type)
+	
 	def validate_holiday_off(self, holiday_date=None):
 			holiday_listname = frappe.db.get_value(
 				"Employee", 
