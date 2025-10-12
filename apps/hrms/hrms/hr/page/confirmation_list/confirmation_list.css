@@ -1,111 +1,136 @@
-* {
-    /* margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+/* Additional fixes for action cards */
+.action-card {
+    border: 2px solid var(--border-color, #d1d8dd);
+    border-radius: var(--border-radius, 4px);
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: white;
+    position: relative;
 }
 
-#page-confirmation-list {
-    padding: 15px 0 0;
-    background: #f3f3f3;
+.action-card:hover {
+    border-color: var(--primary, #2490ef);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-span, b {
-    font-size: 12px;
+.action-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
 }
 
-b {
-    font-weight: 600;
+.action-card input[type="radio"]:checked + label {
+    color: var(--primary, #2490ef);
 }
 
-h3 {
-    font-size: 18px;
-    font-weight: 600;
+.action-card:has(input[type="radio"]:checked) {
+    border-color: var(--primary, #2490ef);
+    background: rgba(36, 144, 239, 0.05);
 }
 
-.pending_confirm_list, .confirm_list {
-    border-radius: 5px;
-    background-color: #fff;
+.employee-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f0f0f0;
+}
+
+.employee-list-item {
+    padding: 15px;
+    border: 1px solid var(--border-color, #d1d8dd);
+    border-radius: var(--border-radius, 4px);
     margin-bottom: 10px;
     cursor: pointer;
+    transition: all 0.2s ease;
+    background: white;
 }
 
-.pending_confirm_list img, .confirm_list img {
-    max-height: 50px;
-    width: 50px;
+.employee-list-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-color: var(--primary, #2490ef);
+    transform: translateY(-1px);
 }
 
-.confirmation-status-section img {
-    height: 30px;
-    border-radius: 50px;
+.employee-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color, #36414c);
+    margin-bottom: 2px;
 }
 
-.confirmed_emp_data {
-    background-color: #fff;
-}
-
-.confirmed_emp_data div {
-    margin-bottom: 20px;
-}
-
-.con-status-info {
-    background-color: #939191;
-    
-}
-
-.confirm_extend_section {
-    margin-top: 20px;
-    background-color: #fff;
-}
-
-.confirmation_box, .extend_box {
-    background-color: #EDF3FF;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: 1px solid #f3f3f3;
-    margin-right: 10px;
-}
-
-.confirmation_box img, .extend_box img {
-    width: 100%;
-}
-
-.btn-submit-group .btn-cancel {
-    color: rgb(19, 139, 219);
-}
-
-.btn-submit-group .btn-submit,
-.btn-submit-group .btn-reject {
-    background-color: rgb(19, 139, 219);
-    color: #fff;
-    transition: background-color 0.3s ease; /* Smooth transition */
-}
-
-.btn-submit-group .btn-submit:hover,
-.btn-submit-group .btn-reject:hover {
-    background-color: rgb(7, 118, 192);
-    color: #fff;
-}
-
-label {
+.employee-id {
     font-size: 12px;
-    margin: 20px 0 5px;
+    color: var(--text-muted, #8d99a6);
 }
 
-/* Media Queries */
+.employee-info-label {
+    font-size: 11px;
+    color: var(--text-muted, #8d99a6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.employee-info-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-color, #36414c);
+}
+
+.form-section-heading {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color, #36414c);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color, #d1d8dd);
+}
+
+.form-group label.reqd:after {
+    content: " *";
+    color: var(--red, #f56565);
+}
+
+/* Page loader */
+.page-loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader {
+    text-align: center;
+}
+
+.loader p {
+    margin-top: 15px;
+    color: var(--text-muted, #8d99a6);
+    font-size: 14px;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .pipal-hr-sidebar {
-        height: auto;
-        width: 300px !important;
+    .page-content {
+        padding: 10px;
     }
-}
-
-@media (max-width: 576px) {
-    .pipal-hr-sidebar-link a {
-        font-size: 18px;
+    
+    .employee-list-item {
+        padding: 10px;
     }
-
-    .confirmation_box, .extend_box {
+    
+    .action-card {
+        margin-bottom: 10px;
+    }
+    
+    .frappe-card {
         margin-bottom: 10px;
     }
 }
