@@ -12,27 +12,24 @@ else if(frappe.user.has_role("Projects Manager") && frappe.user.has_role("Employ
 	window.location.replace('/app/project-manager-dash')
 }
 else if(frappe.user.has_role("Employee")){
-	frappe.pages['pipal-employee-dashboard'].on_page_load = function (wrapper) {
+	frappe.pages['pipal-employee-dashboard'].on_page_load = function(wrapper) {
 		var page = frappe.ui.make_app_page({
 			parent: wrapper,
-			title: 'Pipal Employee Dashboard',
+			title: 'Project Manager Dashboard',
 			single_column: true
 		});
 		me = frappe.pipal_employee_dashboard;
 		frappe.pipal_employee_dashboard.make(page);
-
-	};
+	}
 
 	frappe.pages['pipal-employee-dashboard'].on_page_show = function(wrapper) {
 		$('.standard-actions.flex').addClass('hide');
 		$('.standard-actions.flex').remove();
 	};
 
-	data = []
-	me = frappe.pipal_employee_dashboard;
 	frappe.pipal_employee_dashboard = {
-		start: 0,
-		dashboard_user_data: [],
+		start : 0,
+		manager_data: [],
 		emp_id: "",
 		default_shift: "",
 		actual_start_time: "",
@@ -40,12 +37,13 @@ else if(frappe.user.has_role("Employee")){
 		checkInLogType: "",
 		toggle_salary: "Show",
 		holiday_element: "",
-
+		
 		make: function (page) {
-			var me = frappe.pipal_employee_dashboard;
 			me.page = page;
+			me.body = $("<div></div>").appendTo(me.page.main);
 			me.run();
 		},
+		
 		run: function () {
 			var me = frappe.pipal_employee_dashboard;
 			frappe.call({
@@ -53,31 +51,29 @@ else if(frappe.user.has_role("Employee")){
 				args: {
 					start: me.start,
 				},
-				callback: function (response) {
-					if (response.message && response.message.length > 0) {
-						me.dashboard_user_data = response.message;
-						me.send_data(me.dashboard_user_data);
-						response.message.forEach(function (d) {
-							if (d) {
-								// console.log(d);
-							} else {
+				callback: function (response){
+					if (response.message && response.message.length > 0)
+					{	
+						me.manager_data = response.message;
+						me.send_data(me.manager_data)
+						response.message.forEach(function (data) {
+							if (data) {
+							}else{
 								frappe.show_alert({ message: __("Data Not Found ! "), indicator: "gray" });
 							}
 						});
-					} else {
-						console.error({'error': "The 'Employee' list is empty.", 'message': 'Populate Employee fields Default-Shift, Holiday-List etc. Data.'})
-						frappe.show_alert({ message: __("No more updates"), indicator: "gray" });
-						$('#pipal-employee-dashboard').addClass("hidden");
+					}
+					else
+					{
+						$('#page-pipal-employee-dashboard').addClass('hidden')
 					}
 				},
 			});
-			$('.page-head').addClass('hide');
 			me.updateTime();
 		},
 
-		send_data: function (data) {
-			// console.log("main data = ", data)
-
+		send_data: function (data) 
+		{	
 			emp_data = data[0].employee[0];
 			employee_name = emp_data['employee_name'];
 			designation = emp_data['designation'];
@@ -101,14 +97,14 @@ else if(frappe.user.has_role("Employee")){
 
 			this.showGreeting();
 
-			$(frappe.render_template("pipal_employee_dashboard", data)).appendTo(me.page.main); // this is main rendering file
+			$(frappe.render_template("pipal_employee_dashboard",data)).appendTo(me.page.main);
 			this.startClock()
 			this.showHideDeclarationData(emp_declaration)
 			this.showHideProofSubmissionData(emp_proof_submission)
 			payslip_val['name'] ? "" : $('.payslip_card').remove();
 			this.salaryPiechart(payslip_val);
-			
-			if (me.dashboard_user_data[2]['todaysSwipe'].length > 0) {
+
+			if (me.manager_data[2]['todaysSwipe'].length > 0) {
 				$('#view-swipe').removeClass('hide');
 			}
 			this.toggleLeaveLinks()
@@ -120,7 +116,6 @@ else if(frappe.user.has_role("Employee")){
 				employee : me.emp_id,
 				log_type: check_type
 			}).then(doc => {
-				// console.log(doc);
 				if (doc.log_type == "IN") {
 					me.checkInLogType = "OUT"
 					frappe.show_alert({ message: __("Signed In Successfully ! "), indicator: "green" });
@@ -130,34 +125,105 @@ else if(frappe.user.has_role("Employee")){
 					frappe.show_alert({ message: __("Signed Out Successfully ! "), indicator: "green" });
 				}
 
-
 				$('#check-in-out-btn').text("Check " + me.checkInLogType)
-				if (me.dashboard_user_data[2]['todaysSwipe'].length) {
+				if (me.manager_data[2]['todaysSwipe'].length) {
 					$('#view-swipe').removeClass('hide');
 					this.callRefreshData()
 				}
 			});
-
-
 		},
 
 		viewSwipe: function () {
-			$('.modal-title').addClass('hide');
-			todays_swipe = me.dashboard_user_data[2];
-			var swipe_data = me.dashboard_user_data[2]['todaysSwipe'];
-
-			var swipeTimes = "<ul>";
-			for (var i = 0; i < swipe_data.length; i++) {
-				swipeTimes += "<li> Swipe " + swipe_data[i].log_type + " : " + swipe_data[i].time + "</li>";
+			var todays_swipe = me.manager_data[2];
+			var swipe_data = todays_swipe['todaysSwipe'];
+			
+			// Get today's date info
+			var today = new Date();
+			var dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+			var todayFormatted = today.toLocaleDateString('en-US', dateOptions);
+			var dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+			
+			// Create modal HTML
+			var modalHTML = `
+				<div class="swipe-modal-overlay" id="swipeModalOverlay">
+					<div class="swipe-modal">
+						<div class="swipe-modal-header">
+							<h3><i class="fa fa-clock-o"></i> Today's Attendance</h3>
+							<button class="swipe-modal-close" onclick="me.closeSwipeModal()">
+								<i class="fa fa-times"></i>
+							</button>
+						</div>
+						<div class="swipe-modal-body">
+							<div class="swipe-info-section">
+								<div class="swipe-info-row">
+									<span class="swipe-info-label">Date</span>
+									<span class="swipe-info-value">${todayFormatted}</span>
+								</div>
+								<div class="swipe-info-row">
+									<span class="swipe-info-label">Day</span>
+									<span class="swipe-info-value">${dayName}</span>
+								</div>
+								<div class="swipe-info-row">
+									<span class="swipe-info-label">Shift</span>
+									<span class="swipe-info-value">${me.default_shift || 'N/A'}</span>
+								</div>
+							</div>
+							
+							<div class="swipe-list-title">
+								<i class="fa fa-history"></i> Swipe Records
+							</div>
+							<div class="swipe-list">
+			`;
+			
+			// Add swipe records
+			if (swipe_data && swipe_data.length > 0) {
+				swipe_data.forEach(function(swipe) {
+					var badgeClass = swipe.log_type === 'IN' ? 'badge-in' : 'badge-out';
+					modalHTML += `
+						<div class="swipe-item">
+							<span class="swipe-item-badge ${badgeClass}">${swipe.log_type}</span>
+							<span class="swipe-item-time">${swipe.time}</span>
+						</div>
+					`;
+				});
+			} else {
+				modalHTML += `
+					<div class="swipe-empty">
+						<p>No swipe records for today</p>
+					</div>
+				`;
 			}
-			swipeTimes += "</ul>";
+			
+			modalHTML += `
+							</div>
+						</div>
+					</div>
+				</div>
+			`;
+			
+			// Append modal to body
+			$('body').append(modalHTML);
+			
+			// Close on overlay click
+			$('#swipeModalOverlay').on('click', function(e) {
+				if (e.target.id === 'swipeModalOverlay') {
+					me.closeSwipeModal();
+				}
+			});
+			
+			// Close on ESC key
+			$(document).on('keydown.swipeModal', function(e) {
+				if (e.key === 'Escape') {
+					me.closeSwipeModal();
+				}
+			});
+		},
 
-			// console.log("swipe_data", swipeTimes);
-
-			msgprint("<b>View Swipes</b>"
-				+ swipeTimes
-			);
-
+		closeSwipeModal: function() {
+			$('#swipeModalOverlay').fadeOut(200, function() {
+				$(this).remove();
+			});
+			$(document).off('keydown.swipeModal');
 		},
 
 		callRefreshData: function () {
@@ -168,8 +234,8 @@ else if(frappe.user.has_role("Employee")){
 				},
 				callback: function (response) {
 					if (response.message && response.message.length > 0) {
-						me.dashboard_user_data = response.message;
-						if (me.dashboard_user_data[2]['todaysSwipe'].length) {
+						me.manager_data = response.message;
+						if (me.manager_data[2]['todaysSwipe'].length) {
 							$('#view-swipe').removeClass('hide');
 						}
 					} else {
@@ -179,6 +245,7 @@ else if(frappe.user.has_role("Employee")){
 				},
 			});
 		},
+		
 		ShowHideSalary: function (text_val) {
 			if (text_val == "Show") {
 				me.toggle_salary = "Hide"
@@ -193,6 +260,7 @@ else if(frappe.user.has_role("Employee")){
 			}
 			$('#salary-toggle').text(me.toggle_salary)
 		},
+		
 		displayUpcomingHoliday: function (holiday_array) {
 			me.holiday_element = "<div>"
 			for (i = 0; i < holiday_array.length; i++) {
@@ -202,10 +270,9 @@ else if(frappe.user.has_role("Employee")){
 				<br></div>`
 			}
 			me.holiday_element += "</div>"
-			// console.log(me.holiday_element)
-
 			return me.holiday_element
 		},
+		
 		showPayslip: function (payslip_val) {
 			slip_name = payslip_val['name']
 			slip_company = payslip_val['company']
@@ -232,7 +299,6 @@ else if(frappe.user.has_role("Employee")){
 		},
 
 		showProofSubmission: function (emp_proof_submission) {
-			// console.log(emp_proof_submission[0]);
 			proof_currency = emp_proof_submission[0]['currency'];
 			proof_total_actual_amount = emp_proof_submission[0]['total_actual_amount'];
 			proof_exemption_amount = emp_proof_submission[0]['exemption_amount'];
@@ -247,7 +313,6 @@ else if(frappe.user.has_role("Employee")){
 		},
 
 		displayGreeting: function (greeting) {
-
 			if (hour < 12) {
 				greeting = "Good Morning";
 			} else if (hour < 17) {
@@ -256,7 +321,6 @@ else if(frappe.user.has_role("Employee")){
 				greeting = "Good Evening";
 			}
 			return greeting
-
 		},
 
 		showGreeting: function () {
@@ -281,18 +345,6 @@ else if(frappe.user.has_role("Employee")){
 			greetingMessage = me.displayGreeting(greetingMessage);
 		},
 
-		// updateTime: function () {
-		// 	const now = new Date();
-		// 	const hours = now.getHours().toString().padStart(2, '0');
-		// 	const minutes = now.getMinutes().toString().padStart(2, '0');
-		// 	const seconds = now.getSeconds().toString().padStart(2, '0');
-		// 	$('#liveTime').text(`${hours}:${minutes}:${seconds}`);
-		// },
-
-		// startClock: function () {
-		// 	setInterval(this.updateTime, 1000);
-		// },
-
 		updateTime: function () {
 			frappe.call({
 				method: "hrms.hr.page.pipal_employee_dashboard.pipal_employee_dashboard.get_server_time",
@@ -314,27 +366,47 @@ else if(frappe.user.has_role("Employee")){
 			}
 		},
 
+
 		salaryPiechart: function (payslip_val) {
 			try {
-				this.adjustCanvasForZoom(payslip_val)
-				window.addEventListener('resize', this.adjustCanvasForZoom);
-				window.addEventListener('load', this.adjustCanvasForZoom);
+				// Store payslip_val for later use
+				this.currentPayslipVal = payslip_val;
+				
+				// Wait for DOM to be ready
+				setTimeout(() => {
+					this.drawPieChart(payslip_val);
+				}, 100);
+				
+				// Remove old event listeners if they exist
+				if (this.resizeHandler) {
+					window.removeEventListener('resize', this.resizeHandler);
+				}
+				
+				// Create bound function that includes payslip_val
+				this.resizeHandler = () => {
+					this.drawPieChart(this.currentPayslipVal);
+				};
+				
+				// Add new listener with bound function
+				window.addEventListener('resize', this.resizeHandler);
+				
 			} catch (error) {
 				console.log(error);
 			}
 		},
 
-		adjustCanvasForZoom: function() {
+		// Rename adjustCanvasForZoom to drawPieChart and accept parameter
+		drawPieChart: function(payslip_val) {
 			let canvas = document.getElementById('pieChart');
 			if (!canvas) {
-				throw new Error("Canvas element not found");
+				console.warn("Canvas element not found");
+				return;
 			}
-		
+
 			// Detect zoom level
-			let zoomLevel = window.devicePixelRatio * 100; // Gets zoom level as a percentage (e.g., 100, 200, 300, etc.)
+			let zoomLevel = window.devicePixelRatio * 100;
 			let scaleFactor = 1;
-		
-			// Adjust the scaleFactor based on the zoom level
+
 			if (zoomLevel <= 100) {
 				scaleFactor = 1;
 			} else if (zoomLevel <= 200) {
@@ -343,33 +415,28 @@ else if(frappe.user.has_role("Employee")){
 				scaleFactor = 3;
 			} else if (zoomLevel <= 400) {
 				scaleFactor = 4;
-			}else if (zoomLevel <= 500 || zoomLevel > 500) {
+			} else if (zoomLevel <= 500 || zoomLevel > 500) {
 				scaleFactor = 5;
 			}
 
-			// Set canvas resolution to match the scaleFactor
 			canvas.width = canvas.offsetWidth * scaleFactor;
 			canvas.height = canvas.offsetHeight * scaleFactor;
-		
-			// Adjust the CSS size to keep the canvas size consistent on the page
 			canvas.style.width = `${canvas.width / scaleFactor}px`;
 			canvas.style.height = `${canvas.height / scaleFactor}px`;
-		
+
 			let ctx = canvas.getContext('2d');
-			ctx.scale(scaleFactor, scaleFactor); // Scale drawing operations
-		
+			ctx.scale(scaleFactor, scaleFactor);
+
 			let gross_pay = payslip_val['gross_pay'];
 			let total_deduction = payslip_val['total_deduction'];
-		
 			let net_pay = gross_pay - total_deduction;
-		
-			// Define the radii
+
 			let outerRadius = (canvas.width / 2 / scaleFactor) - 10;
 			let innerRadius = canvas.width / 4 / scaleFactor;
-		
+
 			let netPayAngle = (total_deduction / gross_pay) * 2 * Math.PI;
 			let deductionAngle = (net_pay / gross_pay) * 2 * Math.PI;
-		
+
 			// Draw payment days section
 			ctx.beginPath();
 			ctx.moveTo(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor);
@@ -377,7 +444,7 @@ else if(frappe.user.has_role("Employee")){
 			ctx.fillStyle = '#B9E3C6';
 			ctx.fill();
 			ctx.closePath();
-		
+
 			// Draw leave day section
 			ctx.beginPath();
 			ctx.moveTo(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor);
@@ -385,14 +452,14 @@ else if(frappe.user.has_role("Employee")){
 			ctx.fillStyle = '#1C7293';
 			ctx.fill();
 			ctx.closePath();
-		
+
 			// Draw the inner circle (cutout)
 			ctx.beginPath();
 			ctx.arc(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor, innerRadius, 0, 2 * Math.PI);
 			ctx.fillStyle = '#FFFFFF';
 			ctx.fill();
 			ctx.closePath();
-		
+
 			// Draw the border
 			ctx.beginPath();
 			ctx.arc(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor, outerRadius + 6, 0, 2 * Math.PI);
@@ -409,11 +476,30 @@ else if(frappe.user.has_role("Employee")){
 				$('#payslip_download_link').removeClass('hide');
 			}, 5000);
 		},
+		
 		toggleLeaveLinks: function() {
 			$(document).ready(function() {
-				$('.parent-link > a').click(function() {
-					$(this).next('.child-links').slideToggle();
-					$(this).parent().toggleClass('active');
+				$('.parent-link > a').click(function(e) {
+					e.preventDefault();
+					
+					// Get the parent link element
+					var $parentLink = $(this).parent();
+					
+					// Check if this link is already active
+					var isActive = $parentLink.hasClass('active');
+					
+					// Close all other parent links
+					$('.parent-link').not($parentLink).removeClass('active');
+					$('.parent-link').not($parentLink).find('.child-links').slideUp(200);
+					
+					// Toggle the clicked parent link
+					if (isActive) {
+						$parentLink.removeClass('active');
+						$parentLink.find('.child-links').slideUp(200);
+					} else {
+						$parentLink.addClass('active');
+						$parentLink.find('.child-links').slideDown(200);
+					}
 				});
 			});
 		},
