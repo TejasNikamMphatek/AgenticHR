@@ -15,7 +15,7 @@ else if(frappe.user.has_role("Employee")){
 	frappe.pages['pipal-employee-dashboard'].on_page_load = function(wrapper) {
 		var page = frappe.ui.make_app_page({
 			parent: wrapper,
-			title: 'Project Manager Dashboard',
+			title: 'Pipal Employee Dashboard',
 			single_column: true
 		});
 		me = frappe.pipal_employee_dashboard;
