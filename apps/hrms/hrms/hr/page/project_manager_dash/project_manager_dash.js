@@ -3,7 +3,7 @@ if(frappe.user.has_role("Projects Manager")){
 	frappe.pages['project-manager-dash'].on_page_load = function(wrapper) {
 		var page = frappe.ui.make_app_page({
 			parent: wrapper,
-			// title: 'Project Manager Dashboard',
+			title: 'Project Manager Dashboard',
 			single_column: true
 		});
 		me = frappe.project_manager_dash;

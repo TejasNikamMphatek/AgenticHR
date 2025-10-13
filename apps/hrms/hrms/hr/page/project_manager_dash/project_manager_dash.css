@@ -18,7 +18,6 @@ h4 {
 span, p {
     font-size: 14px;
     font-weight: 400;
-    color: var(--text-muted);
 }
 
 .page-wrapper {
@@ -286,19 +285,16 @@ table.table td {
 /* Check-in Card */
 .checkin-card {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, #94ece4 0%, #67b7e8 100%);
+    background: #EDF3FF;
 }
 
-.checkin-card h3,
-.checkin-card p,
-.checkin-card b {
-    color: white;
-}
 
 .checkin-card .time-container {
+    text-transform: uppercase;
     margin: 20px 0;
     padding: 10px;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(8, 210, 236, 0.15);
     border-radius: var(--border-radius);
     backdrop-filter: blur(10px);
 }
@@ -314,24 +310,19 @@ table.table td {
 }
 
 #view-swipe {
-    color: white;
+    color: rgb(0, 38, 255);
     text-decoration: none;
     font-weight: 500;
-    font-size: 12px;
-    padding: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: var(--border-radius);
-    display: inline-block;
     transition: all 0.2s ease;
 }
 
 #view-swipe:hover {
-    background: rgba(255, 255, 255, 0.15);
+    color: rgb(47, 49, 167);
 }
 
 .check-in-swipe button {
     background-color: white !important;
-    color: #667eea !important;
+    color: #002fff !important;
     font-size: 12px;
     font-weight: 600;
     padding: 10px 20px;
