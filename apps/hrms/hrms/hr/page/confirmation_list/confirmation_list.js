@@ -599,7 +599,7 @@ class ConfirmationList {
                         });
                         
                         // If confirmed, redirect to Leave Policy Assignment
-                        if (status === 'Confirmed') {
+                        if (status === 'Confirmed' && frappe.user.has_role("HR Manager")) {
                             setTimeout(() => {
                                 frappe.route_options = {
                                     employee: this.employee_id
