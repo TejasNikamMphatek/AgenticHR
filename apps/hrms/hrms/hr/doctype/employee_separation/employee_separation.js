@@ -70,6 +70,51 @@ frappe.ui.form.on("Employee Separation", {
                 __("View")
             );
         }
+
+        // Workflow Conditions for Employee ==> PM ==> HR 
+        
+        // Hide native Submit for non-HR/System Manager
+        if (frm.doc.docstatus === 0 && !frappe.user.has_role('HR Manager') && !frappe.user.has_role('System Manager')) {
+            $('.btn-submit').hide();
+        }
+
+        // Submit button for HR/System Manager (visible only after PM forward)
+        if (frm.doc.docstatus === 0 && (frappe.user.has_role('HR Manager') || frappe.user.has_role('System Manager')) && frm.doc.hr_reviewed === 1) {
+            frm.page.set_primary_action(__('Submit'), function() {
+                if (frm.is_dirty()) {
+                    frm.save().then(() => {
+                        frm.save('Submit');  // Native submit
+                    });
+                } else {
+                    frm.save('Submit');
+                }
+            }, 'btn-primary');
+        }
+
+        // PM: "Forward to HR" button (visible only after employee forward, set flag on click only)
+        if (frappe.user.has_role('Projects Manager') && frm.doc.docstatus === 0 && !frm.doc.__islocal && frm.doc.pm_reviewed === 1 && frm.doc.hr_reviewed === 0) {
+            frm.page.add_inner_button(__('Forward to HR'), function() {
+                frappe.model.set_value(frm.doctype, frm.doc.name, 'hr_reviewed', 1);
+                frm.save();
+                frappe.msgprint('Forwarded to HR for approval.');
+            });
+        }
+
+        // Warnings
+        // if (frappe.user.has_role('Projects Manager') && frm.doc.docstatus === 0 && frm.doc.pm_reviewed === 0) {
+        //     frappe.msgprint('Waiting for Employee to forward ("Send to PM" button).');
+        // }
+        if (frappe.user.has_role('HR Manager') && frm.doc.docstatus === 0 && frm.doc.hr_reviewed === 0) {
+            frappe.msgprint('Waiting for PM to forward ("Forward to HR" button).');
+        }
+
+        // Auto-forward to PM after Employee's first save (set pm_reviewed = 1)
+        frappe.ui.form.on('Employee Separation', {
+            before_save: function(frm) {
+                if (frappe.user.has_role('Employee') && frm.doc.pm_reviewed === 0 && !frm.doc.__islocal) {
+                    frappe.model.set_value(frm.doctype, frm.doc.name, 'pm_reviewed', 1);
+                }
+            }
+        });
     }
 });
-
