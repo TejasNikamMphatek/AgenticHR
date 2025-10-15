@@ -1,7 +1,7 @@
 frappe.ui.form.on('Project Timesheet Management', {
     refresh: function(frm) {
         // Add Export button to the top toolbar
-        if (!frm.custom_export_button) {
+        if (true) {
             frm.add_custom_button(__('Export Timesheet'), function() {
                 export_timesheet(frm);
             });
