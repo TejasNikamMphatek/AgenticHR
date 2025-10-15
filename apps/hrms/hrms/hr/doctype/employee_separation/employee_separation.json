@@ -43,7 +43,9 @@
   "activities",
   "notify_users_by_email",
   "section_break_14",
-  "exit_interview"
+  "exit_interview",
+  "pm_reviewed",
+  "hr_reviewed"
  ],
  "fields": [
   {
@@ -293,11 +295,23 @@
    "label": "Exit Reason for  HR",
    "max_height": "70px",
    "read_only_depends_on": "eval:frappe.user.has_role([\"HR Manager\"]) != 1"
+  },
+  {
+   "default": "0",
+   "fieldname": "pm_reviewed",
+   "fieldtype": "Check",
+   "label": "PM Reviewed"
+  },
+  {
+   "default": "0",
+   "fieldname": "hr_reviewed",
+   "fieldtype": "Check",
+   "label": "HR Reviewed "
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-10 15:55:12.858281",
+ "modified": "2025-10-14 13:10:39.393261",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",
