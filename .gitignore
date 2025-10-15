@@ -163,4 +163,5 @@ config/redis_cache.conf
 config/redis_queue.conf
 config/supervisor.conf
 
-pipal_commands.txt
+pipal_commands.txtsites/
+*.seg
