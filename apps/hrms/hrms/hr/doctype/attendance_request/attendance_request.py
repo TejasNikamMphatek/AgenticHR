@@ -5,7 +5,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import add_days, date_diff, format_date, get_link_to_form, getdate, get_fullname
+from frappe.utils import add_days, date_diff, format_date, get_link_to_form, getdate, get_fullname, nowdate
 
 from erpnext.setup.doctype.employee.employee import is_holiday
 
@@ -283,12 +283,14 @@ class AttendanceRequest(Document):
 def get_missing_attendance_html(employee=None):
     if not employee:
         return "<div class='text-muted'>Please select an Employee.</div>"
-
+    
+    today = getdate(nowdate())
     attendance_records = frappe.get_all(
         "Attendance",
         filters={
             "employee": employee,
-            "status": ["in", ["Absent", "Half Day"]]
+            "status": ["in", ["Absent", "Half Day"]],
+			"attendance_date": ["<", today]
         },
         fields=["attendance_date", "status"],
         order_by="attendance_date desc",

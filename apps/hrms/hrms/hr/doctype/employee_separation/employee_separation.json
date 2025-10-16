@@ -37,15 +37,15 @@
   "resign_status",
   "final_decision_status",
   "stop_salary_process_date",
+  "pm_reviewed",
+  "hr_reviewed",
   "table_for_activity",
   "column_break_gres",
   "employee_separation_template",
   "activities",
   "notify_users_by_email",
   "section_break_14",
-  "exit_interview",
-  "pm_reviewed",
-  "hr_reviewed"
+  "exit_interview"
  ],
  "fields": [
   {
@@ -311,7 +311,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-14 13:10:39.393261",
+ "modified": "2025-10-16 12:13:53.244602",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",

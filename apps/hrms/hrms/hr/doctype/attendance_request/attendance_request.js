@@ -3,6 +3,36 @@
 frappe.ui.form.on("Attendance Request", {
 	refresh(frm) {
 
+
+		// Add the custom button
+		frm.add_custom_button(__('Show Missing Attendance'), function () {
+			if (!frm.doc.employee) {
+				frappe.msgprint(__('Please select Employee first.'));
+				return;
+			}
+
+			frappe.call({
+				method: 'hrms.hr.doctype.attendance_request.attendance_request.get_missing_attendance_html',
+				args: {
+					employee: frm.doc.employee
+				},
+				callback: function (r) {
+					if (r.message) {
+						const dialog = new frappe.ui.Dialog({
+							title: __('Missing Attendance Details'),
+							size: 'large',
+							primary_action_label: __('Close'),
+							primary_action() {
+								dialog.hide();
+							},
+						});
+						dialog.$wrapper.find('.modal-body').html(r.message);
+						dialog.show();
+					}
+				}
+			});
+		});
+
 		const editable_fields = ["employee","from_date", "to_date", "half_day", "half_day_date", "reason", "explanation"];
 		const is_creator = frm.doc.owner === frappe.session.user;
 
@@ -82,34 +112,6 @@ frappe.ui.form.on("Attendance Request", {
 			});
 		}
 
-		// Add the custom button
-		frm.add_custom_button(__('Show Missing Attendance'), function () {
-			if (!frm.doc.employee) {
-				frappe.msgprint(__('Please select Employee first.'));
-				return;
-			}
-
-			frappe.call({
-				method: 'hrms.hr.doctype.attendance_request.attendance_request.get_missing_attendance_html',
-				args: {
-					employee: frm.doc.employee
-				},
-				callback: function (r) {
-					if (r.message) {
-						const dialog = new frappe.ui.Dialog({
-							title: __('Missing Attendance Details'),
-							size: 'large',
-							primary_action_label: __('Close'),
-							primary_action() {
-								dialog.hide();
-							},
-						});
-						dialog.$wrapper.find('.modal-body').html(r.message);
-						dialog.show();
-					}
-				}
-			});
-		});
 	},
 
     show_attendance_warnings(frm) {
