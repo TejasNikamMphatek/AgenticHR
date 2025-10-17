@@ -109,7 +109,7 @@ li.nav-item:nth-child(4) > button:nth-child(1) > span:nth-child(1) {
 
 .profile-info a {
     text-decoration: none;
-    color: var(--primary);
+    color: var(--info);
     font-size: 13px;
     font-weight: 500;
     transition: color 0.2s;
@@ -310,19 +310,19 @@ table.table td {
 }
 
 #view-swipe {
-    color: rgb(0, 38, 255);
+    color: var(--info);
     text-decoration: none;
     font-weight: 500;
     transition: all 0.2s ease;
 }
 
 #view-swipe:hover {
-    color: rgb(47, 49, 167);
+    color: blue;
 }
 
 .check-in-swipe button {
-    background-color: white !important;
-    color: #002fff !important;
+    background-color:#00BCD4 !important;
+    color: var(--bg-color);
     font-size: 12px;
     font-weight: 600;
     padding: 10px 20px;
@@ -346,13 +346,13 @@ table.table td {
 
 .quick-access a {
     text-decoration: none;
-    color: var(--primary);
+    color: var(--info);
     font-weight: 500;
     transition: color 0.2s ease;
 }
 
 .quick-access a:hover {
-    color: var(--primary-dark);
+    color: blue;
     text-decoration: none;
 }
 
@@ -394,10 +394,11 @@ table.table td {
     margin-left: 0;
     font-weight: 500;
     transition: color 0.2s ease;
+    color:var(--info);
 }
 
 .payslip-btnbox a:hover {
-    color: var(--primary-dark);
+    color:blue;
     text-decoration: none;
 }
 
@@ -436,14 +437,14 @@ table.table td {
 #declaration_data a,
 #proof_data a {
     text-decoration: none;
-    color: var(--primary);
+    color: var(--info);
     font-weight: 500;
     transition: color 0.2s ease;
 }
 
 #declaration_data a:hover,
 #proof_data a:hover {
-    color: var(--primary-dark);
+    color: blue;
 }
 
 .declaration_image,
