@@ -95,7 +95,7 @@ class User(Document):
 		login_before: DF.Int
 		logout_all_sessions: DF.Check
 		middle_name: DF.Data | None
-		mobile_no: DF.Data | None
+		mobile_no: DF.Phone | None
 		module_profile: DF.Link | None
 		mute_sounds: DF.Check
 		new_password: DF.Password | None

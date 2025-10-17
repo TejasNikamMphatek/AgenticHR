@@ -291,6 +291,7 @@
   },
   {
    "bold": 1,
+   "default": "+91-",
    "fieldname": "emergency_phone_number",
    "fieldtype": "Phone",
    "label": "Emergency Phone",
@@ -480,6 +481,7 @@
    "label": "Address & Contacts"
   },
   {
+   "default": "+91-",
    "fieldname": "cell_number",
    "fieldtype": "Phone",
    "label": "Mobile",
@@ -1076,7 +1078,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-10-11 13:41:16.852297",
+ "modified": "2025-10-17 15:20:46.775152",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
