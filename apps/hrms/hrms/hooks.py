@@ -314,10 +314,7 @@ permission_query_conditions = {
         "hrms.payroll.doctype.salary_slip.permission."
         "get_permission_query_conditions"
     ),
-    "Employee": (
-        "erpnext.setup.doctype.employee.permission."
-        "get_permission_query_conditions"
-    ),
+   
 }
 
 # Has Permission
@@ -331,10 +328,7 @@ has_permission = {
     "Salary Slip": (
         "hrms.payroll.doctype.salary_slip.permission.has_permission"
     ),
-    "Employee": (
-        "erpnext.setup.doctype.employee.permission."
-        "has_permission"
-    ),
+   
 }
 
 
