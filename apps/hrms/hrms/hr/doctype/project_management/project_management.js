@@ -12,7 +12,7 @@ frappe.ui.form.on('Project Management', {
             // Get all roles of the current user
             const roles = frappe.user_roles || [];
 
-            if (roles.includes('Project Manager') && emp_id) {
+            if (roles.includes('Projects Manager') && emp_id) {
                 // Filter employees who report to this manager
                 filters = { reports_to: emp_id };
             } else if (

@@ -680,3 +680,32 @@ def get_approvers_details(reports_to):
 
     return employee or {}
 
+
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_employee_for_self_only(doctype, txt, searchfield, start, page_len, filters):
+    """Return only the employee record linked to the logged-in Project Manager"""
+    user = frappe.session.user
+
+    employee = frappe.db.get_value(
+        "Employee",
+        {"user_id": user},
+        ["name", "employee_name"],
+        as_dict=True
+    )
+
+    if not employee:
+        return []
+
+    # Optional: only match when typing own name/ID
+    if txt and txt.lower() not in (employee["name"].lower() + employee["employee_name"].lower()):
+        return []
+
+    return [(employee["name"], employee["employee_name"])]
+
+
+@frappe.whitelist()
+def get_logged_in_employee():
+    """Return the Employee ID linked to the current session user"""
+    return frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")

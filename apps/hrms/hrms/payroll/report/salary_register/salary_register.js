@@ -1,15 +1,29 @@
-// Copyright (c) 2016, mPHATEK Systems Pvt. Ltd. and contributors
-// For license information, please see license.txt
-
 frappe.query_reports["Salary Register"] = {
-	onload: function(report) {
-        if (frappe.user.has_role("Project Manager") && !frappe.user.has_role("HR Manager")) {
-            const employee_filter = report.get_filter("employee");
-            employee_filter.df.read_only = 1;
-            employee_filter.df.hidden = 1;
-            employee_filter.refresh();
-        }
-    },
+	onload: function (report) {
+		if (frappe.user.has_role("Projects Manager") && !frappe.user.has_role("HR Manager")) {
+			const employee_filter = report.get_filter("employee");
+
+			// Limit employee dropdown to only the logged-in PM's employee record
+			employee_filter.df.get_query = function () {
+				return {
+					query: "erpnext.setup.doctype.employee.employee.get_employee_for_self_only",
+				};
+			};
+
+			// Optional: make it read-only & auto-fill
+			frappe.call({
+				method: "erpnext.setup.doctype.employee.employee.get_logged_in_employee",
+				callback: function (r) {
+					if (r.message) {
+						report.set_filter_value("employee", r.message);
+						employee_filter.df.read_only = 1;
+						employee_filter.refresh();
+					}
+				},
+			});
+		}
+	},
+
 	filters: [
 		{
 			fieldname: "from_date",
@@ -42,15 +56,6 @@ frappe.query_reports["Salary Register"] = {
 			options: "Employee",
 			width: "100px",
 		},
-		// {
-		// 	fieldname: "company",
-		// 	label: __("Company"),
-		// 	fieldtype: "Link",
-		// 	options: "Company",
-		// 	default: frappe.defaults.get_user_default("Company"),
-		// 	width: "100px",
-		// 	reqd: 1,
-		// },
 		{
 			fieldname: "docstatus",
 			label: __("Document Status"),
@@ -58,7 +63,7 @@ frappe.query_reports["Salary Register"] = {
 			options: ["Draft", "Submitted", "Cancelled"],
 			default: "Submitted",
 			width: "100px",
-			read_only: 1
+			read_only: 1,
 		},
 	],
 };
