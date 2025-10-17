@@ -271,12 +271,12 @@
    "options": "Phone"
   },
   {
+   "default": "+91-",
    "fieldname": "mobile_no",
-   "fieldtype": "Data",
+   "fieldtype": "Phone",
    "label": "Mobile No",
    "options": "Phone",
-   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager','Onboarding Employee']) != 1",
-   "unique": 1
+   "read_only_depends_on": "eval:frappe.user.has_role(['HR Manager','Onboarding Employee']) != 1"
   },
   {
    "fieldname": "birth_date",
@@ -811,7 +811,7 @@
   }
  ],
  "max_attachments": 5,
- "modified": "2025-07-01 12:32:09.744870",
+ "modified": "2025-10-17 15:21:29.170676",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
