@@ -1,0 +1,61 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-11-03 12:22:57.833063",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_tuvy",
+  "component",
+  "amount",
+  "abbr",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_tuvy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "component",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Component",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "abbr",
+   "fieldtype": "Data",
+   "label": "Abbr ",
+   "read_only": 1
+  },
+  {
+   "default": "Settled",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Settled\nUnsettled",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-11-06 15:31:46.654002",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "FNF Earnings",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
