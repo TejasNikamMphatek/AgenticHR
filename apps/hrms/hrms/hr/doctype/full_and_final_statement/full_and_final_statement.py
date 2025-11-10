@@ -105,7 +105,7 @@ class FullandFinalStatement(Document):
             employee.save(ignore_permissions=True)
         except Exception:
             frappe.log_error(frappe.get_traceback(), "FNF.on_submit - employee status")
-        self.email_fnf_slip()
+        #self.email_fnf_slip()
 
     def on_cancel(self):
         try:
@@ -205,14 +205,10 @@ class FullandFinalStatement(Document):
         return [
             "Salary Slip",
             "Gratuity",
-            "Expense Claim",
-            "Bonus",
-            "Leave Encashment",
         ]
 
     def get_receivable_component(self):
         return [
-            "Loan",
             "Employee Advance",
         ]
 
