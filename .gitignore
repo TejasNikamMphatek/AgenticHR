@@ -164,3 +164,7 @@ config/redis_queue.conf
 config/supervisor.conf
 
 pipal_commands.txt
+
+# Ignore Frappe auto-generated route index files
+sites/*/indexes/web_routes/
+sites/*/touched_tables.json
