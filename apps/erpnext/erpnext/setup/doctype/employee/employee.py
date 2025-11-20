@@ -43,7 +43,7 @@ class Employee(NestedSet):
 		self.validate_name_fields()
 		self.validate_date()
 		self.validate_email()
-		self.validate_bank_account_number()
+		#self.validate_bank_account_number()
 		self.validate_status()
 		self.validate_reports_to()
 		self.validate_preferred_email()
@@ -313,6 +313,14 @@ class Employee(NestedSet):
 			preferred_email = self.get(preferred_email_field)
 			self.prefered_email = preferred_email
 
+	# def validate_bank_account_number(self):
+	# 	"""Ensure bank account number contains only numeric values."""
+	# 	if self.bank_ac_no:
+	# 		if not self.bank_ac_no.isdigit():
+	# 			frappe.throw(
+	# 				_("Bank Account Number must contain only numeric values. Please enter a valid number."),
+	# 				title=_("Invalid Bank Account Number")
+	# 			)
 	def validate_status(self):
 		if self.status == "Left":
 			reports_to = frappe.db.get_all(
