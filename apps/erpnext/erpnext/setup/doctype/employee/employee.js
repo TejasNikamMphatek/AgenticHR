@@ -140,6 +140,12 @@ frappe.ui.form.on("Employee", {
 		});
 	},
 
+bank_ac_no: function (frm) {
+		if (frm.doc.bank_ac_no && !/^\d+$/.test(frm.doc.bank_ac_no)) {
+			frappe.msgprint(__('Bank Account Number must contain only numeric digits.'));
+			frm.set_value('bank_ac_no', '');
+		}
+	},
 	status: function (frm) {
 		return frm.call({
 			method: "deactivate_sales_person",

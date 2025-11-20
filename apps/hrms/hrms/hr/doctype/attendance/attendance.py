@@ -30,11 +30,14 @@ from datetime import datetime
 from frappe.desk.reportview import get_filters_cond
 from hrms.hr.doctype.shift_assignment.shift_assignment import get_employee_shift
 
+
 class DuplicateAttendanceError(frappe.ValidationError):
     pass
 
+
 class OverlappingShiftAttendanceError(frappe.ValidationError):
     pass
+
 
 class Attendance(Document):
     def validate(self):
@@ -257,7 +260,7 @@ class Attendance(Document):
             WHERE parent = %s AND holiday_date BETWEEN %s AND %s
             """,
             (applicable_holiday_list, from_date, to_date),
-            as_dict=True
+            as_dict=True,
         )
 
         for holiday in holiday_list:
@@ -265,42 +268,112 @@ class Attendance(Document):
             attendance_date = getdate(self.attendance_date)
             if holiday_date == attendance_date:
                 frappe.throw(
-                    _("Attendance date <b> {0} </b> is a holiday : <b> {1} </b>")
-                    .format(self.attendance_date, holiday.description or "Holiday")
+                    _("Attendance date <b> {0} </b> is a holiday : <b> {1} </b>").format(
+                        self.attendance_date, holiday.description or "Holiday"
+                    )
                 )
+
 
 @frappe.whitelist()
 def get_user_roles():
     roles = frappe.get_roles(frappe.session.user)
     # Shorten roles list to avoid exceeding 140 characters
     roles_summary = roles[:3] + ["..."] if len(roles) > 3 else roles
-    frappe.log_error(f"User {frappe.session.user} roles: {roles_summary}", "Role Debug")  # Debug log
+    frappe.log_error(
+        f"User {frappe.session.user} roles: {roles_summary}",
+        "Role Debug",
+    )  # Debug log
     return roles
+
 
 @frappe.whitelist()
 def get_events(start, end, filters=None):
+    """Return calendar events for Attendance + Holidays.
+
+    - HR Manager / System Manager → see all employees.
+    - Projects Manager → see their own + employees whose `reports_to` = their Employee.
+    - Normal employee → only their own attendance.
+    """
     events = []
     user = frappe.session.user
     roles = frappe.get_roles(user)
     employee = frappe.db.get_value("Employee", {"user_id": user})
 
-    is_manager = any(role in roles for role in ['HR Manager', 'Projects Manager', 'System Manager'])
+    is_hr_or_sys_manager = any(r in roles for r in ["HR Manager", "System Manager"])
+    is_project_manager = "Projects Manager" in roles
+
     # Shorten roles list for logging
     roles_summary = roles[:3] + ["..."] if len(roles) > 3 else roles
-    frappe.log_error(f"get_events: User {user}, Roles {roles_summary}, Emp {employee}, Mgr {is_manager}", "Event Debug")  # Debug log
+    frappe.log_error(
+        f"get_events: User {user}, Roles {roles_summary}, Emp {employee}",
+        "Event Debug",
+    )
 
-    if not is_manager and not employee:
+    # If user is not HR/System Manager and has no linked Employee, block
+    if not employee and not is_hr_or_sys_manager:
         frappe.msgprint(_("No employee record found for the current user."))
         return events
 
-    if not is_manager:
-        filters = json.dumps([["Attendance", "employee", "=", employee]])
-    frappe.log_error(f"get_events: Filters: {filters[:100] + '...' if len(str(filters)) > 100 else filters}", "Filter Debug")  # Debug log
+    # 📍 Build list of employees this user can see
+    employee_filter_list = []
 
-    conditions = get_filters_cond("Attendance", filters, [])
-    add_attendance(events, start, end, employee_id=employee if not is_manager else None, conditions=conditions)
+    if is_hr_or_sys_manager:
+        # HR/System Manager → see all (no employee filter)
+        pass
+    elif is_project_manager:
+        # Project Manager → self + employees who report to them
+        if not employee:
+            frappe.msgprint(_("No employee record linked with your user."))
+            return events
+
+        reporting_employees = frappe.get_all(
+            "Employee",
+            filters={"reports_to": employee},
+            pluck="name",
+        )
+
+        # Include self in list
+        reporting_employees.append(employee)
+
+        if reporting_employees:
+            employee_filter_list = reporting_employees
+        else:
+            frappe.msgprint(_("No employees found reporting to you."))
+            return events
+    else:
+        # Normal employee → only self
+        employee_filter_list = [employee]
+
+    # Build SQL conditions string
+    conditions = ""
+
+    # Apply any additional filters coming from calendar (status, shift, etc.)
+    if filters:
+        try:
+            conditions += get_filters_cond("Attendance", filters, [])
+        except Exception as e:
+            frappe.log_error(f"get_events: Error in get_filters_cond: {e}", "Filter Debug")
+
+    # Restrict by allowed employees (if list built)
+    if employee_filter_list:
+        employees_str = ", ".join(frappe.db.escape(emp) for emp in employee_filter_list)
+        conditions += f" and employee in ({employees_str})"
+    title = "Filter Debug"
+    msg = f"get_events() Filters Applied:\n{conditions[:2000]}"  # Keep full details in the message
+    frappe.log_error(msg, title)
+
+
+    #frappe.log_error(
+        #f"get_events: Filters Applied: {conditions}",
+       # "Filter Debug",
+   # )
+
+    # Add attendance + holidays
+    add_attendance(events, start, end, conditions=conditions)
     add_holidays(events, start, end, employee)
+
     return events
+
 
 def add_attendance(events, start, end, employee_id=None, conditions=None):
     query = """select name, attendance_date, status, employee_name, employee
@@ -314,12 +387,16 @@ def add_attendance(events, start, end, employee_id=None, conditions=None):
     if conditions:
         query += conditions
 
-    for d in frappe.db.sql(query, {"from_date": start, "to_date": end, "employee": employee_id}, as_dict=True):
+    for d in frappe.db.sql(
+        query,
+        {"from_date": start, "to_date": end, "employee": employee_id},
+        as_dict=True,
+    ):
         status_map = {
             "Present": "P",
             "Absent": "A",
             "Half Day": "HD",
-            "Work From Home": "WFH"
+            "Work From Home": "WFH",
         }
 
         short_status = status_map.get(d.status, d.status)
@@ -339,6 +416,7 @@ def add_attendance(events, start, end, employee_id=None, conditions=None):
         if e not in events:
             events.append(e)
 
+
 def add_holidays(events, start, end, employee=None):
     holidays = get_holidays_for_employee(employee, start, end)
     if not holidays:
@@ -356,6 +434,7 @@ def add_holidays(events, start, end, employee=None):
                 "allDay": 1,
             }
         )
+
 
 @frappe.whitelist()
 def mark_attendance(
@@ -392,13 +471,13 @@ def mark_attendance(
 
     return attendance.name
 
+
 @frappe.whitelist()
 def mark_bulk_attendance(data):
-    import json
-
     if isinstance(data, str):
         data = json.loads(data)
     data = frappe._dict(data)
+
     if not data.unmarked_days:
         frappe.throw(_("Please select a date."))
         return
@@ -412,6 +491,7 @@ def mark_bulk_attendance(data):
         }
         attendance = frappe.get_doc(doc_dict).insert()
         attendance.submit()
+
 
 @frappe.whitelist()
 def get_unmarked_days(employee, from_date, to_date, exclude_holidays=0):
@@ -450,6 +530,7 @@ def get_unmarked_days(employee, from_date, to_date, exclude_holidays=0):
 
     return unmarked_days
 
+
 @frappe.whitelist()
 def get_attendance_summary_for_date(date=None, employee=None, is_manager=False, filters=None):
     user = frappe.session.user
@@ -460,7 +541,10 @@ def get_attendance_summary_for_date(date=None, employee=None, is_manager=False, 
 
     # Shorten roles list for logging
     roles_summary = roles[:3] + ["..."] if len(roles) > 3 else roles
-    frappe.log_error(f"get_attendance_summary: User {user}, Emp {employee}, Mgr {is_manager}", "Attendance Debug")  # Debug log
+    frappe.log_error(
+        f"get_attendance_summary: User {user}, Emp {employee}, Mgr {is_manager}",
+        "Attendance Debug",
+    )  # Debug log
 
     if not is_manager and employee != frappe.db.get_value("Employee", {"user_id": user}):
         frappe.throw(_("You are not authorized to view this employee's attendance."))
@@ -470,9 +554,9 @@ def get_attendance_summary_for_date(date=None, employee=None, is_manager=False, 
             filters = json.loads(filters)
             for filter_item in filters:
                 if (
-                    len(filter_item) == 4 and
-                    filter_item[0] == "Attendance" and
-                    filter_item[1] == "employee"
+                    len(filter_item) == 4
+                    and filter_item[0] == "Attendance"
+                    and filter_item[1] == "employee"
                 ):
                     employee = filter_item[3]
         except Exception as e:
@@ -487,7 +571,7 @@ def get_attendance_summary_for_date(date=None, employee=None, is_manager=False, 
             "employee": employee,
             "time": ["between", [f"{date} 00:00:00", f"{date} 23:59:59"]],
         },
-        order_by="time asc"
+        order_by="time asc",
     )
 
     swipes = [format_time(c.time) for c in checkins]
@@ -498,11 +582,13 @@ def get_attendance_summary_for_date(date=None, employee=None, is_manager=False, 
         in_time = checkins[i].time
         out_time = checkins[i + 1].time
         hours = (get_datetime(out_time) - get_datetime(in_time)).total_seconds() / 3600.0
-        sessions.append({
-            "in": format_time(in_time),
-            "out": format_time(out_time),
-            "hours": round(hours, 2)
-        })
+        sessions.append(
+            {
+                "in": format_time(in_time),
+                "out": format_time(out_time),
+                "hours": round(hours, 2),
+            }
+        )
         total_hours += hours
 
     shift_info = get_employee_shift(employee, get_datetime(f"{date} 12:00:00")) or {}
@@ -512,36 +598,35 @@ def get_attendance_summary_for_date(date=None, employee=None, is_manager=False, 
             try:
                 shift_doc = frappe.get_doc("Shift Type", default_shift)
                 shift_info = {
-                "shift_type": default_shift,
-                "start_time": shift_doc.start_time,
-                "end_time": shift_doc.end_time
-            }
-            # Optional: log for debugging
+                    "shift_type": default_shift,
+                    "start_time": shift_doc.start_time,
+                    "end_time": shift_doc.end_time,
+                }
+                # Optional: log for debugging
                 frappe.log_error(f"Default shift used for {employee} on {date}", "Shift Debug")
             except Exception as e:
-                frappe.log_error(f"Error loading default shift for {employee} on {date}: {e}", "Shift Debug")
-    shift_type = shift_info.get("shift_type") or "Not Assigned"
-    # print(f"shift_type:{shift_type}")
-    start = shift_info.get("start_time")
-    # print(f"start:{start}")
-    
-    end = shift_info.get("end_time")
-    timing = f"{start} - {end}" if start and end else ""
+                frappe.log_error(
+                    f"Error loading default shift for {employee} on {date}: {e}",
+                    "Shift Debug",
+                )
 
+    shift_type = shift_info.get("shift_type") or "Not Assigned"
+    start = shift_info.get("start_time")
+    end = shift_info.get("end_time")
 
     employee_name = frappe.db.get_value("Employee", employee, "employee_name")
 
     return {
-    "date": date,
-    "employee": employee,
-    "employee_name": employee_name,
-    "swipes": swipes,
-    "sessions": sessions,
-    "total_swipes": len(swipes),
-    "total_hours": round(total_hours, 2),
-    "average_hours": round(total_hours / len(sessions), 2) if sessions else 0,
-    "shift": {
-        "type": shift_type,
-        "timing": f"{start} - {end}" if start and end else "",
+        "date": date,
+        "employee": employee,
+        "employee_name": employee_name,
+        "swipes": swipes,
+        "sessions": sessions,
+        "total_swipes": len(swipes),
+        "total_hours": round(total_hours, 2),
+        "average_hours": round(total_hours / len(sessions), 2) if sessions else 0,
+        "shift": {
+            "type": shift_type,
+            "timing": f"{start} - {end}" if start and end else "",
+        },
     }
-}
