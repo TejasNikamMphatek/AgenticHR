@@ -1,10 +1,8 @@
 # Copyright (c) 2025,  Pipal ERP Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
-
 import frappe
 from frappe.utils.nestedset import NestedSet, get_root_of
-
 from erpnext.utilities.transaction_base import delete_events
 
 
@@ -37,10 +35,32 @@ class Department(NestedSet):
 			self.name = self.department_name
 
 	def validate(self):
+		# 🔹 Ensure root department is correctly set
 		if not self.parent_department:
 			root = get_root_of("Department")
 			if root:
 				self.parent_department = root
+
+		# 🔹 Strict duplicate-approver validation (GitHub addition)
+		self.check_duplicate_approvers("shift_request_approver", "Shift Request Approver")
+		self.check_duplicate_approvers("leave_approvers", "Leave Approver")
+		self.check_duplicate_approvers("expense_approvers", "Expense Approver")
+
+	def check_duplicate_approvers(self, child_table, label):
+		"""
+		Check for duplicate approvers in a child table.
+		Raises a frappe.throw error if duplicates exist.
+		"""
+		approvers = [row.approver for row in self.get(child_table) if row.approver]
+		duplicates = [a for a in approvers if approvers.count(a) > 1]
+
+		if duplicates:
+			duplicates = list(set(duplicates))  # remove repeats
+			frappe.throw(
+				f"Duplicate approvers found in <b>{label}</b>: {', '.join(duplicates)}.<br>"
+				"Please remove duplicates before saving.",
+				title="Duplicate Approvers Found"
+			)
 
 	def before_rename(self, old, new, merge=False):
 		# renaming consistency with abbreviation
@@ -64,8 +84,7 @@ def on_doctype_update():
 
 def get_abbreviated_name(name, company):
 	abbr = frappe.get_cached_value("Company", company, "abbr")
-	new_name = f"{name} - {abbr}"
-	return new_name
+	return f"{name} - {abbr}"
 
 
 @frappe.whitelist()

@@ -43,6 +43,7 @@ class Employee(NestedSet):
 		self.validate_name_fields()
 		self.validate_date()
 		self.validate_email()
+		self.validate_bank_account_number()
 		self.validate_status()
 		self.validate_reports_to()
 		self.validate_preferred_email()

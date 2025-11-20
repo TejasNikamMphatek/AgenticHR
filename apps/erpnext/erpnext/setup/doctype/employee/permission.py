@@ -10,7 +10,7 @@ def get_permission_query_conditions(user=None):
     roles = set(frappe.get_roles(user))
 
     # HR and Onboarding roles can see all Employee records
-    if {"HR Manager", "HR User", "Onboarding Employee", "Projects Manager"} & roles:
+    if {"HR Manager", "HR User", "Onboarding Employee"} & roles:
         return ""
 
     employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
