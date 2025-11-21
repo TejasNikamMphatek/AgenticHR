@@ -6,6 +6,7 @@ if(frappe.user.has_role("Projects Manager")){
 			title: 'Project Manager Dashboard',
 			single_column: true
 		});
+		$('.attendance-request-btn').remove();
 		me = frappe.project_manager_dash;
 		frappe.project_manager_dash.make(page);
 	}
@@ -13,6 +14,7 @@ if(frappe.user.has_role("Projects Manager")){
 	frappe.pages['project-manager-dash'].on_page_show = function(wrapper) {
 		$('.standard-actions.flex').addClass('hide');
 		$('.standard-actions.flex').remove();
+		 $('.attendance-request-btn').remove();
 	};
 
 	frappe.project_manager_dash = {

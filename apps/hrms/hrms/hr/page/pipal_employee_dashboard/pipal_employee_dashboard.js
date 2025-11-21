@@ -18,6 +18,7 @@ else if(frappe.user.has_role("Employee")){
 			title: 'Pipal Employee Dashboard',
 			single_column: true
 		});
+		 $('.attendance-request-btn').remove();
 		me = frappe.pipal_employee_dashboard;
 		frappe.pipal_employee_dashboard.make(page);
 	}
@@ -25,6 +26,7 @@ else if(frappe.user.has_role("Employee")){
 	frappe.pages['pipal-employee-dashboard'].on_page_show = function(wrapper) {
 		$('.standard-actions.flex').addClass('hide');
 		$('.standard-actions.flex').remove();
+		$('.attendance-request-btn').remove();
 	};
 
 	frappe.pipal_employee_dashboard = {
