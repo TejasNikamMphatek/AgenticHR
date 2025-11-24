@@ -230,45 +230,54 @@
                                        <span>Paid Days</span>
                                    </div>
                                </div>
-                               
                                <table class="table border-none">
-                                   <tr>
-                                       <td>
-                                           <span>Gross Pay </span>
-                                       </td>
-                                       <td class="text-right">
-                                           <span>
-                                               <!-- {{pay_currency}}  -->
-                                               &#8377;
-                                               <span id="pay_gross_pay">*****</span>
-                                           </span>
-                                       </td>
-                                   </tr>
-                                   <tr>    
-                                       <td>
-                                           <span>Deduction</span>
-                                       </td>
-                                       <td class="text-right">
-                                           <span> 
-                                               <!-- {{pay_currency}}  -->
-                                               &#8377;
-                                               <span id="pay_total_deduction">*****</span>
-                                           </span>
-                                       </td>
-                                   </tr>
-                                   <tr>
-                                       <td>
-                                           <span>Net Pay</span>
-                                       </td>
-                                       <td class="text-right">
-                                           <span>
-                                               <!-- {{pay_currency}}  -->
-                                               &#8377;
-                                               <span id="pay_net_pay">*****</span>
-                                           </span>
-                                       </td>
-                                   </tr>
-                               </table>
+    <tr>
+        <td>
+            <div class="legend-item">
+                <span class="legend-color gross-color"></span>
+                <span>Gross Pay</span>
+            </div>
+        </td>
+        <td class="text-right">
+            <span>
+                &#8377;
+                <span id="pay_gross_pay">*****</span>
+            </span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div class="legend-item">
+                <span class="legend-color deduction-color"></span>
+                <span>Deduction</span>
+            </div>
+        </td>
+        <td class="text-right">
+            <span>
+                &#8377;
+                <span id="pay_total_deduction">*****</span>
+            </span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div class="legend-item">
+                <span class="legend-color netpay-color"></span>
+                <span>Net Pay</span>
+            </div>
+        </td>
+        <td class="text-right">
+            <span>
+                &#8377;
+                <span id="pay_net_pay">*****</span>
+            </span>
+        </td>
+    </tr>
+</table>
+
+                              
                                
                                <div class="d-flex payslip-btnbox">
 
@@ -335,3 +344,10 @@
        </div>
    </div>
 </div>
+
+
+
+
+
+
+

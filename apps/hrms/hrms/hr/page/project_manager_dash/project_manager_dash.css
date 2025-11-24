@@ -725,3 +725,28 @@ table.table td {
     }
 }
 
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.gross-color {
+    background-color: #000000; /* Black */
+}
+
+.deduction-color {
+    background-color: #B9E3C6; /* Light Green */
+}
+
+.netpay-color {
+    background-color: #1C7293; /* Blue */
+}
