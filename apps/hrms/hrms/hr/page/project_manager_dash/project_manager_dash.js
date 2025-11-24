@@ -14,7 +14,7 @@ if(frappe.user.has_role("Projects Manager")){
 	frappe.pages['project-manager-dash'].on_page_show = function(wrapper) {
 		$('.standard-actions.flex').addClass('hide');
 		$('.standard-actions.flex').remove();
-		 $('.attendance-request-btn').remove();
+		$('.attendance-request-btn').remove();
 	};
 
 	frappe.project_manager_dash = {
@@ -356,7 +356,9 @@ if(frappe.user.has_role("Projects Manager")){
 			}
 		},
 
-
+		// ===========================
+		//   PAYSLIP PIE CHART + HOVER
+		// ===========================
 		salaryPiechart: function (payslip_val) {
 			try {
 				// Store payslip_val for later use
@@ -385,13 +387,15 @@ if(frappe.user.has_role("Projects Manager")){
 			}
 		},
 
-		// Rename adjustCanvasForZoom to drawPieChart and accept parameter
+		// Draw donut chart and set up hover metadata
 		drawPieChart: function(payslip_val) {
 			let canvas = document.getElementById('pieChart');
 			if (!canvas) {
 				console.warn("Canvas element not found");
 				return;
 			}
+
+			var me = frappe.project_manager_dash;
 
 			// Detect zoom level
 			let zoomLevel = window.devicePixelRatio * 100;
@@ -421,42 +425,155 @@ if(frappe.user.has_role("Projects Manager")){
 			let total_deduction = payslip_val['total_deduction'];
 			let net_pay = gross_pay - total_deduction;
 
+			// Guard against divide-by-zero or invalid values
+			if (!gross_pay || gross_pay <= 0) {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				return;
+			}
+
 			let outerRadius = (canvas.width / 2 / scaleFactor) - 10;
 			let innerRadius = canvas.width / 4 / scaleFactor;
 
-			let netPayAngle = (total_deduction / gross_pay) * 2 * Math.PI;
-			let deductionAngle = (net_pay / gross_pay) * 2 * Math.PI;
+			let deductionAngle = (total_deduction / gross_pay) * 2 * Math.PI;
+			let netPayAngle = (net_pay / gross_pay) * 2 * Math.PI;
 
-			// Draw payment days section
+			// Calculate percentages
+			let deduction_pct = (total_deduction / gross_pay) * 100;
+			let net_pct = 100 - deduction_pct;
+
+			let centerX = canvas.width / 2 / scaleFactor;
+			let centerY = canvas.height / 2 / scaleFactor;
+
+			// Draw Deduction slice
 			ctx.beginPath();
-			ctx.moveTo(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor);
-			ctx.arc(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor, outerRadius, 0, netPayAngle);
+			ctx.moveTo(centerX, centerY);
+			ctx.arc(centerX, centerY, outerRadius, 0, deductionAngle);
 			ctx.fillStyle = '#B9E3C6';
 			ctx.fill();
 			ctx.closePath();
 
-			// Draw leave day section
+			// Draw Net Pay slice
 			ctx.beginPath();
-			ctx.moveTo(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor);
-			ctx.arc(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor, outerRadius, netPayAngle, netPayAngle + deductionAngle);
+			ctx.moveTo(centerX, centerY);
+			ctx.arc(centerX, centerY, outerRadius, deductionAngle, deductionAngle + netPayAngle);
 			ctx.fillStyle = '#1C7293';
 			ctx.fill();
 			ctx.closePath();
 
-			// Draw the inner circle (cutout)
+			// Draw inner cut circle
 			ctx.beginPath();
-			ctx.arc(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor, innerRadius, 0, 2 * Math.PI);
+			ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
 			ctx.fillStyle = '#FFFFFF';
 			ctx.fill();
 			ctx.closePath();
 
-			// Draw the border
+			// Border
 			ctx.beginPath();
-			ctx.arc(canvas.width / 2 / scaleFactor, canvas.height / 2 / scaleFactor, outerRadius + 6, 0, 2 * Math.PI);
+			ctx.arc(centerX, centerY, outerRadius + 6, 0, 2 * Math.PI);
 			ctx.strokeStyle = '#000000';
 			ctx.lineWidth = 4;
 			ctx.stroke();
 			ctx.closePath();
+
+			// ---- STORE META FOR HOVER ----
+			me.chartMeta = {
+				centerX: centerX,
+				centerY: centerY,
+				innerRadius: innerRadius,
+				outerRadius: outerRadius,
+				deductionStart: 0,
+				deductionEnd: deductionAngle,
+				netStart: deductionAngle,
+				netEnd: deductionAngle + netPayAngle,
+				deduction_pct: deduction_pct,
+				net_pct: net_pct
+			};
+
+			// ---- BIND HOVER EVENTS ONLY ONCE ----
+			if (!canvas._hoverBound) {
+				canvas.addEventListener('mousemove', function(event) {
+					me.handlePieHover(event, canvas);
+				});
+				canvas.addEventListener('mouseleave', function() {
+					me.hidePieTooltip();
+				});
+				canvas._hoverBound = true;
+			}
+		},
+
+		// Handle hover and show tooltip with % value
+		handlePieHover: function (event, canvas) {
+			var me = frappe.project_manager_dash;
+			if (!me.chartMeta) {
+				return;
+			}
+
+			let rect = canvas.getBoundingClientRect();
+			let x = event.clientX - rect.left;
+			let y = event.clientY - rect.top;
+
+			let dx = x - me.chartMeta.centerX;
+			let dy = y - me.chartMeta.centerY;
+			let distance = Math.sqrt(dx * dx + dy * dy);
+
+			// Outside donut ring
+			if (distance < me.chartMeta.innerRadius || distance > me.chartMeta.outerRadius) {
+				me.hidePieTooltip();
+				return;
+			}
+
+			let angle = Math.atan2(dy, dx);
+			if (angle < 0) {
+				angle += 2 * Math.PI;
+			}
+
+			let label = null;
+			let percentage = null;
+
+			if (angle >= me.chartMeta.deductionStart && angle <= me.chartMeta.deductionEnd) {
+				label = "Deduction";
+				percentage = me.chartMeta.deduction_pct;
+			} else if (angle > me.chartMeta.netStart && angle <= me.chartMeta.netEnd + 0.0001) {
+				label = "Net Pay";
+				percentage = me.chartMeta.net_pct;
+			} else {
+				me.hidePieTooltip();
+				return;
+			}
+
+			if (label !== null) {
+				me.showPieTooltip(label + ": " + percentage.toFixed(2) + "%", event);
+			}
+		},
+
+		// Create/show tooltip div
+		showPieTooltip: function (text, event) {
+			let tooltip = document.getElementById('payslipPieTooltip');
+			if (!tooltip) {
+				tooltip = document.createElement('div');
+				tooltip.id = 'payslipPieTooltip';
+				tooltip.style.position = 'fixed';
+				tooltip.style.padding = '4px 8px';
+				tooltip.style.background = '#000';
+				tooltip.style.color = '#fff';
+				tooltip.style.borderRadius = '4px';
+				tooltip.style.fontSize = '12px';
+				tooltip.style.pointerEvents = 'none';
+				tooltip.style.zIndex = 9999;
+				document.body.appendChild(tooltip);
+			}
+			tooltip.textContent = text;
+			tooltip.style.left = (event.clientX + 10) + 'px';
+			tooltip.style.top = (event.clientY + 10) + 'px';
+			tooltip.style.display = 'block';
+		},
+
+		// Hide tooltip
+		hidePieTooltip: function () {
+			let tooltip = document.getElementById('payslipPieTooltip');
+			if (tooltip) {
+				tooltip.style.display = 'none';
+			}
 		},
 
 		waitLoad: function() {

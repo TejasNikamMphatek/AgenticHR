@@ -81,6 +81,8 @@
    "search_index": 1
   },
   {
+   "fetch_from": "employee.date_of_joining",
+   "fetch_if_empty": 1,
    "fieldname": "from_date",
    "fieldtype": "Date",
    "label": "From Date",
@@ -206,7 +208,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-01 12:50:54.369206",
+ "modified": "2025-11-24 12:34:34.642049",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure Assignment",
