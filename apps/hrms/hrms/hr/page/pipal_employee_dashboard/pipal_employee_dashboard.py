@@ -316,6 +316,21 @@ def getTaxProofSubmission(emp_id = None):
 
 @frappe.whitelist()
 def get_server_time():
-	return {
-        "server_time": datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+    # Detect server timezone from system
+    server_tz = datetime.now().astimezone().tzinfo
+
+    # Target timezone (IST / Asia-Kolkata)
+    ist = pytz.timezone("Asia/Kolkata")
+
+    now_server = datetime.now().astimezone()  # aware datetime
+
+    # If server already runs in IST → use directly
+    if str(server_tz) == "Asia/Kolkata" or str(server_tz) == "IST":
+        final_time = now_server
+    else:
+        # Convert from server timezone → IST
+        final_time = now_server.astimezone(ist)
+
+    return {
+        "server_time": final_time.strftime('%Y-%m-%d %H:%M:%S')
     }
