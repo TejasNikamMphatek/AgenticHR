@@ -288,13 +288,13 @@ def create_employee_tool(data):
         set_name=str(employee_number)
     )
 
-    set_state(user, OnboardingState.EMPLOYEE_CREATED)
+   
 
     return {
         "status": "success",
         "employee": emp.name,
         "employee_number": employee_number,
-        "state": OnboardingState.EMPLOYEE_CREATED,
+        
     }
 
 # Tool 5: finalize_employee_role
