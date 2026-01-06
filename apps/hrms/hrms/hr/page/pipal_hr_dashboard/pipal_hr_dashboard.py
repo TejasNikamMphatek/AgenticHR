@@ -286,3 +286,36 @@ def get_user():
 		order_by="name",
 	)
 	return login_user
+
+
+
+import requests # Make sure requests is installed in bench env
+
+@frappe.whitelist()
+def start_onboarding_agent():
+    """Triggered by Dashboard Button"""
+    try:
+        # FastAPI server ko call karein (Port 5005)
+        response = requests.post("http://localhost:5005/start", timeout=5)
+        return response.json()
+    except Exception as e:
+        frappe.throw(_("Agent Server is offline on port 5005. Error: {0}").format(str(e)))
+
+@frappe.whitelist()
+def trigger_agent_popup(field, user_id, cache_key):
+    """Called by Agent.py to show popup on HR Dashboard"""
+    frappe.publish_realtime('show_agent_dialog', {
+        "field": field,
+        "user_id": user_id,
+        "cache_key": cache_key
+    }, user=frappe.session.user)
+
+@frappe.whitelist()
+def send_answer_to_agent(cache_key, answer):
+    """Sends HR input back to FastAPI answers dictionary"""
+    try:
+        payload = {"cache_key": cache_key, "answer": answer}
+        requests.post("http://localhost:5005/submit-answer", json=payload, timeout=5)
+        return {"status": "success"}
+    except Exception as e:
+        frappe.throw(_("Could not send answer to Agent. Error: {0}").format(str(e)))
