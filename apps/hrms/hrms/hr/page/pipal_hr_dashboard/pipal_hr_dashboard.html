@@ -1061,17 +1061,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="task" style="border-left: 2px solid #00bcd4; background: #e0f7fa;">
-    <div class="row">
-        <div class="col-12">
-            <a href="javascript:void(0);" onclick="me.run_ai_onboarding()">
-                <i class="zmdi zmdi-flash" style="color: #00bcd4;"></i> 
-                <strong>Run AI Onboarding</strong>
-            </a>
-            <p>Click to start the AI agent for pending employee onboarding.</p>
-        </div>
-    </div>
-</div>
+                                            
                                             
                                         </div>
                                     </div>
@@ -1112,6 +1102,30 @@
                     </div>
                     
                 </div>
+                  <div id="ai-chatbot-fab" onclick="me.run_ai_onboarding()">
+            <!-- <i class="zmdi zmdi-robot"></i> -->
+                   <i class="octicon octicon-hubot"></i>
+        </div>
+
+
+        <div id="ai-chatbot-box" class="hidden">
+    <div class="chat-header">
+        <span>AI Onboarding Agent</span>
+        <span class="close-btn" onclick="me.toggle_ai_chat()">✕</span>
+    </div>
+
+    <div id="ai-chat-messages"></div>
+
+    <div class="chat-input">
+        <input
+            type="text"
+            id="ai-chat-input"
+            placeholder="Type your answer…"
+            onkeydown="me.handle_ai_enter(event)"
+        />
+        <button onclick="me.send_ai_answer()">Send</button>
+    </div>
+</div>
                 
             </div>
     </section>

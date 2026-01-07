@@ -292,7 +292,7 @@ def get_user():
 import requests # Make sure requests is installed in bench env
 
 @frappe.whitelist()
-def start_onboarding_agent():
+def start_ai_onboarding():
     """Triggered by Dashboard Button"""
     try:
         # FastAPI server ko call karein (Port 5005)
@@ -319,3 +319,12 @@ def send_answer_to_agent(cache_key, answer):
         return {"status": "success"}
     except Exception as e:
         frappe.throw(_("Could not send answer to Agent. Error: {0}").format(str(e)))
+
+
+@frappe.whitelist()
+def notify_employee_created(employee_name, employee_id):
+    """This name must match what JS is listening for"""
+    frappe.publish_realtime('employee_completed_event', {
+        "message": f"Success: Employee {employee_name} ({employee_id}) created!",
+        "employee_id": employee_id
+    }, user=frappe.session.user)
