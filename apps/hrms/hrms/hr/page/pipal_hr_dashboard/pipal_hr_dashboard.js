@@ -51,74 +51,137 @@ if (!frappe.user.has_role("System Manager") || frappe.user.has_role("Administrat
             });
             $('.page-head').addClass('hide');
         },
+    send_data: function (data) {
+            // Ensure 'me' refers to our object instance
+            var me = frappe.pipal_hr_dashboard;
 
-        send_data: function (data) {
             me.pending_confirmation = data[0]['probation_employee'].length;
             me.resign_count = data[0]['resign_emp'].length;
             me.att_req_count = data[0]['attendance_req'].length;
             me.leave_app_count = data[0]['leave_application'].length;
             me.help_desk_count = data[0]['help_desk_request'].length;
-            me.anniver_slide = this.anniEmpSlider(data[0]['anni_emp']);
-            me.birthday_slide = this.birthdayEmpSlider(data[0]['birthday_employee'])
-            this.showGreeting();
-            me.user_profile = this.showUserProfile(data[0]['login_user'])
-            $(frappe.render_template("pipal_hr_dashboard", data)).appendTo(me.page.main);
-            this.runSlides()
-            this.showHideSlider(data[0]['anni_emp'], data[0]['birthday_employee'])
             
-            // Initialize AI listeners as soon as data is loaded/rendered
-            this.init_agent_listeners();
-        },
+            // Generate sliders
+            me.anniver_slide = me.anniEmpSlider(data[0]['anni_emp']);
+            me.birthday_slide = me.birthdayEmpSlider(data[0]['birthday_employee']);
+            
+            me.showGreeting();
+            me.user_profile = me.showUserProfile(data[0]['login_user']);
 
-        // === AI AGENT FUNCTIONS START ===
-        run_ai_onboarding: function () {
+            // IMPORTANT: Pass 'me' into the template context explicitly
+            // This allows the HTML template to see the counts (me.resign_count, etc.)
+            $(frappe.render_template("pipal_hr_dashboard", {
+                data: data,
+                me: me
+            })).appendTo(me.page.main);
+
+            me.runSlides();
+            me.showHideSlider(data[0]['anni_emp'], data[0]['birthday_employee']);
+            
+            // Initialize AI listeners
+            me.init_agent_listeners();
+        },
+run_ai_onboarding: function () {
             const me = this;
 
-            frappe.confirm('Are you sure you want to start the AI Onboarding Agent?', () => {
-                frappe.show_alert({ message: __("Starting AI Agent..."), indicator: "blue" });
+            const chatbox = document.getElementById("ai-chatbot-box");
+            if (chatbox) chatbox.classList.remove("hidden");
 
-                frappe.call({
-                    method: "hrms.hr.page.pipal_hr_dashboard.pipal_hr_dashboard.start_onboarding_agent",
-                    callback: function (r) {
-                        if (!r.exc) {
-                            frappe.msgprint(__("AI Agent is now running in the background. Please stay on this page for input prompts."));
-                        }
+            const messages = document.getElementById("ai-chat-messages");
+            if (messages) messages.innerHTML = "";
+
+            frappe.call({
+                method: "hrms.hr.page.pipal_hr_dashboard.pipal_hr_dashboard.start_ai_onboarding",
+                callback: function (r) {
+                    if (r.message) {
+                        me.add_ai_message(r.message);
                     }
-                });
+                }
             });
         },
 
         init_agent_listeners: function () {
-            // Real-time listener for the popup from FastAPI/Python
+            const me = this;
+
             frappe.realtime.on('show_agent_dialog', (data) => {
-                let d = new frappe.ui.Dialog({
-                    title: __('AI Agent Input: ') + data.field,
-                    fields: [
-                        {
-                            label: `Enter ${data.field}`,
-                            fieldname: 'ans',
-                            fieldtype: 'Data',
-                            reqd: 1
-                        }
-                    ],
-                    primary_action_label: __('Submit'),
-                    primary_action(values) {
-                        frappe.call({
-                            method: "hrms.hr.page.pipal_hr_dashboard.pipal_hr_dashboard.send_answer_to_agent",
-                            args: {
-                                cache_key: data.cache_key,
-                                answer: values.ans
-                            },
-                            callback: () => {
-                                d.hide();
-                                frappe.show_alert({ message: __('Sent!'), indicator: 'green' });
-                            }
-                        });
-                    }
+                me.current_agent_question = data;
+                document.getElementById("ai-chatbot-box")?.classList.remove("hidden");
+                me.add_ai_message(`Please enter ${data.field}`);
+            });
+            frappe.realtime.on('employee_completed_event', (data) => {
+                console.log("Realtime signal received!", data);
+                    // Show a standard Frappe Alert
+                    frappe.show_alert({
+                        message: __(data.message),
+                        indicator: "green"
+                    }, 7);
+                    if (me.refresh) me.refresh(); 
                 });
-                d.show();
+
+            frappe.realtime.on('ai_agent_completed', () => {
+                setTimeout(() => {
+                    document.getElementById("ai-chatbot-box")?.classList.add("hidden");
+                    me.current_agent_question = null;
+                    document.getElementById("ai-chat-messages").innerHTML = "";
+                    document.getElementById("ai-chat-input").value = "";
+                    if (cur_list) cur_list.refresh();
+                }, 500);
+            });
+
+            frappe.realtime.on('ai_agent_error', (data) => {
+                frappe.show_alert({
+                    message: __(data.msg || "Error during onboarding"),
+                    indicator: "red"
+                });
+                document.getElementById("ai-chatbot-box")?.classList.add("hidden");
+                me.current_agent_question = null;
+            });
+            
+        },
+       
+        
+        send_ai_answer: function () {
+            const input = document.getElementById("ai-chat-input");
+            const answer = input.value.trim();
+            if (!answer || !me.current_agent_question) return;
+
+            me.add_user_message(answer);
+            input.value = "";
+
+            frappe.call({
+                method: "hrms.hr.page.pipal_hr_dashboard.pipal_hr_dashboard.send_answer_to_agent",
+                args: {
+                    cache_key: me.current_agent_question.cache_key,
+                    answer: answer
+                }
             });
         },
+
+        handle_ai_enter: function (e) {
+            if (e.key === "Enter") {
+                this.send_ai_answer();
+            }
+        },
+
+        add_ai_message: function (text) {
+            const box = document.getElementById("ai-chat-messages");
+            const div = document.createElement("div");
+            div.className = "ai-message";
+            div.innerText = text;
+            box.appendChild(div);
+        },
+
+        add_user_message: function (text) {
+            const box = document.getElementById("ai-chat-messages");
+            const div = document.createElement("div");
+            div.className = "user-message";
+            div.innerText = text;
+            box.appendChild(div);
+        },
+        employee_created_alert:function(message){
+            console.log(message)
+        },
+
         // === AI AGENT FUNCTIONS END ===
 
         anniEmpSlider: function (anni_emp) {
